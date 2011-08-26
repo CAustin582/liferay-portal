@@ -50,6 +50,8 @@ public class TearDownWikiNodeTest extends BaseTestCase {
 					RuntimeVariables.replace("Control Panel"));
 				selenium.waitForPageToLoad("30000");
 				selenium.saveScreenShotAndSource();
+				assertEquals(RuntimeVariables.replace("Wiki"),
+					selenium.getText("//ul[@class='category-portlets']/li[9]/a"));
 				selenium.clickAt("//ul[@class='category-portlets']/li[9]/a",
 					RuntimeVariables.replace("Wiki"));
 				selenium.waitForPageToLoad("30000");
