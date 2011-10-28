@@ -15,6 +15,7 @@
 package com.liferay.portalweb.portlet.documentlibrarydisplay.portlet;
 
 import com.liferay.portalweb.portal.BaseTests;
+import com.liferay.portalweb.portlet.documentlibrarydisplay.portlet.adddocumentportlet.AddDocumentPortletTests;
 import com.liferay.portalweb.portlet.documentlibrarydisplay.portlet.addportlet.AddPortletTests;
 import com.liferay.portalweb.portlet.documentlibrarydisplay.portlet.addportletmultiple.AddPortletMultipleTests;
 import com.liferay.portalweb.portlet.documentlibrarydisplay.portlet.configureportletshowfoldersearch.ConfigurePortletShowFolderSearchTests;
@@ -31,6 +32,7 @@ public class PortletTests extends BaseTests {
 	public static Test suite() {
 		TestSuite testSuite = new TestSuite();
 
+		testSuite.addTest(AddDocumentPortletTests.suite());
 		testSuite.addTest(AddPortletTests.suite());
 		testSuite.addTest(AddPortletMultipleTests.suite());
 		testSuite.addTest(ConfigurePortletShowFolderSearchTests.suite());
