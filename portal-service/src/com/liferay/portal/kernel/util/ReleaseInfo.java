@@ -78,11 +78,22 @@ public class ReleaseInfo {
 	}
 
 	public static final String getReleaseInfo() {
-		return _RELEASE_INFO;
+		if (_releaseInfo == null) {
+			_releaseInfo =
+				_RELEASE_INFO_PREFIX + _NAME + " " + _VERSION_DISPLAY_NAME +
+					" (" + _CODE_NAME + " / Build " + _BUILD + " / " + _DATE +
+						")" + _RELEASE_INFO_SUFFIX;
+		}
+
+		return _releaseInfo;
 	}
 
 	public static final String getServerInfo() {
-		return _SERVER_INFO;
+		if (_serverInfo == null) {
+			_serverInfo = _NAME + " / " + _VERSION;
+		}
+
+		return _serverInfo;
 	}
 
 	public static String getVendor() {
@@ -103,24 +114,19 @@ public class ReleaseInfo {
 
 	private static final String _NAME = "Liferay Portal Community Edition";
 
-	private static final String _RELEASE_INFO =
-		ReleaseInfo._RELEASE_INFO_PREFIX + _NAME + " " +
-			ReleaseInfo._VERSION_DISPLAY_NAME + " (" + _CODE_NAME +
-				" / Build " + _BUILD + " / " + _DATE + ")" +
-					ReleaseInfo._RELEASE_INFO_SUFFIX;
-
 	private static final String _RELEASE_INFO_PREFIX = System.getProperty(
 		"liferay.release.info.prefix" , StringPool.BLANK);
 
 	private static final String _RELEASE_INFO_SUFFIX = System.getProperty(
 		"liferay.release.info.suffix" , StringPool.BLANK);
 
-	private static String _SERVER_INFO = _NAME + " / " + ReleaseInfo._VERSION;
+	private static final String _VENDOR = "Liferay, Inc.";
 
-	private static String _VENDOR = "Liferay, Inc.";
+	private static final String _VERSION = "6.2.0";
 
-	private static String _VERSION = "6.2.0";
+	private static final String _VERSION_DISPLAY_NAME = "6.2.0 CE";
 
-	private static String _VERSION_DISPLAY_NAME = "6.2.0 CE";
+	private static String _releaseInfo;
+	private static String _serverInfo;
 
 }

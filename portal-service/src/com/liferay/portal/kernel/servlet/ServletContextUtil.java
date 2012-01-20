@@ -46,8 +46,7 @@ public class ServletContextUtil {
 		"Please configure Tomcat to unpack WARs to enable ";
 
 	public static final String LOG_INFO_SPRITES =
-		ServletContextUtil.LOG_INFO_PREFIX + "enable sprites for best " +
-			"performance";
+		LOG_INFO_PREFIX + "enable sprites for best performance";
 
 	public static Set<String> getClassNames(ServletContext servletContext)
 		throws IOException {

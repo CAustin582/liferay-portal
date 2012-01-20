@@ -13377,7 +13377,7 @@ This method handles the creation of the layout including its resources, metadata
 			<comment><![CDATA[Updates the state of the layout set prototype link.
 
 <p>
-This method can disable the layout set prototype's link by setting <code>layoutSetPrototypeLinkEnabled</code> to <code>false</code>. However, this method can only enable the layout set prototype's link if the layout set prototype's current uuid is not <code>null</code>. Setting the <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> when the layout set prototype's current uuid is <code>null</code> will result in an <code>IllegalStateException</code>.
+This method can disable the layout set prototype's link by setting <code>layoutSetPrototypeLinkEnabled</code> to <code>false</code>. However, this method can only enable the layout set prototype's link if the layout set prototype's current uuid is not <code>null</code>. Setting the <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> when the layout set prototype's current uuid is <code>null</code> will have no effect.
 </p>]]></comment>
 			<param>
 				<name>groupId</name>
@@ -13408,11 +13408,7 @@ This method can disable the layout set prototype's link by setting <code>layoutS
 		</method>
 		<method>
 			<name>updateLayoutSetPrototypeLinkEnabled</name>
-			<comment><![CDATA[Updates the state of the layout set prototype link.
-
-<p>
-<strong>Important:</strong> Setting <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> and <code>layoutSetPrototypeUuid</code> to <code>null</code> when the layout set prototype's current uuid is <code>null</code> will result in an <code>IllegalStateException</code>.
-</p>]]></comment>
+			<comment><![CDATA[Updates the state of the layout set prototype link.]]></comment>
 			<param>
 				<name>groupId</name>
 				<type>long</type>
