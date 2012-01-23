@@ -5174,6 +5174,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		throws SystemException {
 
 		try {
+			SearchContext searchContext = new SearchContext();
+
+			searchContext.setAndSearch(andSearch);
+
 			Map<String, Serializable> attributes =
 				new HashMap<String, Serializable>();
 
@@ -5191,10 +5195,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			attributes.put("status", status);
 			attributes.put("zip", zip);
 
-			SearchContext searchContext = new SearchContext();
-
-			searchContext.setAndSearch(andSearch);
 			searchContext.setAttributes(attributes);
+
 			searchContext.setCompanyId(companyId);
 			searchContext.setEnd(end);
 
@@ -5204,8 +5206,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 				searchContext.setKeywords(keywords);
 			}
 
-			searchContext.setSorts(new Sort[] {sort});
-
 			QueryConfig queryConfig = new QueryConfig();
 
 			queryConfig.setHighlightEnabled(false);
@@ -5213,6 +5213,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 			searchContext.setQueryConfig(queryConfig);
 
+			searchContext.setSorts(new Sort[] {sort});
 			searchContext.setStart(start);
 
 			Indexer indexer = IndexerRegistryUtil.getIndexer(User.class);
