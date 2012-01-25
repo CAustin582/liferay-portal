@@ -432,6 +432,19 @@ public class EditLayoutsAction extends PortletAction {
 				return;
 			}
 		}
+		else if (cmd.equals("reset_prototype")) {
+			if (!LayoutPermissionUtil.contains(
+					permissionChecker, layout, ActionKeys.UPDATE) ||
+				!GroupPermissionUtil.contains(
+					permissionChecker, layout.getGroupId(),
+					ActionKeys.UPDATE)) {
+
+				throw new PrincipalException();
+			}
+			else {
+				return;
+			}
+		}
 
 		boolean hasUpdateLayoutPermission = false;
 

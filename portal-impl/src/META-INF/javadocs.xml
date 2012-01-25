@@ -8792,6 +8792,60 @@ Useful when paginating results. Returns a maximum of <code>end - start</code> in
 			</throws>
 		</method>
 		<method>
+			<name>hasLayoutSetPrototypeLayout</name>
+			<comment><![CDATA[]]></comment>
+			<param>
+				<name>layoutSetPrototypeId</name>
+				<type>long</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>layoutUuid</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>PortalException</name>
+				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>hasLayoutSetPrototypeLayout</name>
+			<comment><![CDATA[]]></comment>
+			<param>
+				<name>layoutSetPrototypeUuid</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>layoutUuid</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>PortalException</name>
+				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
 			<name>importLayouts</name>
 			<comment><![CDATA[Imports the layouts from the byte array.]]></comment>
 			<param>
@@ -9683,6 +9737,33 @@ Useful when paginating results. Returns a maximum of <code>end - start</code> in
 			<return>
 				<comment><![CDATA[]]></comment>
 			</return>
+			<throws>
+				<name>SystemException</name>
+				<type>com.liferay.portal.kernel.exception.SystemException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
+		</method>
+		<method>
+			<name>hasLayoutSetPrototypeLayout</name>
+			<comment><![CDATA[]]></comment>
+			<param>
+				<name>layoutSetPrototype</name>
+				<type>com.liferay.portal.model.LayoutSetPrototype</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<param>
+				<name>layoutUuid</name>
+				<type>java.lang.String</type>
+				<comment><![CDATA[]]></comment>
+			</param>
+			<return>
+				<comment><![CDATA[]]></comment>
+			</return>
+			<throws>
+				<name>PortalException</name>
+				<type>com.liferay.portal.kernel.exception.PortalException</type>
+				<comment><![CDATA[]]></comment>
+			</throws>
 			<throws>
 				<name>SystemException</name>
 				<type>com.liferay.portal.kernel.exception.SystemException</type>
@@ -13377,7 +13458,7 @@ This method handles the creation of the layout including its resources, metadata
 			<comment><![CDATA[Updates the state of the layout set prototype link.
 
 <p>
-This method can disable the layout set prototype's link by setting <code>layoutSetPrototypeLinkEnabled</code> to <code>false</code>. However, this method can only enable the layout set prototype's link if the layout set prototype's current uuid is not <code>null</code>. Setting the <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> when the layout set prototype's current uuid is <code>null</code> will result in an <code>IllegalStateException</code>.
+This method can disable the layout set prototype's link by setting <code>layoutSetPrototypeLinkEnabled</code> to <code>false</code>. However, this method can only enable the layout set prototype's link if the layout set prototype's current uuid is not <code>null</code>. Setting the <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> when the layout set prototype's current uuid is <code>null</code> will have no effect.
 </p>]]></comment>
 			<param>
 				<name>groupId</name>
@@ -13408,11 +13489,7 @@ This method can disable the layout set prototype's link by setting <code>layoutS
 		</method>
 		<method>
 			<name>updateLayoutSetPrototypeLinkEnabled</name>
-			<comment><![CDATA[Updates the state of the layout set prototype link.
-
-<p>
-<strong>Important:</strong> Setting <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> and <code>layoutSetPrototypeUuid</code> to <code>null</code> when the layout set prototype's current uuid is <code>null</code> will result in an <code>IllegalStateException</code>.
-</p>]]></comment>
+			<comment><![CDATA[Updates the state of the layout set prototype link.]]></comment>
 			<param>
 				<name>groupId</name>
 				<type>long</type>

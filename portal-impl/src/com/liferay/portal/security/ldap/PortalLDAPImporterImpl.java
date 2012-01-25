@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.bean.BeanPropertiesUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
 import com.liferay.portal.kernel.cache.SingleVMPoolUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.ldap.LDAPUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
@@ -55,7 +56,6 @@ import com.liferay.portlet.expando.model.ExpandoBridge;
 import com.liferay.portlet.expando.model.ExpandoTableConstants;
 import com.liferay.portlet.expando.service.ExpandoValueLocalServiceUtil;
 import com.liferay.portlet.expando.util.ExpandoConverterUtil;
-import com.liferay.util.ldap.LDAPUtil;
 
 import java.io.Serializable;
 
@@ -1103,6 +1103,14 @@ public class PortalLDAPImporterImpl implements PortalLDAPImporter {
 			passwordReset = user.isPasswordReset();
 		}
 
+		if (!PropsValues.LDAP_IMPORT_USER_PASSWORD_ENABLED) {
+			password = PropsValues.LDAP_IMPORT_USER_PASSWORD_DEFAULT;
+
+			if (password.equalsIgnoreCase(_USER_PASSWORD_SCREEN_NAME)) {
+				password = ldapUser.getScreenName();
+			}
+		}
+
 		if (Validator.isNull(ldapUser.getScreenName())) {
 			ldapUser.setAutoScreenName(true);
 		}
@@ -1124,7 +1132,7 @@ public class PortalLDAPImporterImpl implements PortalLDAPImporter {
 		int birthdayDay = birthdayCal.get(Calendar.DAY_OF_MONTH);
 		int birthdayYear = birthdayCal.get(Calendar.YEAR);
 
-		if (PropsValues.LDAP_IMPORT_USER_PASSWORD_ENABLED) {
+		if (ldapUser.isUpdatePassword()) {
 			UserLocalServiceUtil.updatePassword(
 				user.getUserId(), password, password, passwordReset, true);
 		}

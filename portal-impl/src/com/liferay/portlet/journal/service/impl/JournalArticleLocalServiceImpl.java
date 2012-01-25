@@ -1667,6 +1667,10 @@ public class JournalArticleLocalServiceImpl
 		throws SystemException {
 
 		try {
+			SearchContext searchContext = new SearchContext();
+
+			searchContext.setAndSearch(andSearch);
+
 			Map<String, Serializable> attributes =
 				new HashMap<String, Serializable>();
 
@@ -1681,10 +1685,8 @@ public class JournalArticleLocalServiceImpl
 			attributes.put("structureId", structureId);
 			attributes.put("templateId", templateId);
 
-			SearchContext searchContext = new SearchContext();
-
-			searchContext.setAndSearch(andSearch);
 			searchContext.setAttributes(attributes);
+
 			searchContext.setCompanyId(companyId);
 			searchContext.setGroupIds(new long[] {groupId});
 			searchContext.setEnd(end);
@@ -1695,8 +1697,6 @@ public class JournalArticleLocalServiceImpl
 				searchContext.setKeywords(keywords);
 			}
 
-			searchContext.setSorts(new Sort[] {sort});
-
 			QueryConfig queryConfig = new QueryConfig();
 
 			queryConfig.setHighlightEnabled(false);
@@ -1704,6 +1704,7 @@ public class JournalArticleLocalServiceImpl
 
 			searchContext.setQueryConfig(queryConfig);
 
+			searchContext.setSorts(new Sort[] {sort});
 			searchContext.setStart(start);
 
 			Indexer indexer = IndexerRegistryUtil.getIndexer(

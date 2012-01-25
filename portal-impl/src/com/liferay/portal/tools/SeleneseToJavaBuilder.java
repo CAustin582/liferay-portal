@@ -16,6 +16,8 @@ package com.liferay.portal.tools;
 
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.IntegerWrapper;
+import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
@@ -26,7 +28,11 @@ import com.liferay.portal.util.InitUtil;
 
 import java.io.File;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,25 +72,39 @@ public class SeleneseToJavaBuilder {
 
 		directoryScanner.scan();
 
+		int testHtmlCount = 0;
+
+		Map<String, ObjectValuePair<String, IntegerWrapper>> testHtmlMap =
+			new HashMap<String, ObjectValuePair<String, IntegerWrapper>>();
+
 		Set<String> fileNames = SetUtil.fromArray(
 			directoryScanner.getIncludedFiles());
 
 		for (String fileName : fileNames) {
-
-			// I would have preferred to use XlateHtmlSeleneseToJava, but it
-			// is horribly out of sync with Selenium IDE and generates incorrect
-			// code.
-
-			/*String input = StringUtil.replace(
-				basedir + "/" + fileName, "\\", "/");
-
-			XlateHtmlSeleneseToJava.main(
-				new String[] {
-					"test", "-silent", input
-				}
-			);*/
-
 			if (fileName.endsWith("Test.html")) {
+				testHtmlCount++;
+
+				String content = FileUtil.read(basedir + "/" + fileName);
+
+				content = content.trim();
+				content = StringUtil.replace(content, "\n", "");
+				content = StringUtil.replace(content, "\r\n", "");
+
+				ObjectValuePair<String, IntegerWrapper> testHtmlOVP =
+					testHtmlMap.get(content);
+
+				if (testHtmlOVP == null) {
+					testHtmlOVP = new ObjectValuePair<String, IntegerWrapper>(
+						fileName, new IntegerWrapper());
+
+					testHtmlMap.put(content, testHtmlOVP);
+				}
+				else {
+					IntegerWrapper integerWrapper = testHtmlOVP.getValue();
+
+					integerWrapper.increment();
+				}
+
 				translateTestCase(basedir, fileName);
 			}
 			else if (fileName.endsWith("Tests.html")) {
@@ -100,6 +120,51 @@ public class SeleneseToJavaBuilder {
 					System.out.println("Unused: " + fileName);
 				}
 			}
+		}
+
+		List<ObjectValuePair<String, IntegerWrapper>> testHtmlOVPs =
+			new ArrayList<ObjectValuePair<String, IntegerWrapper>>();
+
+		int duplicateTestHtmlCount = 0;
+
+		for (Map.Entry<String, ObjectValuePair<String, IntegerWrapper>> entry :
+				testHtmlMap.entrySet()) {
+
+			ObjectValuePair<String, IntegerWrapper> testHtmlOVP =
+				entry.getValue();
+
+			testHtmlOVPs.add(testHtmlOVP);
+
+			IntegerWrapper integerWrapper = testHtmlOVP.getValue();
+
+			duplicateTestHtmlCount += integerWrapper.getValue();
+		}
+
+		Collections.sort(testHtmlOVPs, new TestHtmlCountComparator());
+
+		StringBundler sb = new StringBundler();
+
+		for (ObjectValuePair<String, IntegerWrapper> testHtmlOVP :
+				testHtmlOVPs) {
+
+			String fileName = testHtmlOVP.getKey();
+			IntegerWrapper integerWrapper = testHtmlOVP.getValue();
+
+			if (integerWrapper.getValue() > 0) {
+				sb.append(fileName);
+				sb.append(",");
+				sb.append(integerWrapper.getValue());
+				sb.append("\n");
+			}
+		}
+
+		if (false && sb.length() > 0) {
+			System.out.println(
+				"There are " + duplicateTestHtmlCount +
+					" duplicate tests out of " + testHtmlCount +
+						". See duplicate_selenium_tests.csv.");
+
+			FileUtil.write("duplicate_selenium_tests.csv", sb.toString());
 		}
 	}
 
@@ -717,6 +782,13 @@ public class SeleneseToJavaBuilder {
 				sb.append(param3);
 				sb.append(");");
 			}
+			else if (param1.equals("storeChecked")) {
+				sb.append("boolean ");
+				sb.append(param3);
+				sb.append(" = selenium.isChecked(\"");
+				sb.append(param2);
+				sb.append("\");");
+			}
 			else if (param1.equals("storeCurrentDay")) {
 				sb.append("String ");
 				sb.append(param2);
@@ -1147,6 +1219,29 @@ public class SeleneseToJavaBuilder {
 
 	private static final String[] _FIX_PARAM_OLD_SUBS = new String[] {
 		"\\\\n", "<br />"
+	};
+
+	private class TestHtmlCountComparator
+		implements Comparator<ObjectValuePair<String, IntegerWrapper>> {
+
+		public int compare(
+			ObjectValuePair<String, IntegerWrapper> object1,
+			ObjectValuePair<String, IntegerWrapper> object2) {
+
+			IntegerWrapper integerWrapper1 = object1.getValue();
+			IntegerWrapper integerWrapper2 = object2.getValue();
+
+			if (integerWrapper1.getValue() > integerWrapper2.getValue()) {
+				return -1;
+			}
+			else if (integerWrapper1.getValue() < integerWrapper2.getValue()) {
+				return 1;
+			}
+			else {
+				return 0;
+			}
+		}
+
 	};
 
 }

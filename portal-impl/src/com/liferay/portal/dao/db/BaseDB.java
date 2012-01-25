@@ -187,25 +187,10 @@ public abstract class BaseDB implements DB {
 		return _SUPPORTS_UPDATE_WITH_INNER_JOIN;
 	}
 
-	public void runSQL(String sql) throws IOException, SQLException {
-		runSQL(new String[] {sql});
-	}
-
 	public void runSQL(Connection con, String sql)
 		throws IOException, SQLException {
 
 		runSQL(con, new String[] {sql});
-	}
-
-	public void runSQL(String[] sqls) throws IOException, SQLException {
-		Connection con = DataAccess.getConnection();
-
-		try {
-			runSQL(con, sqls);
-		}
-		finally {
-			DataAccess.cleanUp(con);
-		}
 	}
 
 	public void runSQL(Connection con, String[] sqls)
@@ -243,6 +228,21 @@ public abstract class BaseDB implements DB {
 		}
 		finally {
 			DataAccess.cleanUp(s);
+		}
+	}
+
+	public void runSQL(String sql) throws IOException, SQLException {
+		runSQL(new String[] {sql});
+	}
+
+	public void runSQL(String[] sqls) throws IOException, SQLException {
+		Connection con = DataAccess.getConnection();
+
+		try {
+			runSQL(con, sqls);
+		}
+		finally {
+			DataAccess.cleanUp(con);
 		}
 	}
 
@@ -492,10 +492,6 @@ public abstract class BaseDB implements DB {
 		}
 	}
 
-	protected abstract String buildCreateFileContent(
-			String sqlDir, String databaseName, int population)
-		throws IOException;
-
 	protected String[] buildColumnNameTokens(String line) {
 		String[] words = StringUtil.split(line, ' ');
 
@@ -535,6 +531,10 @@ public abstract class BaseDB implements DB {
 
 		return template;
 	}
+
+	protected abstract String buildCreateFileContent(
+			String sqlDir, String databaseName, int population)
+		throws IOException;
 
 	protected String buildTemplate(String sqlDir, String fileName)
 		throws IOException {
@@ -988,9 +988,9 @@ public abstract class BaseDB implements DB {
 	private static Pattern _timestampPattern = Pattern.compile(
 		"SPECIFIC_TIMESTAMP_\\d+");
 
+	private boolean _supportsStringCaseSensitiveQuery;
 	private Map<String, String> _templateMap = new HashMap<String, String>();
 	private String _type;
-	private boolean _supportsStringCaseSensitiveQuery;
 
 	static {
 		StringBundler sb = new StringBundler(TEMPLATE.length * 3 - 3);

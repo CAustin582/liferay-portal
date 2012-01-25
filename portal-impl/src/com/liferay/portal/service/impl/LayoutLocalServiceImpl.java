@@ -56,6 +56,7 @@ import com.liferay.portal.model.LayoutConstants;
 import com.liferay.portal.model.LayoutPrototype;
 import com.liferay.portal.model.LayoutReference;
 import com.liferay.portal.model.LayoutSet;
+import com.liferay.portal.model.LayoutSetPrototype;
 import com.liferay.portal.model.LayoutTypePortlet;
 import com.liferay.portal.model.Portlet;
 import com.liferay.portal.model.PortletConstants;
@@ -1313,6 +1314,28 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		return hasLayouts(group, privateLayout);
 	}
 
+	public boolean hasLayoutSetPrototypeLayout(
+			long layoutSetPrototypeId, String layoutUuid)
+		throws PortalException, SystemException {
+
+		LayoutSetPrototype layoutSetPrototype =
+			layoutSetPrototypeLocalService.getLayoutSetPrototype(
+				layoutSetPrototypeId);
+
+		return hasLayoutSetPrototypeLayout(layoutSetPrototype, layoutUuid);
+	}
+
+	public boolean hasLayoutSetPrototypeLayout(
+			String layoutSetPrototypeUuid, String layoutUuid)
+		throws PortalException, SystemException {
+
+		LayoutSetPrototype layoutSetPrototype =
+			layoutSetPrototypeLocalService.getLayoutSetPrototypeByUuid(
+				layoutSetPrototypeUuid);
+
+		return hasLayoutSetPrototypeLayout(layoutSetPrototype, layoutUuid);
+	}
+
 	/**
 	 * Imports the layouts from the byte array.
 	 *
@@ -2321,6 +2344,22 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 
 		return parentLayoutId;
+	}
+
+	protected boolean hasLayoutSetPrototypeLayout(
+			LayoutSetPrototype layoutSetPrototype, String layoutUuid)
+		throws PortalException, SystemException {
+
+		Group group = layoutSetPrototype.getGroup();
+
+		Layout layout = layoutPersistence.fetchByUUID_G(
+			layoutUuid, group.getGroupId());
+
+		if (layout != null) {
+			return true;
+		}
+
+		return false;
 	}
 
 	protected void validate(

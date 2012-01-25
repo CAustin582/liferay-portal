@@ -65,7 +65,9 @@ public class EditWorkflowInstanceAction extends PortletAction {
 				signalInstance(actionRequest);
 			}
 
-			sendRedirect(actionRequest, actionResponse);
+			String redirect = ParamUtil.getString(actionRequest, "redirect");
+
+			sendRedirect(actionRequest, actionResponse, redirect);
 		}
 		catch (Exception e) {
 			if (e instanceof PrincipalException ||
@@ -137,10 +139,15 @@ public class EditWorkflowInstanceAction extends PortletAction {
 			WorkflowHandlerRegistryUtil.getWorkflowHandler(className);
 
 		workflowHandler.updateStatus(
-				WorkflowConstants.STATUS_DRAFT, workflowContext);
+			WorkflowConstants.STATUS_DRAFT, workflowContext);
 
 		WorkflowInstanceLinkLocalServiceUtil.deleteWorkflowInstanceLink(
 			companyId, groupId, className, classPK);
+	}
+
+	@Override
+	protected boolean isCheckMethodOnProcessAction() {
+		return _CHECK_METHOD_ON_PROCESS_ACTION;
 	}
 
 	protected void signalInstance(ActionRequest actionRequest)
@@ -158,11 +165,6 @@ public class EditWorkflowInstanceAction extends PortletAction {
 		WorkflowInstanceManagerUtil.signalWorkflowInstance(
 			themeDisplay.getCompanyId(), themeDisplay.getUserId(),
 			workflowInstanceId, transitionName, null);
-	}
-
-	@Override
-	protected boolean isCheckMethodOnProcessAction() {
-		return _CHECK_METHOD_ON_PROCESS_ACTION;
 	}
 
 	private static final boolean _CHECK_METHOD_ON_PROCESS_ACTION = false;

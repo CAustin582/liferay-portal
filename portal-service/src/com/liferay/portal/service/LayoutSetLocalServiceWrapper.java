@@ -298,8 +298,8 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 	* However, this method can only enable the layout set prototype's link if
 	* the layout set prototype's current uuid is not <code>null</code>. Setting
 	* the <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> when
-	* the layout set prototype's current uuid is <code>null</code> will result
-	* in an <code>IllegalStateException</code>.
+	* the layout set prototype's current uuid is <code>null</code> will have no
+	* effect.
 	* </p>
 	*
 	* @param groupId the primary key of the group
@@ -322,14 +322,6 @@ public class LayoutSetLocalServiceWrapper implements LayoutSetLocalService,
 
 	/**
 	* Updates the state of the layout set prototype link.
-	*
-	* <p>
-	* <strong>Important:</strong> Setting
-	* <code>layoutSetPrototypeLinkEnabled</code> to <code>true</code> and
-	* <code>layoutSetPrototypeUuid</code> to <code>null</code> when the layout
-	* set prototype's current uuid is <code>null</code> will result in an
-	* <code>IllegalStateException</code>.
-	* </p>
 	*
 	* @param groupId the primary key of the group
 	* @param privateLayout whether the layout set is private to the group

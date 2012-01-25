@@ -136,11 +136,10 @@ public class DLUtil {
 		PortletURL portletURL = liferayPortletResponse.createRenderURL();
 
 		portletURL.setParameter("struts_action", "/document_library/view");
-		portletURL.setParameter("viewEntries", Boolean.TRUE.toString());
-		portletURL.setParameter("viewFolders", Boolean.TRUE.toString());
 
 		Map<String, Object> data = new HashMap<String, Object>();
 
+		data.put("direction-right", Boolean.TRUE.toString());
 		data.put("folder-id", _getDefaultFolderId(request));
 
 		PortalUtil.addPortletBreadcrumbEntry(
@@ -184,6 +183,7 @@ public class DLUtil {
 
 			Map<String, Object> data = new HashMap<String, Object>();
 
+			data.put("direction-right", Boolean.TRUE.toString());
 			data.put("folder-id", ancestorFolder.getFolderId());
 
 			PortalUtil.addPortletBreadcrumbEntry(
@@ -203,6 +203,7 @@ public class DLUtil {
 
 			Map<String, Object> data = new HashMap<String, Object>();
 
+			data.put("direction-right", Boolean.TRUE.toString());
 			data.put("folder-id", folderId);
 
 			PortalUtil.addPortletBreadcrumbEntry(
@@ -235,15 +236,8 @@ public class DLUtil {
 			portletURL.setParameter("struts_action", strutsAction);
 			portletURL.setParameter("groupId", String.valueOf(groupId));
 
-			Map<String, Object> data = new HashMap<String, Object>();
-
-			data.put("folder-id", _getDefaultFolderId(request));
-			data.put("view-entries", Boolean.TRUE.toString());
-			data.put("view-folders", Boolean.TRUE.toString());
-
 			PortalUtil.addPortletBreadcrumbEntry(
-				request, themeDisplay.translate("home"), portletURL.toString(),
-				data);
+				request, themeDisplay.translate("home"), portletURL.toString());
 		}
 		else {
 			portletURL.setParameter("struts_action", "/document_library/view");
@@ -380,10 +374,6 @@ public class DLUtil {
 		return mimeTypesArray;
 	}
 
-	/**
-	 * @deprecated {@link #getPreviewURL(FileEntry, FileVersion, ThemeDisplay,
-	 *             String, boolean, boolean)}
-	 */
 	public static String getPreviewURL(
 		FileEntry fileEntry, FileVersion fileVersion, ThemeDisplay themeDisplay,
 		String queryString) {
