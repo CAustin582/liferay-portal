@@ -53,22 +53,6 @@ public class PermissionCheckerBagImpl implements PermissionCheckerBag {
 		_roles = roles;
 	}
 
-	public List<Group> getUserGroups() {
-		return _userGroups;
-	}
-
-	public List<Organization> getUserOrgs() {
-		return _userOrgs;
-	}
-
-	public List<Group> getUserOrgGroups() {
-		return _userOrgGroups;
-	}
-
-	public List<Group> getUserUserGroupGroups() {
-		return _userUserGroupGroups;
-	}
-
 	public List<Group> getGroups() {
 		return _groups;
 	}
@@ -95,6 +79,22 @@ public class PermissionCheckerBagImpl implements PermissionCheckerBag {
 
 	public List<Role> getRoles() {
 		return _roles;
+	}
+
+	public List<Group> getUserGroups() {
+		return _userGroups;
+	}
+
+	public List<Group> getUserOrgGroups() {
+		return _userOrgGroups;
+	}
+
+	public List<Organization> getUserOrgs() {
+		return _userOrgs;
+	}
+
+	public List<Group> getUserUserGroupGroups() {
+		return _userUserGroupGroups;
 	}
 
 	/**
@@ -292,15 +292,15 @@ public class PermissionCheckerBagImpl implements PermissionCheckerBag {
 		return false;
 	}
 
-	private long _userId;
-	private List<Group> _userGroups;
-	private List<Organization> _userOrgs;
-	private List<Group> _userOrgGroups;
-	private List<Group> _userUserGroupGroups;
+	private Map<Long, Boolean> _groupAdmins = new HashMap<Long, Boolean>();
+	private Map<Long, Boolean> _groupOwners = new HashMap<Long, Boolean>();
 	private List<Group> _groups;
 	private long[] _roleIds;
 	private List<Role> _roles;
-	private Map<Long, Boolean> _groupAdmins = new HashMap<Long, Boolean>();
-	private Map<Long, Boolean> _groupOwners = new HashMap<Long, Boolean>();
+	private List<Group> _userGroups;
+	private long _userId;
+	private List<Group> _userOrgGroups;
+	private List<Organization> _userOrgs;
+	private List<Group> _userUserGroupGroups;
 
 }

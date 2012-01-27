@@ -205,13 +205,15 @@ public class OrganizationLocalServiceImpl
 
 		// Expando
 
-		ExpandoBridge expandoBridge = organization.getExpandoBridge();
+		if (serviceContext != null) {
+			ExpandoBridge expandoBridge = organization.getExpandoBridge();
 
-		expandoBridge.setAttributes(serviceContext);
+			expandoBridge.setAttributes(serviceContext);
+		}
 
 		// Indexer
 
-		if (serviceContext.isIndexingEnabled()) {
+		if ((serviceContext == null) || serviceContext.isIndexingEnabled()) {
 			Indexer indexer = IndexerRegistryUtil.getIndexer(
 				Organization.class);
 
@@ -1608,9 +1610,11 @@ public class OrganizationLocalServiceImpl
 
 		// Expando
 
-		ExpandoBridge expandoBridge = organization.getExpandoBridge();
+		if (serviceContext != null) {
+			ExpandoBridge expandoBridge = organization.getExpandoBridge();
 
-		expandoBridge.setAttributes(serviceContext);
+			expandoBridge.setAttributes(serviceContext);
+		}
 
 		// Indexer
 

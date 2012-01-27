@@ -16,6 +16,7 @@ package com.liferay.portal.security.ldap;
 
 import com.liferay.portal.UserEmailAddressException;
 import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.kernel.ldap.LDAPUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
@@ -32,7 +33,6 @@ import com.liferay.portal.security.auth.FullNameGenerator;
 import com.liferay.portal.security.auth.FullNameGeneratorFactory;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.util.PrefsPropsUtil;
-import com.liferay.util.ldap.LDAPUtil;
 
 import java.util.Calendar;
 import java.util.HashMap;

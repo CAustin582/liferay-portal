@@ -336,6 +336,12 @@ public class ThemeDisplay implements Serializable {
 		return _scopeGroupId;
 	}
 
+	public long getScopeGroupIdOrLiveGroupId()
+		throws PortalException, SystemException {
+
+		return StagingUtil.getLiveGroupId(_scopeGroupId);
+	}
+
 	public String getScopeGroupName() throws PortalException, SystemException {
 		if (_scopeGroup == null) {
 			return StringPool.BLANK;
@@ -343,12 +349,6 @@ public class ThemeDisplay implements Serializable {
 		else {
 			return _scopeGroup.getDescriptiveName();
 		}
-	}
-
-	public long getScopeGroupIdOrLiveGroupId()
-		throws PortalException, SystemException {
-
-		return StagingUtil.getLiveGroupId(_scopeGroupId);
 	}
 
 	public Layout getScopeLayout() throws PortalException, SystemException {
@@ -1266,8 +1266,8 @@ public class ThemeDisplay implements Serializable {
 	private String _languageId;
 	private Layout _layout;
 	private List<Layout> _layouts;
-	private String _layoutSetLogo = StringPool.BLANK;
 	private LayoutSet _layoutSet;
+	private String _layoutSetLogo = StringPool.BLANK;
 	private LayoutTypePortlet _layoutTypePortlet;
 	private String _lifecycle;
 	private boolean _lifecycleAction;

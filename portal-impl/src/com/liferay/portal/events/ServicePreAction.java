@@ -535,6 +535,10 @@ public class ServicePreAction extends Action {
 
 				if (layoutSet.isLogo()) {
 					logoId = layoutSet.getLogoId();
+
+					if (logoId == 0) {
+						logoId = layoutSet.getLiveLogoId();
+					}
 				}
 				else {
 					LayoutSet siblingLayoutSet =
@@ -645,7 +649,9 @@ public class ServicePreAction extends Action {
 			request.setAttribute(WebKeys.LAYOUT, layout);
 			request.setAttribute(WebKeys.LAYOUTS, layouts);
 
-			if (layout.isPrivateLayout()) {
+			if (layout.isPrivateLayout() ||
+				!PropsValues.PERMISSIONS_LAYOUT_PUBLIC_CHECK_GUEST_ENABLED) {
+
 				permissionChecker.setCheckGuest(false);
 			}
 		}

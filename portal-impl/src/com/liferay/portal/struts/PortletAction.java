@@ -120,14 +120,6 @@ public class PortletAction extends Action {
 		}
 	}
 
-	public ActionForward strutsExecute(
-			ActionMapping mapping, ActionForm form, HttpServletRequest request,
-			HttpServletResponse response)
-		throws Exception {
-
-		return super.execute(mapping, form, request, response);
-	}
-
 	public void processAction(
 			ActionMapping mapping, ActionForm form, PortletConfig portletConfig,
 			ActionRequest actionRequest, ActionResponse actionResponse)
@@ -169,6 +161,14 @@ public class PortletAction extends Action {
 		portletRequestDispatcher.forward(resourceRequest, resourceResponse);
 	}
 
+	public ActionForward strutsExecute(
+			ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response)
+		throws Exception {
+
+		return super.execute(mapping, form, request, response);
+	}
+
 	protected void addSuccessMessage(
 		ActionRequest actionRequest, ActionResponse actionResponse) {
 
@@ -205,10 +205,6 @@ public class PortletAction extends Action {
 		else {
 			return forward;
 		}
-	}
-
-	protected void setForward(PortletRequest portletRequest, String forward) {
-		portletRequest.setAttribute(getForwardKey(portletRequest), forward);
 	}
 
 	protected ModuleConfig getModuleConfig(PortletRequest portletRequest) {
@@ -329,6 +325,10 @@ public class PortletAction extends Action {
 				actionResponse.sendRedirect(redirect);
 			}
 		}
+	}
+
+	protected void setForward(PortletRequest portletRequest, String forward) {
+		portletRequest.setAttribute(getForwardKey(portletRequest), forward);
 	}
 
 	protected void writeJSON(

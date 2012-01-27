@@ -88,28 +88,16 @@ public class FileUploadManagedBean implements Renderable {
 		}
 	}
 
-	public PersistentFacesState getState() {
-		return _state;
-	}
-
-	public void setRenderManager(RenderManager renderManager) {
-		_renderManager = renderManager;
-	}
-
 	public InputFile getInputFile() {
 		return _inputFile;
-	}
-
-	public void setInputFile(InputFile inputFile) {
-		_inputFile = inputFile;
 	}
 
 	public int getPercent() {
 		return _percent;
 	}
 
-	public void setPercent(int percent) {
-		_percent = percent;
+	public PersistentFacesState getState() {
+		return _state;
 	}
 
 	public boolean isComplete() {
@@ -133,6 +121,18 @@ public class FileUploadManagedBean implements Renderable {
 		_log.error(renderingException.getMessage());
 	}
 
+	public void setInputFile(InputFile inputFile) {
+		_inputFile = inputFile;
+	}
+
+	public void setPercent(int percent) {
+		_percent = percent;
+	}
+
+	public void setRenderManager(RenderManager renderManager) {
+		_renderManager = renderManager;
+	}
+
 	protected void addErrorMessage(String key) {
 		addErrorMessage(key, null);
 	}
@@ -153,9 +153,9 @@ public class FileUploadManagedBean implements Renderable {
 	private static Log _log = LogFactoryUtil.getLog(
 		FileUploadManagedBean.class);
 
-	private PersistentFacesState _state;
-	private RenderManager _renderManager;
 	private InputFile _inputFile;
 	private int _percent;
+	private RenderManager _renderManager;
+	private PersistentFacesState _state;
 
 }
