@@ -15,7 +15,7 @@
 	<property name="ckeditor.file" value="ckeditor_3.5.3.zip" />
 	<property name="fckeditor.file" value="FCKeditor_2.6.3.zip" />
 	<property name="tinymce.file" value="tinymce_3_2_1.zip" />
-	<property name="vaadin.file" value="vaadin-6.4.10.zip" />
+	<property name="vaadin.file" value="vaadin-6.7.4-liferay.zip" />
 
 	<path id="jspc.common.classpath">
 		<pathelement path="docroot/WEB-INF/classes" />

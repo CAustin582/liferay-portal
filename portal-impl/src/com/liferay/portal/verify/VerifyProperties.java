@@ -163,6 +163,10 @@ public class VerifyProperties extends VerifyProcess {
 			"com.liferay.portal.util.HttpImpl.timeout"
 		},
 		new String[] {
+			"com.liferay.util.format.PhoneNumberFormat",
+			"phone.number.format.impl"
+		},
+		new String[] {
 			"com.liferay.util.servlet.UploadServletRequest.max.size",
 			"com.liferay.portal.upload.UploadServletRequestImpl.max.size"
 		},

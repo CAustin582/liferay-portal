@@ -405,6 +405,32 @@ public class DDMStructureLocalServiceUtil {
 		return getService().getStructure(groupId, name, description);
 	}
 
+	/**
+	* @deprecated {@link #getStructures}
+	*/
+	public static java.util.List<com.liferay.portlet.dynamicdatamapping.model.DDMStructure> getStructureEntries()
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getStructureEntries();
+	}
+
+	/**
+	* @deprecated {@link #getStructures(long)}
+	*/
+	public static java.util.List<com.liferay.portlet.dynamicdatamapping.model.DDMStructure> getStructureEntries(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getStructureEntries(groupId);
+	}
+
+	/**
+	* @deprecated {@link #getStructures(long, int, int)}
+	*/
+	public static java.util.List<com.liferay.portlet.dynamicdatamapping.model.DDMStructure> getStructureEntries(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getStructureEntries(groupId, start, end);
+	}
+
 	public static java.util.List<com.liferay.portlet.dynamicdatamapping.model.DDMStructure> getStructures()
 		throws com.liferay.portal.kernel.exception.SystemException {
 		return getService().getStructures();

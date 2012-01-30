@@ -78,6 +78,9 @@ organizations.form.add.main
 organizations.form.add.miscellaneous
 passwords.passwordpolicytoolkit.generator
 passwords.passwordpolicytoolkit.static
+phone.number.format.impl
+phone.number.format.international.regexp
+phone.number.format.usa.regexp
 portlet.add.default.resource.check.enabled
 portlet.add.default.resource.check.whitelist
 portlet.add.default.resource.check.whitelist.actions

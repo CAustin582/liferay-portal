@@ -447,7 +447,9 @@ public class ServicePreAction extends Action {
 						   permissionChecker, layout, false,
 						   ActionKeys.VIEW)))) {
 
-				if (user.isDefaultUser() && group.isControlPanel()) {
+				if (user.isDefaultUser() &&
+					PropsValues.AUTH_LOGIN_PROMPT_ENABLED) {
+
 					throw new PrincipalException("User is not authenticated");
 				}
 
@@ -535,6 +537,10 @@ public class ServicePreAction extends Action {
 
 				if (layoutSet.isLogo()) {
 					logoId = layoutSet.getLogoId();
+
+					if (logoId == 0) {
+						logoId = layoutSet.getLiveLogoId();
+					}
 				}
 				else {
 					LayoutSet siblingLayoutSet =

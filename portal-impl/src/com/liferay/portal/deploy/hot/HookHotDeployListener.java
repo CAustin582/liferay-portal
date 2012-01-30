@@ -37,6 +37,9 @@ import com.liferay.portal.kernel.events.InvokerSimpleAction;
 import com.liferay.portal.kernel.events.SessionAction;
 import com.liferay.portal.kernel.events.SimpleAction;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.format.PhoneNumberFormat;
+import com.liferay.portal.kernel.format.PhoneNumberFormatUtil;
+import com.liferay.portal.kernel.format.PhoneNumberFormatWrapper;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -235,6 +238,9 @@ public class HookHotDeployListener
 		"organizations.form.add.miscellaneous",
 		"passwords.passwordpolicytoolkit.generator",
 		"passwords.passwordpolicytoolkit.static",
+		"phone.number.format.impl",
+		"phone.number.format.international.regexp",
+		"phone.number.format.usa.regexp",
 		"portlet.add.default.resource.check.enabled",
 		"portlet.add.default.resource.check.whitelist",
 		"portlet.add.default.resource.check.whitelist.actions",
@@ -445,6 +451,14 @@ public class HookHotDeployListener
 
 		if (portalProperties.containsKey(PropsKeys.MAIL_HOOK_IMPL)) {
 			com.liferay.mail.util.HookFactory.setInstance(null);
+		}
+
+		if (portalProperties.containsKey(PropsKeys.PHONE_NUMBER_FORMAT_IMPL)) {
+			PhoneNumberFormatWrapper phoneNumberFormatWrapper =
+				(PhoneNumberFormatWrapper)
+					PhoneNumberFormatUtil.getPhoneNumberFormat();
+
+			phoneNumberFormatWrapper.setPhoneNumberFormat(null);
 		}
 
 		if (portalProperties.containsKey(PropsKeys.SANITIZER_IMPL)) {
@@ -1706,6 +1720,22 @@ public class HookHotDeployListener
 			com.liferay.mail.util.HookFactory.setInstance(mailHook);
 		}
 
+		if (portalProperties.containsKey(PropsKeys.PHONE_NUMBER_FORMAT_IMPL)) {
+			String phoneNumberFormatClassName = portalProperties.getProperty(
+				PropsKeys.PHONE_NUMBER_FORMAT_IMPL);
+
+			PhoneNumberFormat phoneNumberFormat =
+				(PhoneNumberFormat)newInstance(
+					portletClassLoader, PhoneNumberFormat.class,
+					phoneNumberFormatClassName);
+
+			PhoneNumberFormatWrapper phoneNumberFormatWrapper =
+				(PhoneNumberFormatWrapper)
+					PhoneNumberFormatUtil.getPhoneNumberFormat();
+
+			phoneNumberFormatWrapper.setPhoneNumberFormat(phoneNumberFormat);
+		}
+
 		if (portalProperties.containsKey(PropsKeys.SANITIZER_IMPL)) {
 			String sanitizerClassName = portalProperties.getProperty(
 				PropsKeys.SANITIZER_IMPL);
@@ -2268,6 +2298,8 @@ public class HookHotDeployListener
 		"default.landing.page.path",
 		"passwords.passwordpolicytoolkit.generator",
 		"passwords.passwordpolicytoolkit.static",
+		"phone.number.format.international.regexp",
+		"phone.number.format.usa.regexp",
 		"theme.shortcut.icon"
 	};
 

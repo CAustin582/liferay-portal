@@ -98,6 +98,8 @@ public class PropsValues {
 
 	public static final String AUTH_LOGIN_PORTLET_NAME = PropsUtil.get(PropsKeys.AUTH_LOGIN_PORTLET_NAME);
 
+	public static final boolean AUTH_LOGIN_PROMPT_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.AUTH_LOGIN_PROMPT_ENABLED));
+
 	public static final String AUTH_LOGIN_SITE_URL = PropsUtil.get(PropsKeys.AUTH_LOGIN_SITE_URL);
 
 	public static final String AUTH_LOGIN_URL = PropsUtil.get(PropsKeys.AUTH_LOGIN_URL);
@@ -1124,7 +1126,13 @@ public class PropsValues {
 
 	public static boolean PERMISSIONS_VIEW_DYNAMIC_INHERITANCE = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.PERMISSIONS_VIEW_DYNAMIC_INHERITANCE));
 
-	public static final String PERSISTENCE_PROVIDER= GetterUtil.getString(PropsUtil.get(PropsKeys.PERSISTENCE_PROVIDER));
+	public static final String PERSISTENCE_PROVIDER = GetterUtil.getString(PropsUtil.get(PropsKeys.PERSISTENCE_PROVIDER));
+
+	public static final String PHONE_NUMBER_FORMAT_IMPL = GetterUtil.getString(PropsUtil.get(PropsKeys.PHONE_NUMBER_FORMAT_IMPL));
+
+	public static String PHONE_NUMBER_FORMAT_INTERNATIONAL_REGEXP = GetterUtil.getString(PropsUtil.get(PropsKeys.PHONE_NUMBER_FORMAT_INTERNATIONAL_REGEXP));
+
+	public static String PHONE_NUMBER_FORMAT_USA_REGEXP = GetterUtil.getString(PropsUtil.get(PropsKeys.PHONE_NUMBER_FORMAT_USA_REGEXP));
 
 	public static final boolean PLUGIN_NOTIFICATIONS_ENABLED = GetterUtil.getBoolean(PropsUtil.get(PropsKeys.PLUGIN_NOTIFICATIONS_ENABLED));
 

@@ -273,6 +273,32 @@ public class DDMStructureLocalServiceImpl
 		return ddmStructurePersistence.findByG_N_D(groupId, name, description);
 	}
 
+	/**
+	 * @deprecated {@link #getStructures}
+	 */
+	public List<DDMStructure> getStructureEntries() throws SystemException {
+		return getStructures();
+	}
+
+	/**
+	 * @deprecated {@link #getStructures(long)}
+	 */
+	public List<DDMStructure> getStructureEntries(long groupId)
+		throws SystemException {
+
+		return getStructures(groupId);
+	}
+
+	/**
+	 * @deprecated {@link #getStructures(long, int, int)}
+	 */
+	public List<DDMStructure> getStructureEntries(
+			long groupId, int start, int end)
+		throws SystemException {
+
+		return getStructures(groupId, start, end);
+	}
+
 	public List<DDMStructure> getStructures() throws SystemException {
 		return ddmStructurePersistence.findAll();
 	}

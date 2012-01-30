@@ -14,51 +14,12 @@
 
 package com.liferay.util.format;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.InstanceFactory;
-import com.liferay.portal.kernel.util.SystemProperties;
+import com.liferay.portal.kernel.format.PhoneNumberFormatUtil;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author     Brian Wing Shun Chan
+ * @author     Manuel de la Peña
+ * @deprecated Moved to {@link PhoneNumberFormatUtil}
  */
-public class PhoneNumberUtil {
-
-	public static String format(String phoneNumber) {
-		PhoneNumberFormat phoneNumberFormat = _getPhoneNumberFormat();
-
-		return phoneNumberFormat.format(phoneNumber);
-	}
-
-	public static String strip(String phoneNumber) {
-		PhoneNumberFormat phoneNumberFormat = _getPhoneNumberFormat();
-
-		return phoneNumberFormat.strip(phoneNumber);
-	}
-
-	private static PhoneNumberFormat _getPhoneNumberFormat() {
-		if (_phoneNumberFormat == null) {
-			try {
-				String className = GetterUtil.getString(
-					SystemProperties.get(PhoneNumberFormat.class.getName()),
-					USAPhoneNumberFormat.class.getName());
-
-				_phoneNumberFormat =
-					(PhoneNumberFormat)InstanceFactory.newInstance(className);
-			}
-			catch (Exception e) {
-				_log.error(e, e);
-
-				_phoneNumberFormat = new USAPhoneNumberFormat();
-			}
-		}
-
-		return _phoneNumberFormat;
-	}
-
-	private static Log _log = LogFactoryUtil.getLog(PhoneNumberUtil.class);
-
-	private static PhoneNumberFormat _phoneNumberFormat;
-
+public class PhoneNumberUtil extends PhoneNumberFormatUtil {
 }
