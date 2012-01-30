@@ -73,7 +73,10 @@ public class SourceFormatter {
 
 			_sourceFormatterHelper.init();
 
-			_readExclusions();
+			_javaTermAlphabetizeExclusionsProperties = _getExclusionsProperties(
+				"source_formatter_javaterm_alphabetize_exclusions.properties");
+			_lineLengthExclusionsProperties = _getExclusionsProperties(
+				"source_formatter_line_length_exclusions.properties");
 
 			Thread thread1 = new Thread () {
 				@Override
@@ -328,6 +331,70 @@ public class SourceFormatter {
 		}
 	}
 
+	private static void _checkJSPAttributes(
+		String fileName, String line, int lineCount) {
+
+		String previousArgument = null;
+
+		for (int x = 0;;) {
+			x = line.indexOf(StringPool.SPACE);
+
+			if (x == -1) {
+				return;
+			}
+
+			line = line.substring(x + 1);
+
+			int y = line.indexOf(StringPool.EQUAL);
+
+			if ((y == -1) || (line.length() <= (y + 1))) {
+				return;
+			}
+
+			String argument = line.substring(0, y);
+
+			if (Validator.isNotNull(previousArgument) &&
+				(previousArgument.compareTo(argument) > 0)) {
+
+				//_sourceFormatterHelper.printError(
+				//	fileName, "sort: " + fileName + " " + lineCount);
+
+				return;
+			}
+
+			line = line.substring(y + 1);
+
+			char delimeter = line.charAt(0);
+
+			if ((delimeter != CharPool.APOSTROPHE) &&
+				(delimeter != CharPool.QUOTE)) {
+
+				_sourceFormatterHelper.printError(
+					fileName, "delimeter: " + fileName + " " + lineCount);
+			}
+
+			line = line.substring(1);
+
+			int z = line.indexOf(delimeter);
+
+			if (z == -1) {
+				return;
+			}
+
+			line = line.substring(z + 1);
+
+			line = StringUtil.trimTrailing(line);
+
+			if (line.startsWith(StringPool.FORWARD_SLASH) ||
+				line.startsWith(StringPool.GREATER_THAN)) {
+
+				return;
+			}
+
+			previousArgument = argument;
+		}
+	}
+
 	private static void _checkPersistenceTestSuite() throws IOException {
 		String basedir = "./portal-impl/test";
 
@@ -457,58 +524,54 @@ public class SourceFormatter {
 		}
 	}
 
-	private static void _compareDefinitionNames(
-		String fileName, String previousDefinitionName, String definitionName) {
+	private static void _compareJavaTermNames(
+		String fileName, String previousJavaTermName, String javaTermName) {
 
-		if (fileName.endsWith("DiffImplTest.java")) {
-			return;
-		}
-
-		if (Validator.isNull(previousDefinitionName) ||
-			Validator.isNull(definitionName)) {
+		if (Validator.isNull(previousJavaTermName) ||
+			Validator.isNull(javaTermName)) {
 
 			return;
 		}
 
-		if (definitionName.equals("_log")) {
+		if (javaTermName.equals("_log")) {
 			_sourceFormatterHelper.printError(fileName, "sort: " + fileName);
 
 			return;
 		}
 
-		if (previousDefinitionName.equals("_instance") ||
-			previousDefinitionName.equals("_log")) {
+		if (previousJavaTermName.equals("_instance") ||
+			previousJavaTermName.equals("_log")) {
 
 			return;
 		}
 
-		if (definitionName.equals("_instance")) {
+		if (javaTermName.equals("_instance")) {
 			_sourceFormatterHelper.printError(fileName, "sort: " + fileName);
 
 			return;
 		}
 
-		if (previousDefinitionName.compareToIgnoreCase(definitionName) <= 0) {
+		if (previousJavaTermName.compareToIgnoreCase(javaTermName) <= 0) {
 			return;
 		}
 
-		String definitionNameLowerCase = definitionName.toLowerCase();
-		String previousDefinitionNameLowerCase =
-			previousDefinitionName.toLowerCase();
+		String javaTermNameLowerCase = javaTermName.toLowerCase();
+		String previousJavaTermNameLowerCase =
+			previousJavaTermName.toLowerCase();
 
 		if (fileName.contains("persistence") &&
-			(previousDefinitionName.startsWith("doCount") &&
-			 definitionName.startsWith("doCount")) ||
-			(previousDefinitionName.startsWith("doFind") &&
-			 definitionName.startsWith("doFind")) ||
-			(previousDefinitionNameLowerCase.startsWith("count") &&
-			 definitionNameLowerCase.startsWith("count")) ||
-			(previousDefinitionNameLowerCase.startsWith("filter") &&
-			 definitionNameLowerCase.startsWith("filter")) ||
-			(previousDefinitionNameLowerCase.startsWith("find") &&
-			 definitionNameLowerCase.startsWith("find")) ||
-			(previousDefinitionNameLowerCase.startsWith("join") &&
-			 definitionNameLowerCase.startsWith("join"))) {
+			(previousJavaTermName.startsWith("doCount") &&
+			 javaTermName.startsWith("doCount")) ||
+			(previousJavaTermName.startsWith("doFind") &&
+			 javaTermName.startsWith("doFind")) ||
+			(previousJavaTermNameLowerCase.startsWith("count") &&
+			 javaTermNameLowerCase.startsWith("count")) ||
+			(previousJavaTermNameLowerCase.startsWith("filter") &&
+			 javaTermNameLowerCase.startsWith("filter")) ||
+			(previousJavaTermNameLowerCase.startsWith("find") &&
+			 javaTermNameLowerCase.startsWith("find")) ||
+			(previousJavaTermNameLowerCase.startsWith("join") &&
+			 javaTermNameLowerCase.startsWith("join"))) {
 
 			return;
 		}
@@ -1177,11 +1240,11 @@ public class SourceFormatter {
 
 		int lineToSkipIfEmpty = 0;
 
-		String definitionName = null;
-		int definitionType = 0;
+		String javaTermName = null;
+		int javaTermType = 0;
 
-		String previousDefinitionName = null;
-		int previousDefinitionType = 0;
+		String previousJavaTermName = null;
+		int previousJavaTermType = 0;
 
 		List<String> methodParameterTypes = new ArrayList<String>();
 		List<String> previousMethodParameterTypes = null;
@@ -1212,64 +1275,71 @@ public class SourceFormatter {
 
 			String trimmedLine = StringUtil.trimLeading(line);
 
+			String excluded = 
+				_javaTermAlphabetizeExclusionsProperties.getProperty(
+					StringUtil.replace(
+						fileName, "\\", "/") + StringPool.AT + lineCount);
+
+			if (excluded == null) {
+				excluded = _javaTermAlphabetizeExclusionsProperties.getProperty(
+					StringUtil.replace(fileName, "\\", "/"));
+			}
+
 			if (line.startsWith(StringPool.TAB + "private ") ||
 				line.startsWith(StringPool.TAB + "protected ") ||
 				line.startsWith(StringPool.TAB + "public ")) {
 
 				hasSameMethodName = false;
 
-				Tuple tuple = _getDefinitionTuple(line);
+				Tuple tuple = _getJavaTermTuple(line);
 
 				if (tuple != null) {
-					definitionName = (String)tuple.getObject(0);
-					definitionType = (Integer)tuple.getObject(1);
+					javaTermName = (String)tuple.getObject(0);
+					javaTermType = (Integer)tuple.getObject(1);
 
-					boolean isMethod = _isInDefinitionTypeGroup(
-						definitionType, _TYPE_METHOD);
+					boolean isMethod = _isInJavaTermTypeGroup(
+						javaTermType, _TYPE_METHOD);
 					boolean isPrivateMethodOrVariable =
-						_isInDefinitionTypeGroup(
-							definitionType, _TYPE_PRIVATE_METHOD_OR_VARIABLE);
+						_isInJavaTermTypeGroup(
+							javaTermType, _TYPE_PRIVATE_METHOD_OR_VARIABLE);
 
 					if (isMethod) {
 						readMethodParameterTypes = true;
 					}
 
 					if ((isPrivateMethodOrVariable &&
-						 !definitionName.startsWith(StringPool.UNDERLINE) &&
-						 !definitionName.equals("serialVersionUID")) ||
+						 !javaTermName.startsWith(StringPool.UNDERLINE) &&
+						 !javaTermName.equals("serialVersionUID")) ||
 						(!isPrivateMethodOrVariable &&
-						 definitionName.startsWith(StringPool.UNDERLINE))) {
+						 javaTermName.startsWith(StringPool.UNDERLINE))) {
 
 						_sourceFormatterHelper.printError(
 							fileName,
 							"underscore: " + fileName + " " + lineCount);
 					}
 
-					if (Validator.isNotNull(previousDefinitionName)) {
-						if (previousDefinitionType > definitionType) {
+					if (Validator.isNotNull(previousJavaTermName)) {
+						if (previousJavaTermType > javaTermType) {
 							_sourceFormatterHelper.printError(
 								fileName,
 								"order: " + fileName + " " + lineCount);
 						}
-						else if (previousDefinitionType == definitionType) {
+						else if (previousJavaTermType == javaTermType) {
 							if (isMethod &&
-								previousDefinitionName.equals(definitionName)) {
+								previousJavaTermName.equals(javaTermName)) {
 
 								hasSameMethodName = true;
 							}
-							else if (!_isInDefinitionTypeGroup(
-										definitionType,
-										_TYPE_STATIC_VARIABLE)) {
-
-								_compareDefinitionNames(
-									fileName, previousDefinitionName,
-									definitionName);
+							else if (excluded == null) {
+								_compareJavaTermNames(
+									fileName, previousJavaTermName,
+									javaTermName);
 							}
 						}
 					}
 
-					previousDefinitionName = definitionName;
-					previousDefinitionType = definitionType;
+					previousJavaTermName = javaTermName;
+					previousJavaTermType = javaTermType;
 				}
 			}
 
@@ -1375,12 +1445,12 @@ public class SourceFormatter {
 				longLogFactoryUtil = true;
 			}
 
-			String excluded = _exclusionsProperties.getProperty(
-				StringUtil.replace(fileName, "\\", "/") + StringPool.AT +
-					lineCount);
+			excluded = _lineLengthExclusionsProperties.getProperty(
+				StringUtil.replace(
+					fileName, "\\", "/") + StringPool.AT + lineCount);
 
 			if (excluded == null) {
-				excluded = _exclusionsProperties.getProperty(
+				excluded = _lineLengthExclusionsProperties.getProperty(
 					StringUtil.replace(fileName, "\\", "/"));
 			}
 
@@ -1632,6 +1702,9 @@ public class SourceFormatter {
 
 		String line = null;
 
+		String previousArgument = null;
+		boolean readArguments = false;
+
 		while ((line = unsyncBufferedReader.readLine()) != null) {
 			lineCount++;
 
@@ -1649,6 +1722,47 @@ public class SourceFormatter {
 			}
 
 			String trimmedLine = StringUtil.trimLeading(line);
+
+			if (readArguments) {
+				if (!trimmedLine.startsWith(StringPool.FORWARD_SLASH) &&
+					!trimmedLine.startsWith(StringPool.GREATER_THAN)) {
+
+					int pos = trimmedLine.indexOf(StringPool.EQUAL);
+
+					if (pos != -1) {
+						String argument = trimmedLine.substring(0, pos);
+
+						if (Validator.isNotNull(previousArgument) &&
+							(previousArgument.compareTo(argument) > 0)) {
+
+							/*
+							_sourceFormatterHelper.printError(
+								fileName,
+								"sort: " + fileName + " " + lineCount);
+							*/
+						}
+
+						previousArgument = argument;
+					}
+				}
+				else {
+					previousArgument = null;
+					readArguments = false;
+				}
+			}
+
+			if (trimmedLine.startsWith("<aui:") ||
+				trimmedLine.startsWith("<liferay-ui:")) {
+
+				if (!trimmedLine.contains(StringPool.SPACE) &&
+					!trimmedLine.endsWith(StringPool.GREATER_THAN)) {
+
+					readArguments = true;
+				}
+				else {
+					_checkJSPAttributes(fileName, trimmedLine, lineCount);
+				}
+			}
 
 			if (!trimmedLine.contains(StringPool.DOUBLE_SLASH) &&
 				!trimmedLine.startsWith(StringPool.STAR)) {
@@ -2111,7 +2225,33 @@ public class SourceFormatter {
 		return null;
 	}
 
-	private static Tuple _getDefinitionTuple(String line) {
+	private static Properties _getExclusionsProperties(String fileName)
+		throws IOException {
+
+		Properties exclusionsProperties = new Properties();
+
+		ClassLoader classLoader = SourceFormatter.class.getClassLoader();
+
+		String sourceFormatterExclusions = System.getProperty(
+			"source-formatter-exclusions",
+			"com/liferay/portal/tools/dependencies/" + fileName);
+
+		URL url = classLoader.getResource(sourceFormatterExclusions);
+
+		if (url == null) {
+			return null;
+		}
+
+		InputStream inputStream = url.openStream();
+
+		exclusionsProperties.load(inputStream);
+
+		inputStream.close();
+
+		return exclusionsProperties;
+	}
+
+	private static Tuple _getJavaTermTuple(String line) {
 		int pos = line.indexOf(StringPool.OPEN_PARENTHESIS);
 
 		if (line.startsWith(StringPool.TAB + "public static ")) {
@@ -2599,39 +2739,16 @@ public class SourceFormatter {
 		return false;
 	}
 
-	private static boolean _isInDefinitionTypeGroup(
-		int definitionType, int[] definitionTypeGroup) {
+	private static boolean _isInJavaTermTypeGroup(
+		int javaTermType, int[] javaTermTypeGroup) {
 
-		for (int type : definitionTypeGroup) {
-			if (definitionType == type) {
+		for (int type : javaTermTypeGroup) {
+			if (javaTermType == type) {
 				return true;
 			}
 		}
 
 		return false;
-	}
-
-	private static void _readExclusions() throws IOException {
-		_exclusionsProperties = new Properties();
-
-		ClassLoader classLoader = SourceFormatter.class.getClassLoader();
-
-		String sourceFormatterExclusions = System.getProperty(
-			"source-formatter-exclusions",
-			"com/liferay/portal/tools/dependencies/" +
-				"source_formatter_exclusions.properties");
-
-		URL url = classLoader.getResource(sourceFormatterExclusions);
-
-		if (url == null) {
-			return;
-		}
-
-		InputStream inputStream = url.openStream();
-
-		_exclusionsProperties.load(inputStream);
-
-		inputStream.close();
 	}
 
 	private static String _replacePrimitiveWrapperInstantiation(
@@ -2784,13 +2901,6 @@ public class SourceFormatter {
 		SourceFormatter._TYPE_VARIABLE_PRIVATE_STATIC_CONSTANT
 	};
 
-	private static final int[] _TYPE_STATIC_VARIABLE = {
-		SourceFormatter._TYPE_VARIABLE_PRIVATE_STATIC,
-		SourceFormatter._TYPE_VARIABLE_PRIVATE_STATIC_CONSTANT,
-		SourceFormatter._TYPE_VARIABLE_PROTECTED_STATIC,
-		SourceFormatter._TYPE_VARIABLE_PUBLIC_STATIC
-	};
-
 	private static final int _TYPE_VARIABLE_PRIVATE = 17;
 
 	private static final int _TYPE_VARIABLE_PRIVATE_STATIC = 16;
@@ -2804,16 +2914,17 @@ public class SourceFormatter {
 	private static final int _TYPE_VARIABLE_PUBLIC_STATIC = 1;
 
 	private static String[] _excludes;
-	private static Properties _exclusionsProperties;
 	private static FileImpl _fileUtil = FileImpl.getInstance();
 	private static Pattern _javaImportPattern = Pattern.compile(
 		"(^[ \t]*import\\s+.*;\n+)+", Pattern.MULTILINE);
+	private static Properties _javaTermAlphabetizeExclusionsProperties;
 	private static Map<String, String> _jspContents =
 		new HashMap<String, String>();
 	private static Pattern _jspImportPattern = Pattern.compile(
 		"(<.*\n*page.import=\".*>\n*)+", Pattern.MULTILINE);
 	private static Pattern _jspIncludeFilePattern = Pattern.compile(
 		"/.*[.]jsp[f]?");
+	private static Properties _lineLengthExclusionsProperties;
 	private static SAXReaderImpl _saxReaderUtil = SAXReaderImpl.getInstance();
 	private static SourceFormatterHelper _sourceFormatterHelper;
 	private static Pattern _xssPattern = Pattern.compile(
