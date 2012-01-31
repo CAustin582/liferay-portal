@@ -16,6 +16,7 @@ package com.liferay.portal.tools;
 
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -59,6 +60,8 @@ public class SeleneseToJavaBuilder {
 			"basedir");
 		CmdLineParser.Option minimizeOption = cmdLineParser.addStringOption(
 			"minimize");
+		CmdLineParser.Option reportDuplicatesOption =
+			cmdLineParser.addStringOption("reportDuplicates");
 
 		cmdLineParser.parse(args);
 
@@ -70,6 +73,9 @@ public class SeleneseToJavaBuilder {
 		minimizeTestFileName = normalizeFileName(minimizeTestFileName);
 
 		String minimizeTestContent = getNormalizedContent(minimizeTestFileName);
+
+		_reportDuplicates = GetterUtil.getBoolean(
+			(String)cmdLineParser.getOptionValue(reportDuplicatesOption));
 
 		int testHtmlCount = 0;
 
@@ -156,7 +162,7 @@ public class SeleneseToJavaBuilder {
 			}
 		}
 
-		if (sb.length() > 0) {
+		if (_reportDuplicates && (sb.length() > 0)) {
 			System.out.println(
 				"There are " + duplicateTestHtmlCount +
 					" duplicate tests out of " + testHtmlCount +
@@ -1379,6 +1385,7 @@ public class SeleneseToJavaBuilder {
 	private static final String[] _FIX_PARAM_OLD_SUBS = {"\\\\n", "<br />"};
 
 	private String _basedir;
+	private boolean _reportDuplicates;
 
 	private class TestHtmlCountComparator
 		implements Comparator<ObjectValuePair<String, IntegerWrapper>> {

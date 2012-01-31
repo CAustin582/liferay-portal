@@ -648,7 +648,7 @@ var defaultTypes = []]>
 		<delete dir="test-classes" />
 
 		<!--
-		ant build-selenium -Dminimize=com/liferay/portalweb/portal/util/TearDownPageTest.html
+		ant build-selenium -Dminimize=com/liferay/portalweb/portal/util/TearDownPageTest.html -DreportDuplicates=true
 		-->
 
 		<java
@@ -659,7 +659,7 @@ var defaultTypes = []]>
 			newenvironment="true"
 		>
 			<jvmarg value="-Dexternal-properties=com/liferay/portal/tools/dependencies/portal-tools.properties" />
-			<arg line="--basedir test --minimize ${minimize}" />
+			<arg line="--basedir test --minimize ${minimize} --reportDuplicates ${reportDuplicates}" />
 		</java>
 	</target>
 
