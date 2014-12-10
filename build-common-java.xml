@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="build-common-java" xmlns:antelope="antlib:ise.antelope.tasks">
+	xmlns:ivy="antlib:org.apache.ivy.ant">
 	<import file="build-common.xml" />
 
 	<if>
@@ -248,6 +249,32 @@
 				</if>
 			</then>
 		</if>
+	</target>
+
+	<target name="publish-core">
+		<ivy:resolve />
+
+		<if>
+			<available file="bnd.bnd" />
+			<then>
+				<loadproperties srcfile="bnd.bnd" />
+			</then>
+			<else>
+				<var name="Bundle-Version" value="${release.info.version}" />
+			</else>
+		</if>
+
+		<ivy:publish
+			conf="core"
+			resolver="core"
+			overwrite="true"
+			publishivy="false"
+			pubrevision="${Bundle-Version}.${tstamp.value}"
+		>
+			<artifacts pattern="[artifact].[ext]" />
+		</ivy:publish>
+
+		<var name="Bundle-Version" unset="true" />
 	</target>
 
 	<target name="release" depends="jar">

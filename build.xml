@@ -648,6 +648,22 @@
 		</DTDDoc>
 	</target>
 
+	<target name="publish-core" depends="compile" >
+		<ant dir="portal-impl" target="publish-core" inheritAll="false" />
+		<ant dir="portal-pacl" target="publish-core" inheritAll="false" />
+		<ant dir="portal-service" target="publish-core" inheritAll="false" />
+		<ant dir="portal-test" target="publish-core" inheritAll="false" />
+		<ant dir="util-bridges" target="publish-core" inheritAll="false" />
+		<ant dir="util-java" target="publish-core" inheritAll="false" />
+		<ant dir="util-slf4j" target="publish-core" inheritAll="false" />
+		<ant dir="util-taglib" target="publish-core" inheritAll="false" />
+		<ant dir="support-tomcat" target="publish-core" inheritAll="false" />
+	</target>
+
+	<target name="testr">
+		<ivy:resolve conf="core" />
+	</target>
+
 	<target name="jar">
 		<ant dir="portal-service" target="jar" inheritAll="false" />
 
@@ -1050,7 +1066,11 @@
 	</target>
 
 	<target name="start">
+		<record action="start" name="ant.output.txt" />
+
 		<antcall target="compile" />
+
+		<record action="stop" name="ant.output.txt" />
 
 		<echo>The "start" target is now deprecated. Please use the "compile" target instead.</echo>
 	</target>
@@ -1251,7 +1271,6 @@ print AdminControl.invoke(appManager, 'startApplication', 'liferay-portal')
 
 			ant -f modules/apps/bookmarks/bookmarks-test/build.xml compile-test
 			ant -f modules/sdk/ant-arquillian/build.xml clean compile
-			ant -f modules/test/poshi-runner/build.xml clean compile
 
 			ant -f portal-service/build.xml test-class -Dtest.class=StringUtilTest
 		</execute>
