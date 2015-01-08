@@ -66,7 +66,7 @@
 		<dependency name="java-diff" org="org.incava" rev="1.1"/>
 		<dependency name="janino" org="org.codehaus.janino" rev="2.7.4"/>
 		<dependency name="netty-all" org="io.netty" rev="4.0.23.Final"/>
-		<dependency name="freemarker" org="org.freemarker" rev="2.3.17" />
+		<dependency name="freemarker" org="freemarker" rev="2.3.17" />
 		<dependency name="msnmlib" org="jmsn" rev="1.4-20050613"/>
 		<dependency name="im4java" org="org.im4java" rev="1.2.0"/>
 		<dependency name="tika-core" org="org.apache.tika" rev="1.6"/>
@@ -101,6 +101,29 @@
 		<dependency name="lucene-spellchecker" org="org.apache.lucene" rev="3.5.0"/>
 		<dependency name="lucene-highlighter" org="org.apache.lucene" rev="3.5.0"/>
 		<dependency name="jcifs" org="jcifs" rev="1.3.17"/>
+		<dependency name="axis" org="org.apache.axis" rev="1.4"/>
+		<dependency name="jfreechart" org="jfree" rev="1.0.13"/>
+		<!-- <dependency name="jackrabbit-jcr-commons" org="org.apache.jackrabbit" rev="2.1.6"/> -->
+		<dependency name="jetty-server" org="org.eclipse.jetty" rev="8.1.10.v20130312"/>
+		<dependency name="cas-client-core" org="org.jasig.cas" rev="3.1.9"/>
+		<dependency name="urlrewritefilter" org="org.tuckey" rev="4.0.3"/>
+		<dependency name="spring-webmvc" org="org.springframework" rev="3.2.10.RELEASE"/>
+		<dependency name="javassist" org="org.javassist" rev="3.18.2-GA"/>
+		<dependency name="qdox" org="com.thoughtworks.qdox" rev="1.12"/>
+		<dependency name="derbytools" org="org.apache.derby" rev="10.4.1.3"/>
+		<dependency name="jalopy" org="jalopy" rev="1.5rc3"/>
+		<dependency name="commons-fileupload" org="commons-fileupload" rev="1.3.1"/>
+		<dependency name="rome" org="rome" rev="1.0"/>
+		<dependency name="jodd-proxetta" org="org.jodd" rev="3.6.3"/>
+		<dependency name="openid4java" org="org.openid4java" rev="0.9.5"/>
+		<dependency name="velocity" org="org.apache.velocity" rev="1.6.4"/>
+		<dependency name="velocity-tools" org="velocity-tools" rev="1.4"/>
+		<dependency name="jazzy-core" org="net.sf.jazzy" rev="0.5.2" />
+		<dependency name="truezip" org="de.schlichtherle" rev="6.8"/>
+		<dependency name="ical4j" org="org.mnode.ical4j" rev="1.0.2" />
+		<dependency name="jets3t" org="net.java.dev.jets3t" rev="0.9.0"/>
+		<dependency name="jodconverter" org="com.artofsolving" rev="2.2.1"/>
+		<dependency name="jspwiki" org="com.ecyrd" rev="2.8.4"/>
 
 
 
@@ -111,9 +134,7 @@
 		<dependency name="com.liferay.ibm.icu.icu4j" org="com.liferay" rev="4.0.1" />
 		<dependency name="commons-beanutils" org="commons-beanutils" rev="1.8.2" />
 		<dependency name="commons-validator" org="commons-validator" rev="1.3.1" />
-		<dependency name="ical4j" org="org.mnode.ical4j" rev="1.0.2" />
 		<dependency name="jaxrpc" org="javax.xml" rev="1.1" />
-		<dependency name="jazzy-core" org="net.sf.jazzy" rev="0.5.2" />
 		<dependency name="log4j" org="log4j" rev="1.2.16" />
 		<dependency name="poi" org="org.apache.poi" rev="3.11" />
 		<dependency name="rome" org="rome" rev="1.0" /> -->

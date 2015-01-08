@@ -16,19 +16,6 @@
 		</else>
 	</if>
 
-	<target name="publish-local" depends="jar">
-		<ivy:resolve conf="core" />
-
-		<ivy:publish
-			resolver="core"
-			revision="master.development"
-			overwrite="true"
-			update="true"
-		>
-			<artifacts pattern="[artifact].[ext]" />
-		</ivy:publish>
-	</target>
-
 	<target name="clean">
 		<delete dir="classes" />
 		<delete dir="test-classes" />
@@ -53,11 +40,11 @@
 		</condition>
 	</target>
 
-	<target name="check-deploy-uptodate" depends="check-jar-uptodate">
+	<target name="check-deploy-uptodate" depends="check-jar-uptodate" if="${jar.uptodate}">
 		<uptodate property="deploy.uptodate" srcfile="${jar.file}.jar" targetfile="${deploy.dir}/${jar.file}.jar" />
 	</target>
 
-	<target name="check-jar-uptodate" depends="check-compile-uptodate">
+	<target name="check-jar-uptodate" depends="check-compile-uptodate" if="${compile.uptodate}">
 		<uptodate property="jar.uptodate" srcfile="classes/.touch" targetfile="${jar.file}.jar" />
 
 		<condition property="deploy.uptodate" value="false">
@@ -83,31 +70,11 @@
 
 		<mkdir dir="classes" />
 
-		<if>
-			<available file="ivy.xml" />
-			<then>
-				<ivy:cachepath conf="default" pathid="default.path" />
-
-				<javac
-					classpathref="default.path"
-					compiler="${javac.compiler}"
-					debug="${javac.debug}"
-					deprecation="${javac.deprecation}"
-					destdir="classes"
-					encoding="${javac.encoding}"
-					includeAntRuntime="false"
-					nowarn="${javac.nowarn}"
-					srcdir="src"
-				/>
-			</then>
-			<else>
-				<antcall target="compile-java">
-					<param name="javac.classpathref" value="project.classpath" />
-					<param name="javac.destdir" value="classes" />
-					<param name="javac.srcdir" value="src" />
-				</antcall>
-			</else>
-		</if>
+		<antcall target="compile-java">
+			<param name="javac.classpathref" value="project.classpath" />
+			<param name="javac.destdir" value="classes" />
+			<param name="javac.srcdir" value="src" />
+		</antcall>
 	</target>
 
 	<target name="compile-java">
@@ -122,17 +89,37 @@
 			</then>
 		</if>
 
-		<javac
-			classpathref="${javac.classpathref}"
-			compiler="${javac.compiler}"
-			debug="${javac.debug}"
-			deprecation="${javac.deprecation}"
-			destdir="${javac.destdir}"
-			encoding="${javac.encoding}"
-			includeAntRuntime="false"
-			nowarn="${javac.nowarn}"
-			srcdir="${javac.srcdir}"
-		/>
+		<if>
+			<available file="ivy.xml" />
+			<then>
+				<ivy:cachepath conf="default" pathid="ivy.classpath" />
+
+				<javac
+					classpathref="ivy.classpath"
+					compiler="${javac.compiler}"
+					debug="${javac.debug}"
+					deprecation="${javac.deprecation}"
+					destdir="${javac.destdir}"
+					encoding="${javac.encoding}"
+					includeAntRuntime="false"
+					nowarn="${javac.nowarn}"
+					srcdir="${javac.srcdir}"
+				/>
+			</then>
+			<else>
+				<javac
+					classpathref="${javac.classpathref}"
+					compiler="${javac.compiler}"
+					debug="${javac.debug}"
+					deprecation="${javac.deprecation}"
+					destdir="${javac.destdir}"
+					encoding="${javac.encoding}"
+					includeAntRuntime="false"
+					nowarn="${javac.nowarn}"
+					srcdir="${javac.srcdir}"
+				/>
+			</else>
+		</if>
 
 		<if>
 			<equals arg1="${javac.deprecation}" arg2="on" />
@@ -281,6 +268,19 @@
 				</if>
 			</then>
 		</if>
+	</target>
+
+	<target name="publish-local" depends="jar">
+		<ivy:resolve conf="core" />
+
+		<ivy:publish
+			resolver="core"
+			revision="master.development"
+			overwrite="true"
+			update="true"
+		>
+			<artifacts pattern="[artifact].[ext]" />
+		</ivy:publish>
 	</target>
 
 	<target name="publish-core">
