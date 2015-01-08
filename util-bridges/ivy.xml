@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m2="http://ant.apache.org/ivy/maven" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="com.liferay.portal" module="util-bridges">
+		<license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt" />
+
+		<description homepage="http://www.liferay.com" />
+	</info>
+
+	<configurations>
+		<conf name="core" />
+		<conf name="default" />
+	</configurations>
+
+	<publications>
+		<artifact conf="core" name="util-bridges" />
+	</publications>
+
+	<dependencies defaultconf="default">
+		<dependency name="ant-apache-bsf" org="org.apache.ant" rev="1.8.3" />
+		<dependency name="com.caucho.resin" org="com.liferay" rev="4.0.11"/>
+		<dependency name="javax.servlet-api" org="javax.servlet" rev="3.0.1"/>
+		<dependency name="portal-service" org="com.liferay.portal" rev="latest.integration" />
+		<dependency name="portals-bridges-struts" org="org.apache.portals.bridges" rev="1.2.7-1.0"/>
+		<dependency name="portals-bridges-common" org="org.apache.portals.bridges" rev="1.0"/>
+		<dependency name="portlet-api" org="javax.portlet" rev="2.0" />
+		<dependency name="struts" org="struts" rev="1.2.9"/>
+	</dependencies>
+</ivy-module>

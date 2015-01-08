@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="build-common-java" xmlns:antelope="antlib:ise.antelope.tasks">
-	xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="build-common-java" xmlns:antelope="antlib:ise.antelope.tasks" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<import file="build-common.xml" />
 
 	<if>
@@ -16,6 +15,19 @@
 			<property name="portal-impl.classes.dir" value="${project.dir}/portal-impl/classes" />
 		</else>
 	</if>
+
+	<target name="publish-local" depends="jar">
+		<ivy:resolve conf="core" />
+
+		<ivy:publish
+			resolver="core"
+			revision="master.development"
+			overwrite="true"
+			update="true"
+		>
+			<artifacts pattern="[artifact].[ext]" />
+		</ivy:publish>
+	</target>
 
 	<target name="clean">
 		<delete dir="classes" />
@@ -71,11 +83,31 @@
 
 		<mkdir dir="classes" />
 
-		<antcall target="compile-java">
-			<param name="javac.classpathref" value="project.classpath" />
-			<param name="javac.destdir" value="classes" />
-			<param name="javac.srcdir" value="src" />
-		</antcall>
+		<if>
+			<available file="ivy.xml" />
+			<then>
+				<ivy:cachepath conf="default" pathid="default.path" />
+
+				<javac
+					classpathref="default.path"
+					compiler="${javac.compiler}"
+					debug="${javac.debug}"
+					deprecation="${javac.deprecation}"
+					destdir="classes"
+					encoding="${javac.encoding}"
+					includeAntRuntime="false"
+					nowarn="${javac.nowarn}"
+					srcdir="src"
+				/>
+			</then>
+			<else>
+				<antcall target="compile-java">
+					<param name="javac.classpathref" value="project.classpath" />
+					<param name="javac.destdir" value="classes" />
+					<param name="javac.srcdir" value="src" />
+				</antcall>
+			</else>
+		</if>
 	</target>
 
 	<target name="compile-java">

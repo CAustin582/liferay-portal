@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m2="http://ant.apache.org/ivy/maven" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="com.liferay.portal" module="util-taglib">
+		<license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt" />
+
+		<description homepage="http://www.liferay.com" />
+	</info>
+
+	<configurations>
+		<conf name="core" />
+		<conf name="default" />
+	</configurations>
+
+	<publications>
+		<artifact conf="core" name="util-taglib" />
+	</publications>
+
+	<dependencies defaultconf="default">
+		<dependency name="commons-lang" org="commons-lang" rev="2.6"/>
+		<dependency name="freemarker" org="org.freemarker" rev="2.3.17" />
+		<dependency name="javax.servlet-api" org="javax.servlet" rev="3.0.1" />
+		<dependency name="jsp-api" org="javax.servlet.jsp" rev="2.1"/>
+		<dependency name="portal-service" org="com.liferay.portal" rev="latest.integration" />
+		<dependency name="portlet-api" org="javax.portlet" rev="2.0" />
+		<dependency name="util-java" org="com.liferay.portal" rev="${ivy.core.dependency.revision}" />
+	</dependencies>
+</ivy-module>

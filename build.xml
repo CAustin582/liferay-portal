@@ -648,22 +648,6 @@
 		</DTDDoc>
 	</target>
 
-	<target name="publish-core" depends="compile" >
-		<ant dir="portal-impl" target="publish-core" inheritAll="false" />
-		<ant dir="portal-pacl" target="publish-core" inheritAll="false" />
-		<ant dir="portal-service" target="publish-core" inheritAll="false" />
-		<ant dir="portal-test" target="publish-core" inheritAll="false" />
-		<ant dir="util-bridges" target="publish-core" inheritAll="false" />
-		<ant dir="util-java" target="publish-core" inheritAll="false" />
-		<ant dir="util-slf4j" target="publish-core" inheritAll="false" />
-		<ant dir="util-taglib" target="publish-core" inheritAll="false" />
-		<ant dir="support-tomcat" target="publish-core" inheritAll="false" />
-	</target>
-
-	<target name="testr">
-		<ivy:resolve conf="core" />
-	</target>
-
 	<target name="jar">
 		<ant dir="portal-service" target="jar" inheritAll="false" />
 

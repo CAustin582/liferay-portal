@@ -481,7 +481,15 @@ Please set the environment variable ANT_OPTS to the recommended value of
 			<var name="junit.debug.jpda" value="" />
 		</then>
 	</if>
-
+<!-- 
+	<target name="publish-core-jar">
+		<ivy:publish
+			organisation="com.liferay.portal"
+			pubrevision="${lp.version}.${tstamp.value}"
+			resolver="core"
+		/>
+	</target>
+ -->
 	<macrodef name="ant-execute">
 		<attribute default="build.xml" name="ant.build.file" />
 		<attribute name="ant.dir" />

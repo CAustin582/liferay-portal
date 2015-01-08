@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0" xmlns:m2="http://ant.apache.org/ivy/maven" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+	<info organisation="com.liferay.portal" module="portal-test">
+		<license name="LGPL 2.1" url="http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt" />
+
+		<description homepage="http://www.liferay.com" />
+	</info>
+
+	<configurations>
+		<conf name="core" />
+	</configurations>
+
+	<publications>
+		<artifact conf="core" name="portal-test" />
+	</publications>
+</ivy-module>
