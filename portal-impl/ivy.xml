@@ -66,7 +66,7 @@
 		<dependency name="java-diff" org="org.incava" rev="1.1"/>
 		<dependency name="janino" org="org.codehaus.janino" rev="2.7.4"/>
 		<dependency name="netty-all" org="io.netty" rev="4.0.23.Final"/>
-		<dependency name="freemarker" org="freemarker" rev="2.3.17" />
+		<dependency name="org.freemarker" org="com.liferay" rev="2.3.17.LIFERAY-PATCHED-1" />
 		<dependency name="msnmlib" org="jmsn" rev="1.4-20050613"/>
 		<dependency name="im4java" org="org.im4java" rev="1.2.0"/>
 		<dependency name="tika-core" org="org.apache.tika" rev="1.6"/>
