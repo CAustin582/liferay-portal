@@ -2,14 +2,29 @@
 	<settings defaultResolver="default" />
 
 	<resolvers>
+		<ibiblio
+			m2compatible="true"
+			name="liferay-snapshots-ce"
+			root="http://cdn.repository.liferay.com/nexus/content/repositories/liferay-snapshots-ce"
+			changingMatcher="regexp"
+			changingPattern=".*-SNAPSHOT"
+			checkmodified="true"
+		/>
+		<ibiblio m2compatible="true" name="liferay-ce" root="http://cdn.repository.liferay.com/nexus/content/groups/liferay-ce" />
 		<ibiblio m2compatible="true" name="liferay-public" root="http://cdn.repository.liferay.com/nexus/content/groups/public" />
 		<ibiblio m2compatible="true" name="local-m2" root="file:///${user.home}/.m2/repository" />
 
 		<filesystem checkmodified="true" name="core">
 			<artifact pattern="${user.home}/.m2/repository/com/liferay/portal/[artifact]/[revision]/[artifact]-[revision].[ext]" />
 		</filesystem>
+	</resolvers>
 
+	<resolvers>
 		<chain dual="true" name="default">
+			<resolver ref="liferay-snapshots-ce" />
+
+			<resolver ref="liferay-ce" />
+
 			<resolver ref="liferay-public" />
 
 			<resolver ref="local-m2" />
