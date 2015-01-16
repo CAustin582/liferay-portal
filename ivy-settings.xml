@@ -1,5 +1,15 @@
 <ivysettings>
-	<settings defaultResolver="default" />
+	<settings defaultResolver="default" defaultLatestStrategy="liferay-latest-revision" />
+
+    <latest-strategies>
+        <latest-revision name="liferay-latest-revision" usedefaultspecialmeanings="false">
+	        <specialMeaning name="m" value="-5"/>
+	        <specialMeaning name="a" value="-4"/>
+	        <specialMeaning name="b" value="-3"/>
+	        <specialMeaning name="rc" value="-2"/>
+	        <specialMeaning name="SNAPSHOT" value="-1"/>
+        </latest-revision>
+    </latest-strategies> 
 
 	<resolvers>
 		<ibiblio
@@ -7,7 +17,7 @@
 			name="liferay-snapshots-ce"
 			root="http://cdn.repository.liferay.com/nexus/content/repositories/liferay-snapshots-ce"
 			changingMatcher="regexp"
-			changingPattern=".*-SNAPSHOT"
+			changingPattern=".*SNAPSHOT"
 			checkmodified="true"
 		/>
 		<ibiblio m2compatible="true" name="liferay-ce" root="http://cdn.repository.liferay.com/nexus/content/groups/liferay-ce" />
@@ -20,13 +30,13 @@
 	</resolvers>
 
 	<resolvers>
-		<chain dual="true" name="default">
+		<chain name="internal" changingPattern=".*-SNAPSHOT" checkmodified="true">
+		</chain>
+
+		<chain dual="true" name="default" changingPattern=".*-SNAPSHOT" checkmodified="true">
 			<resolver ref="liferay-snapshots-ce" />
-
 			<resolver ref="liferay-ce" />
-
 			<resolver ref="liferay-public" />
-
 			<resolver ref="local-m2" />
 		</chain>
 	</resolvers>

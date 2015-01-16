@@ -8,7 +8,7 @@
 
 	<configurations>
 		<conf name="core" />
-		<conf name="default" />
+		<conf name="default" transitive="false" />
 	</configurations>
 
 	<publications>
@@ -16,118 +16,151 @@
 	</publications>
 
 	<dependencies defaultconf="default">
-		<dependency name="abdera-extensions-main" org="org.apache.abdera" rev="1.1.2"/>
-		<dependency name="abdera-server" org="org.apache.abdera" rev="1.1.2"/>
-		<dependency name="ant" org="org.apache.ant" rev="1.8.2"/>
-		<dependency name="antlr" org="org.antlr" rev="3.0.1"/>
+		<dependency name="abdera-extensions-main" org="org.apache.abdera" rev="1.1.2" />
+		<dependency name="abdera-server" org="org.apache.abdera" rev="1.1.2" />
+		<dependency name="abdera-core" org="org.apache.abdera" rev="1.1.2" />
+		<dependency name="abdera-i18n" org="org.apache.abdera" rev="1.1.2"/>
+		<dependency name="ant" org="org.apache.ant" rev="1.8.2" />
+		<dependency name="antlr" org="org.antlr" rev="3.0.1" />
 		<dependency name="aQute.bnd" org="com.liferay" rev="2.3.0.20140225-161137" />
 		<dependency name="asm-debug-all" org="org.ow2.asm" rev="5.0.1" />
 		<dependency name="aspectjweaver" org="org.aspectj" rev="1.8.0" />
-		<dependency name="axis" org="org.apache.axis" rev="1.4"/>
-		<dependency name="bobo-browse" org="com.browseengine.bobo" rev="3.2.0"/>
-		<dependency name="bsh" org="bsh" rev="2.0b4"/>
-		<dependency name="c3p0" org="com.mchange" rev="0.9.2.1"/>
-		<dependency name="cas-client-core" org="org.jasig.cas" rev="3.1.9"/>
+		<dependency name="axis" org="org.apache.axis" rev="1.4" />
+		<dependency name="bobo-browse" org="com.browseengine.bobo" rev="3.2.0" />
+		<dependency name="bsh" org="org.beanshell" rev="2.0b4" />
+		<dependency name="c3p0" org="com.mchange" rev="0.9.2.1" />
+		<dependency name="cas-client-core" org="org.jasig.cas" rev="3.1.9" />
 		<dependency name="ccpp" org="javax.ccpp" rev="1.0" />
-		<dependency name="chemistry-opencmis-client-api" org="org.apache.chemistry.opencmis" rev="0.6.0"/>
-		<dependency name="chemistry-opencmis-client-impl" org="org.apache.chemistry.opencmis" rev="0.6.0"/>
-		<dependency name="closure-compiler" org="com.google.javascript" rev="v20131014"/>
+		<dependency name="chemistry-opencmis-client-api" org="org.apache.chemistry.opencmis" rev="0.6.0" />
+		<dependency name="chemistry-opencmis-client-impl" org="org.apache.chemistry.opencmis" rev="0.6.0" />
+		<dependency name="closure-compiler" org="com.google.javascript" rev="v20131014" />
 		<dependency name="com.liferay.registry.api" org="com.liferay" rev="latest.integration" />
-		<dependency name="commons-compress" org="org.apache.commons" rev="1.8.1"/>
-		<dependency name="commons-configuration" org="commons-configuration" rev="1.5"/>
-		<dependency name="commons-dbcp" org="commons-dbcp" rev="1.2.2"/>
-		<dependency name="commons-fileupload" org="commons-fileupload" rev="1.3.1"/>
+		<dependency name="commons-beanutils" org="commons-beanutils" rev="1.8.2" />
+		<dependency name="commons-codec" org="commons-codec" rev="1.9" />
+		<dependency name="commons-compress" org="org.apache.commons" rev="1.8.1" />
+		<dependency name="commons-configuration" org="commons-configuration" rev="1.5" />
+		<dependency name="commons-dbcp" org="commons-dbcp" rev="1.2.2" />
+		<dependency name="commons-fileupload" org="commons-fileupload" rev="1.3.1" />
 		<dependency name="commons-httpclient" org="commons-httpclient" rev="3.1" />
-		<dependency name="commons-io" org="commons-io" rev="2.1"/>
-		<dependency name="derbytools" org="org.apache.derby" rev="10.4.1.3"/>
-		<dependency name="easyconf" org="easyconf" rev="0.9.5" transitive="false" />
-		<dependency name="ehcache" org="net.sf.ehcache" rev="2.8.3"/>
-		<dependency name="ehcache-jgroups3replication" org="org.jasig.ehcache" rev="1.7"/>
-		<dependency name="groovy" org="org.codehaus.groovy" rev="2.2.2"/>
+		<dependency name="commons-io" org="commons-io" rev="2.1" />
+		<dependency name="derbytools" org="org.apache.derby" rev="10.4.1.3" />
+		<dependency name="easyconf" org="easyconf" rev="0.9.5" />
+		<dependency name="ehcache" org="net.sf.ehcache" rev="2.8.3" />
+		<!-- <dependency name="ehcache-jgroups3replication" org="org.jasig.ehcache" rev="1.7" /> -->
+		<dependency name="groovy" org="org.codehaus.groovy" rev="2.2.2" />
 		<dependency name="hibernate-core" org="org.hibernate" rev="3.6.10.Final" />
-		<dependency name="httpclient" org="org.apache.httpcomponents" rev="4.3.3"/>
-		<dependency name="httpcore" org="org.apache.httpcomponents" rev="4.3.2"/>
+		<dependency name="httpclient" org="org.apache.httpcomponents" rev="4.3.3" />
+		<dependency name="httpcore" org="org.apache.httpcomponents" rev="4.3.2" />
 		<dependency name="ical4j" org="org.mnode.ical4j" rev="1.0.2" />
-		<dependency name="im4java" org="org.im4java" rev="1.2.0"/>
-		<dependency name="jabsorb" org="org.jabsorb" rev="1.3.1"/>
-		<dependency name="jackrabbit-core" org="org.apache.jackrabbit" rev="2.1.6"/>
-		<dependency name="jai-core" org="javax.media" rev="1.1.3"/>
-		<dependency name="jalopy" org="jalopy" rev="1.5rc3"/>
-		<dependency name="janino" org="org.codehaus.janino" rev="2.7.4"/>
-		<dependency name="java-diff" org="org.incava" rev="1.1"/>
-		<dependency name="javaee-api" org="javaee" rev="5"/>
-		<dependency name="javassist" org="org.javassist" rev="3.18.2-GA"/>
+		<dependency name="im4java" org="org.im4java" rev="1.2.0" />
+		<dependency name="jabsorb" org="org.jabsorb" rev="1.3.1" />
+		<dependency name="jackrabbit-core" org="org.apache.jackrabbit" rev="2.1.6" />
+		<dependency name="jai-core" org="javax.media" rev="1.1.3" />
+		<dependency name="jalopy" org="jalopy" rev="1.5rc3" />
+		<dependency name="janino" org="org.codehaus.janino" rev="2.7.4" />
+		<dependency name="java-diff" org="org.incava" rev="1.1" />
+		<!-- <dependency name="javaee-api" org="javaee" rev="5" /> -->
+		<dependency name="javassist" org="org.javassist" rev="3.18.2-GA" />
 		<dependency name="javax.ccpp.ccpp-ri" org="com.liferay" rev="1.0" />
 		<dependency name="javax.servlet-api" org="javax.servlet" rev="3.0.1" />
 		<dependency name="jazzy-core" org="net.sf.jazzy" rev="0.5.2" />
-		<dependency name="jchardet" org="net.sourceforge.jchardet" rev="1.0"/>
-		<dependency name="jcifs" org="jcifs" rev="1.3.17"/>
-		<dependency name="jcr" org="javax.jcr" rev="2.0"/>
-		<dependency name="jericho-html" org="net.htmlparser.jericho" rev="3.1"/>
-		<dependency name="jets3t" org="net.java.dev.jets3t" rev="0.9.0"/>
-		<dependency name="jetty-server" org="org.eclipse.jetty" rev="8.1.10.v20130312"/>
-		<dependency name="jfreechart" org="jfree" rev="1.0.13"/>
-		<dependency name="jodconverter" org="com.artofsolving" rev="2.2.1"/>
-		<dependency name="jodd-bean" org="org.jodd" rev="3.6.3"/>
-		<dependency name="jodd-json" org="org.jodd" rev="3.6.3"/>
-		<dependency name="jodd-proxetta" org="org.jodd" rev="3.6.3"/>
-		<dependency name="jodd-servlet" org="org.jodd" rev="3.6.3"/>
+		<dependency name="jchardet" org="net.sourceforge.jchardet" rev="1.0" />
+		<dependency name="jcifs" org="jcifs" rev="1.3.17" />
+		<dependency name="jcr" org="javax.jcr" rev="2.0" />
+		<dependency name="jericho-html" org="net.htmlparser.jericho" rev="3.1" />
+		<dependency name="jets3t" org="net.java.dev.jets3t" rev="0.9.0" />
+		<dependency name="jetty-server" org="org.eclipse.jetty" rev="8.1.10.v20130312" />
+		<dependency name="jfreechart" org="jfree" rev="1.0.13" />
+		<dependency name="jodconverter" org="com.artofsolving" rev="2.2.1" />
+		<dependency name="jodd-core" org="org.jodd" rev="3.6.3" />
+		<dependency name="jodd-bean" org="org.jodd" rev="3.6.3" />
+		<dependency name="jodd-json" org="org.jodd" rev="3.6.3" />
+		<dependency name="jodd-proxetta" org="org.jodd" rev="3.6.3" />
+		<dependency name="jodd-servlet" org="org.jodd" rev="3.6.3" />
 		<dependency name="joscarlib" org="com.liferay" rev="0.4" />
-		<dependency name="jruby" org="org.jruby" rev="1.6.5"/>
-		<dependency name="json" org="org.json" rev="20090211"/>
-		<dependency name="json-schema-validator" org="com.github.fge" rev="2.2.3"/>
-		<dependency name="jspwiki" org="com.ecyrd" rev="2.8.4"/>
-		<dependency name="jython-standalone" org="org.python" rev="2.5.2"/>
-		<dependency name="lucene-analyzers" org="org.apache.lucene" rev="3.5.0"/>
-		<dependency name="lucene-highlighter" org="org.apache.lucene" rev="3.5.0"/>
-		<dependency name="lucene-spellchecker" org="org.apache.lucene" rev="3.5.0"/>
+		<dependency name="jruby" org="org.jruby" rev="1.6.5" />
+		<dependency name="json" org="org.json" rev="20090211" />
+		<dependency name="json-schema-validator" org="com.github.fge" rev="2.2.3" />
+		<dependency name="jspwiki" org="com.ecyrd" rev="2.8.4" />
+		<dependency name="jython-standalone" org="org.python" rev="2.5.2" />
+		<dependency name="lucene-core" org="org.apache.lucene" rev="3.5.0" />
+		<dependency name="lucene-analyzers" org="org.apache.lucene" rev="3.5.0" />
+		<dependency name="lucene-highlighter" org="org.apache.lucene" rev="3.5.0" />
+		<dependency name="lucene-spellchecker" org="org.apache.lucene" rev="3.5.0" />
 		<dependency name="mail" org="javax.mail" rev="1.4" />
-		<dependency name="msnmlib" org="jmsn" rev="1.4-20050613"/>
+		<dependency name="msnmlib" org="jmsn" rev="1.4-20050613" />
 		<dependency name="net.jmge.gif.gif89" org="com.liferay" rev="1.0" />
-		<dependency name="netty-all" org="io.netty" rev="4.0.23.Final"/>
-		<dependency name="nl.captcha.simplecaptcha" org="com.liferay" rev="1.1.1"/>
-		<dependency name="openid4java" org="org.openid4java" rev="0.9.5"/>
+		<dependency name="netty-all" org="io.netty" rev="4.0.23.Final" />
+		<dependency name="nl.captcha.simplecaptcha" org="com.liferay" rev="1.1.1" />
+		<dependency name="openid4java-nodeps" org="org.openid4java" rev="0.9.5" />
 		<dependency name="org.apache.struts" org="com.liferay" rev="1.2.9.LIFERAY-PATCHED-1" />
 		<dependency name="org.freemarker" org="com.liferay" rev="2.3.17.LIFERAY-PATCHED-1" />
 		<dependency name="org.jamwiki.jamwiki-core" org="com.liferay" rev="1.0.7" />
 		<dependency name="org.outerj.daisy.daisydiff" org="com.liferay" rev="1.2" />
 		<dependency name="org.vps.crypt" org="com.liferay" rev="1.0" />
 		<dependency name="org.walluck.oscar" org="com.liferay" rev="0.9.2" />
-		<dependency name="pdfbox" org="org.apache.pdfbox" rev="1.8.6"/>
+		<dependency name="pdfbox" org="org.apache.pdfbox" rev="1.8.6" />
 		<dependency name="poi" org="org.apache.poi" rev="3.11" />
-		<dependency name="portal-service" org="com.liferay.portal" rev="${ivy.core.dependency.revision}" changing="true" />
+		<dependency name="portal-service" org="com.liferay.portal" rev="${ivy.core.dependency.revision}" />
 		<dependency name="portlet-api" org="javax.portlet" rev="2.0" />
-		<dependency name="qdox" org="com.thoughtworks.qdox" rev="1.12"/>
-		<dependency name="quartz" org="org.quartz-scheduler" rev="2.1.7"/>
-		<dependency name="rome" org="rome" rev="1.0"/>
-		<dependency name="scribe" org="org.scribe" rev="1.0.8"/>
+		<dependency name="qdox" org="com.thoughtworks.qdox" rev="1.12" />
+		<dependency name="quartz" org="org.quartz-scheduler" rev="2.1.7" />
+		<dependency name="rome" org="rome" rev="1.0" />
+		<dependency name="scribe" org="org.scribe" rev="1.0.8" />
+		<dependency name="spring-expression" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="spring-core" org="org.springframework" rev="3.2.10.RELEASE" />
 		<dependency name="spring-beans" org="org.springframework" rev="3.2.10.RELEASE" />
-		<dependency name="spring-context" org="org.springframework" rev="3.2.10.RELEASE"/>
-		<dependency name="spring-jdbc" org="org.springframework" rev="3.2.10.RELEASE"/>
-		<dependency name="spring-orm" org="org.springframework" rev="3.2.10.RELEASE"/>
-		<dependency name="spring-web" org="org.springframework" rev="3.2.10.RELEASE"/>
-		<dependency name="spring-webmvc" org="org.springframework" rev="3.2.10.RELEASE"/>
-		<dependency name="tika-core" org="org.apache.tika" rev="1.6"/>
-		<dependency name="tomcat-jdbc" org="org.apache.tomcat" rev="7.0.42"/>
-		<dependency name="truezip" org="de.schlichtherle" rev="6.8"/>
-		<dependency name="urlrewritefilter" org="org.tuckey" rev="4.0.3"/>
+		<dependency name="spring-context" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="spring-jdbc" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="spring-orm" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="spring-web" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="spring-tx" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="spring-aop" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="spring-webmvc" org="org.springframework" rev="3.2.10.RELEASE" />
+		<dependency name="tika-core" org="org.apache.tika" rev="1.6" />
+		<dependency name="tomcat-jdbc" org="org.apache.tomcat" rev="7.0.42" />
+		<dependency name="truezip" org="de.schlichtherle" rev="6.8" />
+		<dependency name="urlrewritefilter" org="org.tuckey" rev="4.0.3" />
 		<dependency name="util-bridges" org="com.liferay.portal" rev="${ivy.core.dependency.revision}" />
 		<dependency name="util-java" org="com.liferay.portal" rev="${ivy.core.dependency.revision}" />
 		<dependency name="util-taglib" org="com.liferay.portal" rev="${ivy.core.dependency.revision}" />
-		<dependency name="velocity" org="org.apache.velocity" rev="1.6.4"/>
-		<dependency name="velocity-tools" org="velocity-tools" rev="1.4"/>
-		<dependency name="xalan" org="xalan" rev="2.7.1"/>
-		<dependency name="xstream" org="com.thoughtworks.xstream" rev="1.4.3"/>
+		<dependency name="velocity" org="org.apache.velocity" rev="1.6.4" />
+		<dependency name="velocity-tools" org="velocity-tools" rev="1.4" />
+		<dependency name="xalan" org="xalan" rev="2.7.1" />
+		<dependency name="xstream" org="com.thoughtworks.xstream" rev="1.4.3" />
 		<dependency name="xuggle.xuggler.noarch" org="com.liferay" rev="5.4" />
-		<dependency name="yuicompressor" org="com.yahoo.platform.yui" rev="2.4.7"/>
-
+		<dependency name="yuicompressor" org="com.yahoo.platform.yui" rev="2.4.7" />
+		<dependency name="monte-repack" org="com.pojosontheweb" rev="1.0" />
+		<dependency name="aopalliance" org="aopalliance" rev="1.0" />
 		<dependency name="portals-bridges-struts" org="org.apache.portals.bridges" rev="1.2.7-1.0" />
-		<dependency org="org.apache.portals.bridges" name="portals-bridges-common" rev="1.0"/>
+		<dependency name="jgroups" org="org.jgroups" rev="3.2.10.Final" />
+		<dependency name="commons-lang" org="commons-lang" rev="2.6" />
+		<dependency name="commons-collections" org="commons-collections" rev="3.2.1" />
+		<dependency name="oro" org="oro" rev="2.0.8" />
+		<dependency name="jackson-databind" org="com.fasterxml.jackson.core" rev="2.2.3" />
+		<dependency name="jackson-coreutils" org="com.github.fge" rev="1.6"/>
+		<dependency name="json-schema-core" org="com.github.fge" rev="1.2.1"/>
+		<dependency name="log4j" org="log4j" rev="1.2.16" />
+		<dependency name="chemistry-opencmis-commons-api" org="org.apache.chemistry.opencmis" rev="0.6.0"/>
+		<dependency name="chemistry-opencmis-commons-impl" org="org.apache.chemistry.opencmis" rev="0.6.0"/>
+		<dependency name="lucene-analyzers" org="org.apache.lucene" rev="3.5.0"/>
+		<dependency name="xercesImpl" org="xerces" rev="2.11.0"/>
+		<dependency org="dom4j" name="dom4j" rev="1.6.1"/>
+		<dependency org="jaxen" name="jaxen" rev="1.1.1"/>
+		<dependency org="org.eclipse.jetty" name="jetty-util" rev="8.1.10.v20130312"/>
+		<dependency org="javax.enterprise.deploy" name="javax.enterprise.deploy-api" rev="1.6"/>
+		<dependency org="javax.servlet.jsp" name="jsp-api" rev="2.1"/>
+		<dependency org="net.sf.ehcache" name="ehcache-jgroupsreplication" rev="1.7"/>
 
 
-		<!-- <dependency org="org.aspectj" name="aspectjrt" rev="1.8.0"/>
-		<dependency org="org.aspectj" name="aspectjweaver" rev="1.8.0"/> -->
-		<!-- <dependency org="aopalliance" name="aopalliance" rev="1.0"/> -->
+
+
+		<!-- <dependency org="org.apache.portals.bridges" name="portals-bridges-common" rev="1.0" /> -->
+
+
+		<!-- <dependency org="org.aspectj" name="aspectjrt" rev="1.8.0" />
+		<dependency org="org.aspectj" name="aspectjweaver" rev="1.8.0" /> -->
+		<!-- <dependency org="aopalliance" name="aopalliance" rev="1.0" /> -->
 		<!-- <dependency name="ant-apache-bsf" org="org.apache.ant" rev="1.8.3" />
 		<dependency name="aspectjweaver" org="org.aspectj" rev="1.8.0" />
 		<dependency name="axis" org="org.apache.axis" rev="1.4" />
@@ -136,7 +169,6 @@
 		<dependency name="commons-beanutils" org="commons-beanutils" rev="1.8.2" />
 		<dependency name="commons-validator" org="commons-validator" rev="1.3.1" />
 		<dependency name="jaxrpc" org="javax.xml" rev="1.1" />
-		<dependency name="log4j" org="log4j" rev="1.2.16" />
 		<dependency name="poi" org="org.apache.poi" rev="3.11" />
 		<dependency name="rome" org="rome" rev="1.0" /> -->
 	</dependencies>
