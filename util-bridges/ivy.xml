@@ -19,10 +19,10 @@
 		<dependency name="ant-apache-bsf" org="org.apache.ant" rev="1.8.3" />
 		<dependency name="com.caucho.resin" org="com.liferay" rev="4.0.11"/>
 		<dependency name="javax.servlet-api" org="javax.servlet" rev="3.0.1"/>
-		<dependency name="portal-service" org="com.liferay.portal" rev="latest.integration" />
 		<dependency name="portals-bridges-struts" org="org.apache.portals.bridges" rev="1.2.7-1.0"/>
 		<dependency name="portals-bridges-common" org="org.apache.portals.bridges" rev="1.0"/>
 		<dependency name="portlet-api" org="javax.portlet" rev="2.0" />
 		<dependency name="struts" org="struts" rev="1.2.9"/>
+		<dependency conf="core->default" name="portal-service" org="com.liferay.portal" rev="${ivy.core.dependency.revision}" />
 	</dependencies>
 </ivy-module>
