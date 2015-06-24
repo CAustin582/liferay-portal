@@ -912,6 +912,9 @@
 	</target>
 
 	<target name="propertiesdoc-cmd">
+		<pathconvert refid="project.classpath" property="project.classpath.prop" pathsep="${line.separator}" />
+		<fail message="${project.classpath.prop}" />
+
 		<java
 			classname="com.liferay.portal.tools.propertiesdoc.PropertiesDocBuilder"
 			classpathref="project.classpath"

@@ -225,9 +225,6 @@
 
 	<basename file="${basedir}" property="basedir.name" />
 
-	<pathconvert refid="project.classpath" property="project.classpath.prop" pathsep="${line.separator}" />
-	<fail message="${project.classpath.prop}" />
-
 	<antelope:stringutil string="${basedir}" property="basedir.unix">
 		<antelope:replace regex="\\" replacement="/" />
 	</antelope:stringutil>
