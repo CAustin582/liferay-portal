@@ -15,6 +15,7 @@
 package com.liferay.gradle.plugins.tasks;
 
 import com.liferay.gradle.util.FileUtil;
+import com.liferay.gradle.util.GradleUtil;
 import com.liferay.gradle.util.StringUtil;
 
 import java.io.File;
@@ -165,6 +166,20 @@ public class DirectDeployTask extends BasePortalImplToolsTask {
 
 	public void setWebAppType(String webAppType) {
 		_webAppType = webAppType;
+	}
+
+	@Override
+	protected void addDependencies() {
+		super.addDependencies();
+
+		String appServerType = getAppServerType();
+
+		if (appServerType.equals("jonas")) {
+			File dir = new File(getAppServerPortalDir(), "lib/endorsed");
+
+			GradleUtil.addDependency(
+				project, getConfigurationName(), getJarsFileTree(dir));
+		}
 	}
 
 	@Override
