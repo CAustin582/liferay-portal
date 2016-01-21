@@ -17,12 +17,13 @@
 <%@ include file="/bookmarks/init.jsp" %>
 
 <%
-String navigation = ParamUtil.getString(request, "navigation", "home");
+String navigation = ParamUtil.getString(request, "navigation", "all");
 
 int curEntry = ParamUtil.getInteger(request, "curEntry");
 int deltaEntry = ParamUtil.getInteger(request, "deltaEntry");
 
 long folderId = GetterUtil.getLong((String)request.getAttribute("view.jsp-folderId"));
+int total = GetterUtil.getInteger((String)request.getAttribute("view.jsp-total"));
 
 String displayStyle = ParamUtil.getString(request, "displayStyle");
 
@@ -35,10 +36,17 @@ String keywords = ParamUtil.getString(request, "keywords");
 PortletURL displayStyleURL = renderResponse.createRenderURL();
 
 if (Validator.isNull(keywords)) {
-	displayStyleURL.setParameter("mvcRenderCommandName", "/bookmarks/view");
+	if (folderId == BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+		displayStyleURL.setParameter("mvcRenderCommandName", "/bookmarks/view");
+	}
+	else {
+		displayStyleURL.setParameter("mvcRenderCommandName", "/bookmarks/view_folder");
+		displayStyleURL.setParameter("folderId", String.valueOf(folderId));
+	}
 }
 else {
 	displayStyleURL.setParameter("mvcPath", "/bookmarks/search.jsp");
+	displayStyleURL.setParameter("folderId", String.valueOf(folderId));
 }
 
 displayStyleURL.setParameter("navigation", HtmlUtil.escapeJS(navigation));
@@ -50,8 +58,6 @@ if (curEntry > 0) {
 if (deltaEntry > 0) {
 	displayStyleURL.setParameter("deltaEntry", String.valueOf(deltaEntry));
 }
-
-displayStyleURL.setParameter("folderId", String.valueOf(folderId));
 %>
 
 <liferay-frontend:management-bar-display-buttons

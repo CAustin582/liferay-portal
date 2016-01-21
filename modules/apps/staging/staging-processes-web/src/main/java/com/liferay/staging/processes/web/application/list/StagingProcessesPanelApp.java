@@ -18,7 +18,7 @@ import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
 import com.liferay.application.list.constants.PanelCategoryKeys;
 import com.liferay.portal.model.Portlet;
-import com.liferay.staging.processes.web.constants.StagingProcessesPortletKeys;
+import com.liferay.staging.constants.StagingProcessesPortletKeys;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,6 +41,7 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 		return StagingProcessesPortletKeys.STAGING_PROCESSES;
 	}
 
+	@Override
 	@Reference(
 		target = "(javax.portlet.name=" + StagingProcessesPortletKeys.STAGING_PROCESSES + ")",
 		unbind = "-"

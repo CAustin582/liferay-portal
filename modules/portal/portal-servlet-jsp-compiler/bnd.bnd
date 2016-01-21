@@ -1,7 +1,6 @@
-Bundle-Activator: com.liferay.portal.servlet.jsp.compiler.internal.JspFactoryBundleActivator
 Bundle-Name: Liferay Portal Servlet JSP Compiler
 Bundle-SymbolicName: com.liferay.portal.servlet.jsp.compiler
-Bundle-Version: 1.0.4
+Bundle-Version: 1.0.6
 Export-Package: com.liferay.portal.servlet.jsp.compiler
 Import-Package:\
 	com.sun.el;version='[3.0.0,4.0)',\
@@ -65,5 +64,4 @@ Provide-Capability:\
 -includeresource:\
 	@lib/javax.servlet.jsp.jar,\
 	@lib/javax.servlet.jsp.jstl.jar!/META-INF/*.tld,\
-	@lib/org.apache.felix.utils.jar!/org/apache/felix/utils/log/*,\
-	classes
+	@lib/org.apache.felix.utils.jar!/org/apache/felix/utils/log/*

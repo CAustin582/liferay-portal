@@ -6,18 +6,11 @@
 	<var name="portletName" value="Bookmarks" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="${pageName}" />
 		</execute>
 
@@ -154,7 +147,7 @@
 			<var name="contentBody" value="Bookmark Name" />
 		</execute>
 
-		<execute macro="Bookmark#viewBookmark">
+		<execute macro="Bookmark#viewEntry">
 			<var name="bookmarkName" value="Bookmark Name" />
 			<var name="bookmarkURL" value="http://www.liferay.com" />
 		</execute>
@@ -249,7 +242,7 @@
 			<var name="contentBody" value="Bookmark Name Edit" />
 		</execute>
 
-		<execute macro="Bookmark#viewBookmark">
+		<execute macro="Bookmark#viewEntry">
 			<var name="bookmarkName" value="Bookmark Name Edit" />
 			<var name="bookmarkURL" value="http://www.liferay.com" />
 		</execute>

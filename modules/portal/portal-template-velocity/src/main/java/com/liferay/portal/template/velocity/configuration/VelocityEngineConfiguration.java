@@ -16,12 +16,12 @@ package com.liferay.portal.template.velocity.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.configuration.admin.ConfigurationAdmin;
+import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * @author Peter Fellwock
  */
-@ConfigurationAdmin(category = "platform")
+@ExtendedObjectClassDefinition(category = "platform")
 @Meta.OCD(
 	id = "com.liferay.portal.template.velocity.configuration.VelocityEngineConfiguration",
 	localization = "content/Language",
@@ -59,7 +59,7 @@ public interface VelocityEngineConfiguration {
 	@Meta.AD(deflt = "", required = false)
 	public String[] restrictedPackages();
 
-	@Meta.AD(deflt = "serviceLocator|", required = false)
+	@Meta.AD(deflt = "serviceLocator|utilLocator", required = false)
 	public String[] restrictedVariables();
 
 	@Meta.AD(deflt = "VM_global_library.vm|VM_liferay.vm", required = false)

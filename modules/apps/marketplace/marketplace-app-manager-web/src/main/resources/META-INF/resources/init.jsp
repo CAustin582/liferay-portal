@@ -27,6 +27,7 @@ taglib uri="http://liferay.com/tld/util" prefix="liferay-util" %>
 
 <%@ page import="com.liferay.marketplace.app.manager.web.constants.BundleConstants" %><%@
 page import="com.liferay.marketplace.app.manager.web.constants.BundleStateConstants" %><%@
+page import="com.liferay.marketplace.app.manager.web.dao.search.MarketplaceAppManagerResultRowSplitter" %><%@
 page import="com.liferay.marketplace.app.manager.web.util.AppDisplay" %><%@
 page import="com.liferay.marketplace.app.manager.web.util.AppDisplayComparator" %><%@
 page import="com.liferay.marketplace.app.manager.web.util.AppDisplayFactoryUtil" %><%@
@@ -46,6 +47,7 @@ page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.language.UnicodeLanguageUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.LiferayWindowState" %><%@
 page import="com.liferay.portal.kernel.upload.UploadException" %><%@
+page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
 page import="com.liferay.portal.kernel.util.HtmlUtil" %><%@
 page import="com.liferay.portal.kernel.util.ListUtil" %><%@
 page import="com.liferay.portal.kernel.util.ParamUtil" %><%@
@@ -74,3 +76,9 @@ page import="org.osgi.framework.ServiceReference" %>
 <portlet:defineObjects />
 
 <liferay-theme:defineObjects />
+
+<%
+PortletURL currentURLObj = PortletURLUtil.getCurrent(liferayPortletRequest, liferayPortletResponse);
+
+String currentURL = currentURLObj.toString();
+%>

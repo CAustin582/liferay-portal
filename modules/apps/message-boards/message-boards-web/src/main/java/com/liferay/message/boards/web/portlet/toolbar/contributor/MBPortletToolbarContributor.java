@@ -19,8 +19,8 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.toolbar.contributor.BasePortletToolbarContributor;
 import com.liferay.portal.kernel.portlet.toolbar.contributor.PortletToolbarContributor;
-import com.liferay.portal.kernel.servlet.taglib.ui.Menu;
 import com.liferay.portal.kernel.servlet.taglib.ui.MenuItem;
 import com.liferay.portal.kernel.servlet.taglib.ui.URLMenuItem;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -52,29 +52,12 @@ import org.osgi.service.component.annotations.Reference;
 	property = {
 		"javax.portlet.name=" + MBPortletKeys.MESSAGE_BOARDS,
 		"mvc.render.command.name=-",
-		"mvc.render.command.name=/message_boards/view"
+		"mvc.render.command.name=/message_boards/view",
+		"mvc.render.command.name=/message_boards/view_category"
 	},
 	service = {MBPortletToolbarContributor.class, PortletToolbarContributor.class}
 )
-public class MBPortletToolbarContributor implements PortletToolbarContributor {
-
-	@Override
-	public List<Menu> getPortletTitleMenus(PortletRequest portletRequest) {
-		List<Menu> menus = new ArrayList<>();
-
-		Menu menu = new Menu();
-
-		menu.setDirection("down");
-		menu.setExtended(false);
-		menu.setIcon("../aui/plus-sign-2");
-		menu.setMenuItems(getPortletTitleMenuItems(portletRequest));
-		menu.setShowArrow(false);
-		menu.setShowWhenSingleIcon(true);
-
-		menus.add(menu);
-
-		return menus;
-	}
+public class MBPortletToolbarContributor extends BasePortletToolbarContributor {
 
 	protected void addPortletTitleAddCategoryMenuItem(
 			List<MenuItem> menuItems, long categoryId,
@@ -169,6 +152,7 @@ public class MBPortletToolbarContributor implements PortletToolbarContributor {
 		return true;
 	}
 
+	@Override
 	protected List<MenuItem> getPortletTitleMenuItems(
 		PortletRequest portletRequest) {
 
@@ -219,6 +203,6 @@ public class MBPortletToolbarContributor implements PortletToolbarContributor {
 	private static final Log _log = LogFactoryUtil.getLog(
 		MBPortletToolbarContributor.class);
 
-	private volatile BaseModelPermissionChecker _baseModelPermissionChecker;
+	private BaseModelPermissionChecker _baseModelPermissionChecker;
 
 }

@@ -33,7 +33,8 @@ PortletURL portletURL = renderResponse.createRenderURL();
 </aui:nav-bar>
 
 <liferay-frontend:management-bar
-	includeCheckBox="<%= userNotificationEventsCount > 0 %>"
+	disabled="<%= userNotificationEventsCount == 0 %>"
+	includeCheckBox="<%= true %>"
 	searchContainerId="userNotificationEvents"
 >
 	<liferay-frontend:management-bar-buttons>

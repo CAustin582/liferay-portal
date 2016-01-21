@@ -60,17 +60,6 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 	public static final int PORTAL_MAX_DIR_LEVEL = 5;
 
-	public BaseSourceProcessor() {
-		portalSource = _isPortalSource();
-
-		try {
-			_properties = _getProperties();
-		}
-		catch (Exception e) {
-			ReflectionUtil.throwException(e);
-		}
-	}
-
 	@Override
 	public final void format() throws Exception {
 		for (String fileName : getFileNames()) {
@@ -501,6 +490,17 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 	}
 
+	protected void checkChaining(String line, String fileName, int lineCount) {
+		if (line.startsWith("this(")) {
+			return;
+		}
+
+		if (line.contains(".getClass().")) {
+			processErrorMessage(
+				fileName, "chaining: " + fileName + " " + lineCount);
+		}
+	}
+
 	protected void checkStringBundler(
 		String line, String fileName, int lineCount) {
 
@@ -820,6 +820,16 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		processFormattedFile(file, fileName, content, newContent);
 	}
 
+	protected String formatEmptyArray(String line) {
+		int pos = line.indexOf("[] {}");
+
+		if ((pos != -1) && !ToolsUtil.isInsideQuotes(line, pos)) {
+			return StringUtil.replaceFirst(line, "[] {}", "[0]", pos - 1);
+		}
+
+		return line;
+	}
+
 	protected String formatIncorrectSyntax(
 		String line, String incorrectSyntax, String correctSyntax,
 		boolean lineStart) {
@@ -905,6 +915,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		linePart = formatIncorrectSyntax(linePart, "){", ") {", false);
 		linePart = formatIncorrectSyntax(linePart, "]{", "] {", false);
 		linePart = formatIncorrectSyntax(linePart, " [", "[", false);
+		linePart = formatIncorrectSyntax(linePart, "{ ", "{", false);
+		linePart = formatIncorrectSyntax(linePart, " }", "}", false);
 
 		for (int x = 0;;) {
 			x = linePart.indexOf(CharPool.EQUAL, x + 1);
@@ -1088,7 +1100,7 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		_annotationsExclusions = SetUtil.fromArray(
 			new String[] {
 				"ArquillianResource", "BeanReference", "Inject", "Mock",
-				"SuppressWarnings"
+				"ServiceReference", "SuppressWarnings"
 			});
 
 		return _annotationsExclusions;
@@ -1252,7 +1264,8 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 	protected File getFile(String fileName, int level) {
 		for (int i = 0; i < level; i++) {
-			File file = new File(fileName);
+			File file = new File(
+				sourceFormatterArgs.getBaseDirName() + fileName);
 
 			if (file.exists()) {
 				return file;
@@ -1379,6 +1392,12 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 		}
 
 		return new String[0];
+	}
+
+	protected int getLineCount(String content, int pos) {
+		String beforePos = content.substring(0, pos);
+
+		return StringUtil.count(beforePos, StringPool.NEW_LINE) + 1;
 	}
 
 	protected String getMainReleaseVersion() {
@@ -1956,13 +1975,16 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 
 		for (int i = 0; i <= level; i++) {
 			try {
-				InputStream inputStream = new FileInputStream(fileName);
+				InputStream inputStream = new FileInputStream(
+					sourceFormatterArgs.getBaseDirName() + fileName);
 
 				Properties props = new Properties();
 
 				props.load(inputStream);
 
 				propertiesList.add(props);
+
+				break;
 			}
 			catch (FileNotFoundException fnfe) {
 			}
@@ -2014,16 +2036,20 @@ public abstract class BaseSourceProcessor implements SourceProcessor {
 	}
 
 	private void _init() {
+		portalSource = _isPortalSource();
+
 		_errorMessagesMap = new HashMap<>();
 
-		_sourceFormatterHelper = new SourceFormatterHelper(
-			sourceFormatterArgs.isUseProperties());
-
 		try {
+			_properties = _getProperties();
+
+			_sourceFormatterHelper = new SourceFormatterHelper(
+				sourceFormatterArgs.isUseProperties());
+
 			_sourceFormatterHelper.init();
 		}
-		catch (IOException ioe) {
-			ReflectionUtil.throwException(ioe);
+		catch (Exception e) {
+			ReflectionUtil.throwException(e);
 		}
 
 		_excludes = _getExcludes();

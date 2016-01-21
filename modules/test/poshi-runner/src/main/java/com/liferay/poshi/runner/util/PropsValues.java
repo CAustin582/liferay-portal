@@ -214,6 +214,12 @@ public class PropsValues {
 	public static final String[] TEST_INCLUDE_DIR_NAMES = StringUtil.split(
 		PropsUtil.get("test.include.dir.names"));
 
+	public static final String TEST_NAME_SKIP_PORTAL_INSTANCE = PropsUtil.get(
+		"test.name.skip.portal.instance");
+
+	public static final boolean TEST_PAUSE_ON_FAILURE = GetterUtil.getBoolean(
+		PropsUtil.get("test.pause.on.failure"));
+
 	public static final boolean TEST_PORTAL_INSTANCE = GetterUtil.getBoolean(
 		PropsUtil.get("test.portal.instance"));
 

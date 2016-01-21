@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="Polls" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -68,7 +61,7 @@
 
 		<execute macro="Page#openURL" />
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Polls Page" />
 		</execute>
 
@@ -118,7 +111,7 @@
 			<var name="portlet" value="Polls" />
 		</execute>
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Polls Page" />
 		</execute>
 
@@ -180,7 +173,7 @@
 
 		<execute macro="Page#openURL" />
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Polls Page" />
 		</execute>
 

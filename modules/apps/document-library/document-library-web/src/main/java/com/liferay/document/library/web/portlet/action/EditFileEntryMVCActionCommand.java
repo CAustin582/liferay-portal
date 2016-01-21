@@ -16,6 +16,7 @@ package com.liferay.document.library.web.portlet.action;
 
 import com.liferay.document.library.web.constants.DLPortletKeys;
 import com.liferay.document.library.web.settings.internal.DLPortletInstanceSettings;
+import com.liferay.dynamic.data.mapping.kernel.StorageFieldRequiredException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -61,27 +62,26 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portlet.PortletURLImpl;
-import com.liferay.portlet.asset.AssetCategoryException;
-import com.liferay.portlet.asset.AssetTagException;
+import com.liferay.portlet.asset.exception.AssetCategoryException;
+import com.liferay.portlet.asset.exception.AssetTagException;
 import com.liferay.portlet.asset.model.AssetVocabulary;
-import com.liferay.portlet.documentlibrary.DuplicateFileEntryException;
-import com.liferay.portlet.documentlibrary.DuplicateFolderNameException;
-import com.liferay.portlet.documentlibrary.FileEntryLockException;
-import com.liferay.portlet.documentlibrary.FileExtensionException;
-import com.liferay.portlet.documentlibrary.FileMimeTypeException;
-import com.liferay.portlet.documentlibrary.FileNameException;
-import com.liferay.portlet.documentlibrary.FileSizeException;
-import com.liferay.portlet.documentlibrary.InvalidFileEntryTypeException;
-import com.liferay.portlet.documentlibrary.InvalidFileVersionException;
-import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
-import com.liferay.portlet.documentlibrary.NoSuchFolderException;
-import com.liferay.portlet.documentlibrary.SourceFileNameException;
 import com.liferay.portlet.documentlibrary.antivirus.AntivirusScannerException;
+import com.liferay.portlet.documentlibrary.exception.DuplicateFileEntryException;
+import com.liferay.portlet.documentlibrary.exception.DuplicateFolderNameException;
+import com.liferay.portlet.documentlibrary.exception.FileEntryLockException;
+import com.liferay.portlet.documentlibrary.exception.FileExtensionException;
+import com.liferay.portlet.documentlibrary.exception.FileMimeTypeException;
+import com.liferay.portlet.documentlibrary.exception.FileNameException;
+import com.liferay.portlet.documentlibrary.exception.FileSizeException;
+import com.liferay.portlet.documentlibrary.exception.InvalidFileEntryTypeException;
+import com.liferay.portlet.documentlibrary.exception.InvalidFileVersionException;
+import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
+import com.liferay.portlet.documentlibrary.exception.NoSuchFolderException;
+import com.liferay.portlet.documentlibrary.exception.SourceFileNameException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.service.DLAppService;
 import com.liferay.portlet.documentlibrary.service.DLTrashService;
 import com.liferay.portlet.documentlibrary.util.DLUtil;
-import com.liferay.portlet.dynamicdatamapping.StorageFieldRequiredException;
 import com.liferay.portlet.trash.service.TrashEntryService;
 import com.liferay.portlet.trash.util.TrashUtil;
 
@@ -1033,8 +1033,8 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 	private static final Log _log = LogFactoryUtil.getLog(
 		EditFileEntryMVCActionCommand.class);
 
-	private volatile DLAppService _dlAppService;
-	private volatile DLTrashService _dlTrashService;
-	private volatile TrashEntryService _trashEntryService;
+	private DLAppService _dlAppService;
+	private DLTrashService _dlTrashService;
+	private TrashEntryService _trashEntryService;
 
 }

@@ -415,8 +415,8 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 						var applicationAdapter = $('#<portlet:namespace />customJspServletContextName');
 
 						if (applicationAdapter.length) {
-							var publicPages = $('#<portlet:namespace />publicLayoutSetPrototypeId');
 							var privatePages = $('#<portlet:namespace />privateLayoutSetPrototypeId');
+							var publicPages = $('#<portlet:namespace />publicLayoutSetPrototypeId');
 
 							var toggleCompatibleSiteTemplates = function(event) {
 								var siteTemplate = applicationAdapter.val();
@@ -483,10 +483,10 @@ boolean hasUnlinkLayoutSetPrototypePermission = PortalPermissionUtil.contains(pe
 	<liferay-ui:search-container
 		headerNames="name,type,null"
 		id="parentGroupSearchContainer"
+		total="<%= parentGroups.size() %>"
 	>
 		<liferay-ui:search-container-results
 			results="<%= parentGroups %>"
-			total="<%= parentGroups.size() %>"
 		/>
 
 		<liferay-ui:search-container-row

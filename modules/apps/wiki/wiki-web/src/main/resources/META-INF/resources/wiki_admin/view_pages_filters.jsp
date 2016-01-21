@@ -1,4 +1,3 @@
-
 <%--
 /**
  * Copyright (c) 2000-present Liferay, Inc. All rights reserved.
@@ -27,9 +26,10 @@ String orderByType = GetterUtil.getString((String)request.getAttribute("view_pag
 
 PortletURL portletURL = renderResponse.createRenderURL();
 
-portletURL.setParameter("mvcRenderCommandName", "/wiki_admin/view_pages");
+portletURL.setParameter("mvcRenderCommandName", "/wiki/view_pages");
 portletURL.setParameter("redirect", currentURL);
 portletURL.setParameter("nodeId", String.valueOf(node.getNodeId()));
+portletURL.setParameter("navigation", navigation);
 
 Map<String, String> orderColumns = new HashMap<String, String>();
 
@@ -39,7 +39,7 @@ orderColumns.put("title", "title");
 
 <liferay-frontend:management-bar-navigation
 	navigationKeys='<%= new String[] {"all-pages", "draft-pages", "frontpage", "orphan-pages", "recent-changes"} %>'
-	portletURL="<%= portletURL %>"
+	portletURL="<%= PortletURLUtil.clone(portletURL, liferayPortletResponse) %>"
 />
 
 <c:if test='<%= navigation.equals("all-pages") %>'>

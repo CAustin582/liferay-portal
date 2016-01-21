@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="Blogs" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -272,6 +265,8 @@
 	</command>
 
 	<command name="DeleteBlogsEntries" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<var name="blogsEntryCounterList" value="1,2,3" />
 
 		<for list="${blogsEntryCounterList}" param="entryCount" >
@@ -332,6 +327,8 @@
 	</command>
 
 	<command name="EditBlogsEntryContent" priority="5">
+		<property name="portal.acceptance" value="true" />
+
 		<var name="entryContent" value="Blogs Entry Content" />
 		<var name="entryContentEdit" value="Blogs Entry Content Edit" />
 		<var name="entryTitle" value="Blogs Entry Title" />

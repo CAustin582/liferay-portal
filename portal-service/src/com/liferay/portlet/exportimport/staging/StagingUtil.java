@@ -60,7 +60,8 @@ public class StagingUtil {
 	}
 
 	/**
-	 * @deprecated As of 7.0.0, replaced by {@link #getRemoteSiteURL(Group, boolean)}
+	 * @deprecated As of 7.0.0, replaced by {@link #getRemoteSiteURL(Group,
+	 *             boolean)}
 	 */
 	@Deprecated
 	public static String buildRemoteURL(
@@ -214,99 +215,6 @@ public class StagingUtil {
 		User user, long layoutSetBranchId, long plid) {
 
 		_staging.deleteRecentLayoutRevisionId(user, layoutSetBranchId, plid);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.service.StagingLocalService#disableStaging(
-	 *             Group, ServiceContext)}
-	 */
-	@Deprecated
-	public static void disableStaging(
-			Group scopeGroup, Group liveGroup, ServiceContext serviceContext)
-		throws Exception {
-
-		_staging.disableStaging(scopeGroup, liveGroup, serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.service.StagingLocalService#disableStaging(
-	 *             Group, ServiceContext)}
-	 */
-	@Deprecated
-	public static void disableStaging(
-			Group liveGroup, ServiceContext serviceContext)
-		throws Exception {
-
-		_staging.disableStaging(liveGroup, serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.service.StagingLocalService#disableStaging(
-	 *             PortletRequest, Group, ServiceContext)}
-	 */
-	@Deprecated
-	public static void disableStaging(
-			PortletRequest portletRequest, Group scopeGroup, Group liveGroup,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		_staging.disableStaging(
-			portletRequest, scopeGroup, liveGroup, serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.service.StagingLocalService#disableStaging(
-	 *             PortletRequest, Group, ServiceContext)}
-	 */
-	@Deprecated
-	public static void disableStaging(
-			PortletRequest portletRequest, Group liveGroup,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		_staging.disableStaging(portletRequest, liveGroup, serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.service.StagingLocalService#enableLocalStaging(
-	 *             long, Group, boolean, boolean, ServiceContext)}
-	 */
-	@Deprecated
-	public static void enableLocalStaging(
-			long userId, Group scopeGroup, Group liveGroup,
-			boolean branchingPublic, boolean branchingPrivate,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		_staging.enableLocalStaging(
-			userId, scopeGroup, liveGroup, branchingPublic, branchingPrivate,
-			serviceContext);
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             com.liferay.portlet.exportimport.service.StagingLocalService#enableRemoteStaging(
-	 *             long, Group, boolean, boolean, String, int, String, boolean,
-	 *             long, ServiceContext)}
-	 */
-	@Deprecated
-	public static void enableRemoteStaging(
-			long userId, Group scopeGroup, Group liveGroup,
-			boolean branchingPublic, boolean branchingPrivate,
-			String remoteAddress, int remotePort, String remotePathContext,
-			boolean secureConnection, long remoteGroupId,
-			ServiceContext serviceContext)
-		throws Exception {
-
-		_staging.enableRemoteStaging(
-			userId, scopeGroup, liveGroup, branchingPublic, branchingPrivate,
-			remoteAddress, remotePort, remotePathContext, secureConnection,
-			remoteGroupId, serviceContext);
 	}
 
 	public static JSONArray getErrorMessagesJSONArray(

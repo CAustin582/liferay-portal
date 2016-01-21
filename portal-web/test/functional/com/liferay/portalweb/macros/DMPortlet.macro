@@ -82,7 +82,7 @@
 				<execute function="AssertClick" locator1="Message#ERROR_2" value1="Display style views cannot be empty." />
 			</then>
 			<else>
-				<execute function="AssertClick" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+				<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 			</else>
 		</if>
 	</command>
@@ -129,7 +129,7 @@
 
 		<execute function="Click" locator1="Button#SAVE" />
 
-		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
 	</command>
 
 	<command name="viewDefaultConfigurationDisplaySettingsPG">

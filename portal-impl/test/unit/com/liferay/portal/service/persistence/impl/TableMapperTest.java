@@ -14,7 +14,7 @@
 
 package com.liferay.portal.service.persistence.impl;
 
-import com.liferay.portal.NoSuchModelException;
+import com.liferay.portal.exception.NoSuchModelException;
 import com.liferay.portal.kernel.cache.MultiVMPool;
 import com.liferay.portal.kernel.cache.MultiVMPoolUtil;
 import com.liferay.portal.kernel.cache.PortalCache;
@@ -286,9 +286,12 @@ public class TableMapperTest {
 		PortalCache<Long, long[]> leftToRightPortalCache =
 			_tableMapperImpl.leftToRightPortalCache;
 
+		Class<?> clazz = leftToRightPortalCache.getClass();
+
 		Assert.assertEquals(
 			"com.liferay.portal.tools.ToolDependencies$TestPortalCache",
-			leftToRightPortalCache.getClass().getName());
+			clazz.getName());
+
 		Assert.assertEquals(
 			TableMapper.class.getName() + "-" + _TABLE_NAME + "-LeftToRight",
 			leftToRightPortalCache.getPortalCacheName());
@@ -301,9 +304,12 @@ public class TableMapperTest {
 		PortalCache<Long, long[]> rightToLeftPortalCache =
 			_tableMapperImpl.rightToLeftPortalCache;
 
+		clazz = rightToLeftPortalCache.getClass();
+
 		Assert.assertEquals(
 			"com.liferay.portal.tools.ToolDependencies$TestPortalCache",
-			rightToLeftPortalCache.getClass().getName());
+			clazz.getName());
+
 		Assert.assertEquals(
 			TableMapper.class.getName() + "-" + _TABLE_NAME + "-RightToLeft",
 			rightToLeftPortalCache.getPortalCacheName());
@@ -1460,8 +1466,7 @@ public class TableMapperTest {
 						"VALUES (?, ?, ?)",
 				sql);
 			Assert.assertArrayEquals(
-				new int[] {Types.BIGINT, Types.BIGINT, Types.BIGINT},
-				types);
+				new int[] {Types.BIGINT, Types.BIGINT, Types.BIGINT}, types);
 		}
 
 		@Override

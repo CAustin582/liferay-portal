@@ -14,8 +14,8 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.InvalidRepositoryException;
-import com.liferay.portal.NoSuchRepositoryException;
+import com.liferay.portal.exception.InvalidRepositoryException;
+import com.liferay.portal.exception.NoSuchRepositoryException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -35,7 +35,7 @@ import com.liferay.portal.model.SystemEventConstants;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.RepositoryLocalServiceBaseImpl;
-import com.liferay.portlet.documentlibrary.RepositoryNameException;
+import com.liferay.portlet.documentlibrary.exception.RepositoryNameException;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 
 import java.util.List;
@@ -88,25 +88,6 @@ public class RepositoryLocalServiceImpl extends RepositoryLocalServiceBaseImpl {
 		}
 
 		return repository;
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #addRepository(long, long,
-	 *             long, long, String, String, String, UnicodeProperties,
-	 *             boolean, ServiceContext)}
-	 */
-	@Deprecated
-	@Override
-	public Repository addRepository(
-			long userId, long groupId, long classNameId, long parentFolderId,
-			String name, String description, String portletId,
-			UnicodeProperties typeSettingsProperties,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		return addRepository(
-			userId, groupId, classNameId, parentFolderId, name, description,
-			portletId, typeSettingsProperties, false, serviceContext);
 	}
 
 	@Override

@@ -18,7 +18,7 @@
 			<name>animationTime</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>Integer</type>
+			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
 			<name>closeable</name>
@@ -30,7 +30,7 @@
 			<name>cssClass</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>String</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>destroyOnHide</name>
@@ -42,31 +42,31 @@
 			<name>message</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>String</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>targetContainer</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>String</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>timeout</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>Integer</type>
+			<type>java.lang.Integer</type>
 		</attribute>
 		<attribute>
 			<name>title</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>String</type>
+			<type>java.lang.String</type>
 		</attribute>
 		<attribute>
 			<name>type</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
-			<type>String</type>
+			<type>java.lang.String</type>
 		</attribute>
 	</tag>
 	<tag>
@@ -1316,6 +1316,11 @@
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
+		<attribute>
+			<name>search</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
 	</tag>
 	<tag>
 		<description>Creates an error message to display to the user.</description>
@@ -1949,6 +1954,11 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
+			<name>data</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
 			<description>A position from which to pop up the icon menu dialog in relation to the trigger. The default direction is <![CDATA[<code>left</code>]]>. Possible values are <![CDATA[<code>up</code>]]>, <![CDATA[<code>down</code>]]>, <![CDATA[<code>left</code>]]> or <![CDATA[<code>right</code>]]>.</description>
 			<name>direction</name>
 			<required>false</required>
@@ -2051,41 +2061,6 @@
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 			<type>boolean</type>
-		</attribute>
-	</tag>
-	<tag>
-		<name>image-selector</name>
-		<tag-class>com.liferay.taglib.ui.ImageSelectorTag</tag-class>
-		<body-content>JSP</body-content>
-		<attribute>
-			<name>draggableImage</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>fileEntryId</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>maxFileSize</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>paramName</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>uploadURL</name>
-			<required>true</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>validExtensions</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	<tag>
@@ -3155,96 +3130,6 @@
 		</attribute>
 		<attribute>
 			<name>layoutTemplates</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-	</tag>
-	<tag>
-		<name>layouts-tree</name>
-		<tag-class>com.liferay.taglib.ui.LayoutsTreeTag</tag-class>
-		<body-content>JSP</body-content>
-		<attribute>
-			<name>checkContentDisplayPage</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>defaultStateChecked</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>draggableTree</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>expandFirstNode</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>groupId</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>incomplete</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>linkTemplate</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>portletURL</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>privateLayout</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>rootLinkTemplate</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>rootNodeName</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>saveState</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>selectableTree</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>selectedLayoutIds</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>selPlid</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>treeId</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<name>portletURLs</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
@@ -4582,18 +4467,6 @@
 		<attribute>
 			<description>A variable to use for the results</description>
 			<name>resultsVar</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>Deprecated as of 6.2.0, replaced by the <![CDATA[<code>liferay-aui:search-container</code>]]> attribute <![CDATA[<code>total</code>]]></description>
-			<name>total</name>
-			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-		<attribute>
-			<description>Deprecated as of 6.2.0, replaced by the <![CDATA[<code>liferay-aui:search-container</code>]]> attribute <![CDATA[<code>totalVar</code>]]></description>
-			<name>totalVar</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>

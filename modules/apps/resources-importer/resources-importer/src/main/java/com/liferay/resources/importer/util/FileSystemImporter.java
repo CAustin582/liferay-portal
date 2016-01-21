@@ -86,7 +86,7 @@ import com.liferay.portlet.asset.model.AssetEntry;
 import com.liferay.portlet.asset.model.AssetTag;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.blogs.model.BlogsEntry;
-import com.liferay.portlet.documentlibrary.DuplicateFileException;
+import com.liferay.portlet.documentlibrary.exception.DuplicateFileException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.model.DLFolder;
 import com.liferay.portlet.documentlibrary.model.DLFolderConstants;
@@ -181,15 +181,15 @@ public class FileSystemImporter extends BaseImporter {
 					script, false, serviceContext);
 			}
 		}
-		catch (PortalException e) {
+		catch (PortalException pe) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					"Unable to import application display template " +
 						file.getName(),
-					e);
+					pe);
 			}
 
-			throw e;
+			throw pe;
 		}
 	}
 

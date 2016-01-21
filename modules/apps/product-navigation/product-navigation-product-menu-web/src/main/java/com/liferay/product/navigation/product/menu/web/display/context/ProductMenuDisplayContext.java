@@ -99,7 +99,9 @@ public class ProductMenuDisplayContext {
 							PanelCategoryKeys.ROOT)) {
 
 					if (panelCategoryHelper.containsPortlet(
-							_themeDisplay.getPpid(), panelCategory)) {
+							_themeDisplay.getPpid(), panelCategory.getKey(),
+							_themeDisplay.getPermissionChecker(),
+							_themeDisplay.getScopeGroup())) {
 
 						_rootPanelCategoryKey = panelCategory.getKey();
 
@@ -121,10 +123,7 @@ public class ProductMenuDisplayContext {
 
 		List<PanelCategory> childPanelCategories = getChildPanelCategories();
 
-		// If only the Personal Panel is shown, then the product menu itself
-		// will not be shown to users
-
-		if (childPanelCategories.size() <= 1) {
+		if (childPanelCategories.isEmpty()) {
 			return false;
 		}
 

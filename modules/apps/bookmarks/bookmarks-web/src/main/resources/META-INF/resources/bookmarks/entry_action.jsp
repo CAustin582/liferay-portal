@@ -36,7 +36,7 @@ if (row != null) {
 	}
 }
 else {
-	entry = (BookmarksEntry)request.getAttribute("view_entry.jsp-entry");
+	entry = (BookmarksEntry)request.getAttribute("info_panel.jsp-entry");
 
 	view = true;
 }
@@ -54,6 +54,17 @@ else {
 		<liferay-ui:icon
 			message="edit"
 			url="<%= editURL %>"
+		/>
+
+		<portlet:renderURL var="moveURL">
+			<portlet:param name="mvcRenderCommandName" value="/bookmarks/move_entry" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="rowIdsBookmarksEntry" value="<%= String.valueOf(entry.getEntryId()) %>" />
+		</portlet:renderURL>
+
+		<liferay-ui:icon
+			message="move"
+			url="<%= moveURL %>"
 		/>
 	</c:if>
 
@@ -105,8 +116,15 @@ else {
 
 	<c:if test="<%= BookmarksEntryPermissionChecker.contains(permissionChecker, entry, ActionKeys.DELETE) %>">
 		<portlet:renderURL var="redirectURL">
-			<portlet:param name="mvcRenderCommandName" value="/bookmarks/view" />
-			<portlet:param name="folderId" value="<%= String.valueOf(entry.getFolderId()) %>" />
+			<c:choose>
+				<c:when test="<%= entry.getFolderId() == BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID %>">
+					<portlet:param name="mvcRenderCommandName" value="/bookmarks/view" />
+				</c:when>
+				<c:otherwise>
+					<portlet:param name="mvcRenderCommandName" value="/bookmarks/view_folder" />
+					<portlet:param name="folderId" value="<%= String.valueOf(entry.getFolderId()) %>" />
+				</c:otherwise>
+			</c:choose>
 		</portlet:renderURL>
 
 		<portlet:actionURL name="/bookmarks/edit_entry" var="deleteURL">

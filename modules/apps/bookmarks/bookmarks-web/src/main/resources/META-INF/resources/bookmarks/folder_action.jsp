@@ -21,17 +21,11 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 BookmarksFolder folder = null;
 
-long folderId = 0;
-
 if (row != null) {
 	folder = (BookmarksFolder)row.getObject();
-
-	folderId = folder.getFolderId();
 }
 else {
-	folder = (BookmarksFolder)request.getAttribute("view.jsp-folder");
-
-	folderId = GetterUtil.getLong((String)request.getAttribute("view.jsp-folderId"));
+	folder = (BookmarksFolder)request.getAttribute("info_panel.jsp-folder");
 }
 
 String modelResource = null;
@@ -43,7 +37,7 @@ boolean showPermissionsURL = false;
 if (folder != null) {
 	modelResource = BookmarksFolder.class.getName();
 	modelResourceDescription = folder.getName();
-	resourcePrimKey = String.valueOf(folderId);
+	resourcePrimKey = String.valueOf(folder.getFolderId());
 
 	showPermissionsURL = BookmarksFolderPermissionChecker.contains(permissionChecker, folder, ActionKeys.PERMISSIONS);
 }
@@ -75,6 +69,17 @@ if (row == null) {
 			message="edit"
 			url="<%= editURL %>"
 		/>
+
+		<portlet:renderURL var="moveURL">
+			<portlet:param name="mvcRenderCommandName" value="/bookmarks/move_entry" />
+			<portlet:param name="redirect" value="<%= currentURL %>" />
+			<portlet:param name="rowIdsBookmarksFolder" value="<%= String.valueOf(folder.getFolderId()) %>" />
+		</portlet:renderURL>
+
+		<liferay-ui:icon
+			message="move"
+			url="<%= moveURL %>"
+		/>
 	</c:if>
 
 	<c:if test="<%= showPermissionsURL %>">
@@ -96,8 +101,15 @@ if (row == null) {
 
 	<c:if test="<%= (folder != null) && BookmarksFolderPermissionChecker.contains(permissionChecker, folder, ActionKeys.DELETE) %>">
 		<portlet:renderURL var="redirectURL">
-			<portlet:param name="mvcRenderCommandName" value="/bookmarks/view" />
-			<portlet:param name="folderId" value="<%= String.valueOf(folder.getParentFolderId()) %>" />
+			<c:choose>
+				<c:when test="<%= folder.getParentFolderId() == BookmarksFolderConstants.DEFAULT_PARENT_FOLDER_ID %>">
+					<portlet:param name="mvcRenderCommandName" value="/bookmarks/view" />
+				</c:when>
+				<c:otherwise>
+					<portlet:param name="mvcRenderCommandName" value="/bookmarks/view_folder" />
+					<portlet:param name="folderId" value="<%= String.valueOf(folder.getParentFolderId()) %>" />
+				</c:otherwise>
+			</c:choose>
 		</portlet:renderURL>
 
 		<portlet:actionURL name="/bookmarks/edit_folder" var="deleteURL">

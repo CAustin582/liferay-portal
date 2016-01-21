@@ -165,8 +165,13 @@
 	<td></td>
 </tr>
 <tr>
+	<td>MY_CALENDARS_CALENDAR_PRIMARY_COLOR_HIDDEN</td>
+	<td>//div[contains(@id,'CalendarPortlet_myCalendarList')]/div/div/div[contains(@style,'')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MY_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT</td>
-	<td>//div[contains(@id,'CalendarPortlet_myCalendarList')]/div/div/div[contains(@style,'D96666')]</td>
+	<td>//div[contains(@id,'CalendarPortlet_myCalendarList')]/div/div/div[contains(@style,'D96666')] | //div[contains(@id,'CalendarPortlet_myCalendarList')]/div/div/div[contains(@style,'background-color: rgb(217, 102, 102); border-color: rgb(217, 102, 102);')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -259,7 +264,12 @@
 </tr>
 <tr>
 	<td>CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_DEFAULT</td>
-	<td>//div[contains(@id,'CalendarPortlet_siteCalendarList')]/div/div/div[contains(@style,'D96666')]</td>
+	<td>//div[contains(@id,'CalendarPortlet_siteCalendarList')]/div/div/div[contains(@style,'D96666')] | //div[contains(@id,'CalendarPortlet_siteCalendarList')]/div/div/div[contains(@style,'background-color: rgb(217, 102, 102); border-color: rgb(217, 102, 102);')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CURRENT_SITE_CALENDARS_CALENDAR_PRIMARY_COLOR_HIDDEN</td>
+	<td>//div[contains(@id,'CalendarPortlet_siteCalendarList')]/div/div/div[contains(@style,'')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -530,6 +540,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SCHEDULER_EVENT_CALENDAR_NAME</td>
+	<td>//tr[contains(@class,'calendar-portlet-event')]//label[contains(.,'${key_calendarName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SCHEDULER_EVENT_GENERIC</td>
 	<td>//div[contains(@class,'calendar-portlet-event')]</td>
 	<td></td>
@@ -607,6 +622,11 @@
 <tr>
 	<td>SCHEDULER_EVENT_REPEAT_TITLE</td>
 	<td>//div[contains(@class,'scheduler-event-repeated calendar-portlet-event') and contains(@data-starttime,'${key_startDateTime}') and contains(@data-enddate,'${key_endDate}') and contains(@data-endtime,'${key_endDateTime}')]/div[@class='scheduler-event-content']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SCHEDULER_EVENT_SPECIFIC_EVENT_TIMES</td>
+	<td>//div[contains(@class,'calendar-portlet-event') and contains(@data-starttime,'${key_startDateTime}') and contains(@data-endtime,'${key_endDateTime}')]</td>
 	<td></td>
 </tr>
 <tr>

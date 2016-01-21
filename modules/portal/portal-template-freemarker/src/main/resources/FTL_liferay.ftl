@@ -57,15 +57,6 @@ LPS-30525.
 	/>
 </#macro>
 
-<#macro control_menu>
-	<#if is_setup_complete && is_signed_in>
-		<@liferay_portlet["runtime"]
-			portletProviderAction=portletProviderAction.VIEW
-			portletProviderClassName="com.liferay.portlet.admin.util.PortalControlMenuApplicationType$ControlMenu"
-		/>
-	</#if>
-</#macro>
-
 <#macro css
 	file_name
 >
@@ -126,7 +117,7 @@ ${languageUtil.format(locale, key, arguments)}</#macro>
 	<#if is_setup_complete && is_signed_in>
 		<@liferay_portlet["runtime"]
 			portletProviderAction=portletProviderAction.VIEW
-			portletProviderClassName="com.liferay.portlet.admin.util.PortalProductMenuApplicationType$ProductMenu"
+			portletProviderClassName="com.liferay.admin.kernel.util.PortalProductMenuApplicationType$ProductMenu"
 		/>
 	</#if>
 </#macro>
@@ -150,7 +141,7 @@ ${languageUtil.format(locale, key, arguments)}</#macro>
 		<@liferay_portlet["runtime"]
 			defaultPreferences=default_preferences
 			portletProviderAction=portletProviderAction.VIEW
-			portletProviderClassName="com.liferay.portlet.admin.util.PortalSearchApplicationType$Search"
+			portletProviderClassName="com.liferay.admin.kernel.util.PortalSearchApplicationType$Search"
 		/>
 	</#if>
 </#macro>
@@ -164,6 +155,6 @@ ${languageUtil.format(locale, key, arguments)}</#macro>
 <#macro user_personal_bar>
 	<@liferay_portlet["runtime"]
 		portletProviderAction=portletProviderAction.VIEW
-		portletProviderClassName="com.liferay.portlet.admin.util.PortalUserPersonalBarApplicationType$UserPersonalBar"
+		portletProviderClassName="com.liferay.admin.kernel.util.PortalUserPersonalBarApplicationType$UserPersonalBar"
 	/>
 </#macro>

@@ -10,7 +10,7 @@
 <tbody>
 <tr>
 	<td>ADVANCED_SEARCH</td>
-	<td>//a[contains(@class,'toggle-advanced') and i[@class='caret']]</td>
+	<td>//button[contains(@class,'toggle-advanced') and span[@class='caret']]</td>
 	<td></td>
 </tr>
 <tr>
@@ -76,6 +76,21 @@
 <tr>
 	<td>DETAILS</td>
 	<td>//div[contains(.,'Details')]/span/a/i[@class='icon-file-alt']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISPLAY_STYLE_DESCRIPTIVE_ACTIVE</td>
+	<td>//a[contains(@class,'active') and @title='Descriptive']/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISPLAY_STYLE_ICON_ACTIVE</td>
+	<td>//a[contains(@class,'active') and @title='Icon']/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISPLAY_STYLE_LIST_ACTIVE</td>
+	<td>//a[contains(@class,'active') and @title='List']/span</td>
 	<td></td>
 </tr>
 <tr>
@@ -169,6 +184,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SUBSCRIBE</td>
+	<td>//span/*[name()='svg'][contains(@class,'icon-star')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>TOOLTIP</td>
 	<td>//span[@class='taglib-icon-help']</td>
 	<td></td>
@@ -202,6 +222,11 @@
 <tr>
 	<td>HEADER_VERTICAL_ELLIPSIS</td>
 	<td>//*[@data-qa-id='headerOptions']//a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>HISTORY_VERTICAL_ELLIPSIS</td>
+	<td>//*[contains(@class,'lexicon-icon-ellipsis-v')]</td>
 	<td></td>
 </tr>
 <tr>

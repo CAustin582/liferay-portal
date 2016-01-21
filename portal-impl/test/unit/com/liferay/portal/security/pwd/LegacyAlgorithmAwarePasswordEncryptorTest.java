@@ -14,7 +14,7 @@
 
 package com.liferay.portal.security.pwd;
 
-import com.liferay.portal.PwdEncryptorException;
+import com.liferay.portal.exception.PwdEncryptorException;
 import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.DigesterUtil;
 import com.liferay.portal.kernel.util.StringPool;
@@ -37,7 +37,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 /**
  * @author Michael C. Han
  */
-@PowerMockIgnore({"javax.crypto.*" })
+@PowerMockIgnore({"javax.crypto.*"})
 @PrepareForTest(PropsUtil.class)
 @RunWith(PowerMockRunner.class)
 public class LegacyAlgorithmAwarePasswordEncryptorTest {

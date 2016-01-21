@@ -15,17 +15,18 @@
 package com.liferay.login.web.portlet.action;
 
 import com.liferay.login.web.constants.LoginPortletKeys;
-import com.liferay.portal.CompanyMaxUsersException;
 import com.liferay.portal.CookieNotSupportedException;
-import com.liferay.portal.NoSuchUserException;
-import com.liferay.portal.PasswordExpiredException;
-import com.liferay.portal.UserEmailAddressException;
-import com.liferay.portal.UserIdException;
-import com.liferay.portal.UserLockoutException;
-import com.liferay.portal.UserPasswordException;
-import com.liferay.portal.UserScreenNameException;
+import com.liferay.portal.exception.CompanyMaxUsersException;
+import com.liferay.portal.exception.NoSuchUserException;
+import com.liferay.portal.exception.PasswordExpiredException;
+import com.liferay.portal.exception.UserEmailAddressException;
+import com.liferay.portal.exception.UserIdException;
+import com.liferay.portal.exception.UserLockoutException;
+import com.liferay.portal.exception.UserPasswordException;
+import com.liferay.portal.exception.UserScreenNameException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.security.auth.session.AuthenticatedSessionManagerUtil;
@@ -242,10 +243,15 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		LiferayPortletRequest liferayPortletRequest =
+			PortalUtil.getLiferayPortletRequest(actionRequest);
+
+		String portletName = liferayPortletRequest.getPortletName();
+
 		Layout layout = (Layout)actionRequest.getAttribute(WebKeys.LAYOUT);
 
 		PortletURL portletURL = new PortletURLImpl(
-			actionRequest, LoginPortletKeys.LOGIN, layout.getPlid(),
+			actionRequest, portletName, layout.getPlid(),
 			PortletRequest.RENDER_PHASE);
 
 		portletURL.setParameter("saveLastPath", Boolean.FALSE.toString());
@@ -262,7 +268,12 @@ public class LoginMVCActionCommand extends BaseMVCActionCommand {
 			portletURL.setParameter("login", login);
 		}
 
-		portletURL.setWindowState(WindowState.MAXIMIZED);
+		if (portletName.equals(LoginPortletKeys.LOGIN)) {
+			portletURL.setWindowState(WindowState.MAXIMIZED);
+		}
+		else {
+			portletURL.setWindowState(actionRequest.getWindowState());
+		}
 
 		actionResponse.sendRedirect(portletURL.toString());
 	}

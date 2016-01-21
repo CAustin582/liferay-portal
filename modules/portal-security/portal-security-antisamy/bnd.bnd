@@ -7,8 +7,7 @@ Import-Package:\
 	!org.apache.xml.resolver.*,\
 	!sun.io,\
 	*
-Include-Resource: \
-	classes,\
+Include-Resource:\
 	@lib/antisamy.jar,\
 	@lib/batik-css.jar,\
 	@lib/batik-ext.jar,\
@@ -18,3 +17,6 @@ Include-Resource: \
 	@lib/xercesImpl.jar,\
 	@lib/xml-apis.jar,\
 	@lib/xml-apis-ext.jar
+Liferay-Releng-Module-Group-Description:
+Liferay-Releng-Module-Group-Title:
+-include: ../../../marketplace/platform/bnd.bnd

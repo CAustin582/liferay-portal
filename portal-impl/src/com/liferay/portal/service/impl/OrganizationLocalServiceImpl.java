@@ -14,11 +14,11 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.DuplicateOrganizationException;
-import com.liferay.portal.OrganizationNameException;
-import com.liferay.portal.OrganizationParentException;
-import com.liferay.portal.OrganizationTypeException;
-import com.liferay.portal.RequiredOrganizationException;
+import com.liferay.portal.exception.DuplicateOrganizationException;
+import com.liferay.portal.exception.OrganizationNameException;
+import com.liferay.portal.exception.OrganizationParentException;
+import com.liferay.portal.exception.OrganizationTypeException;
+import com.liferay.portal.exception.RequiredOrganizationException;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -69,7 +69,7 @@ import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.comparator.OrganizationIdComparator;
 import com.liferay.portal.util.comparator.OrganizationNameComparator;
-import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
+import com.liferay.users.admin.kernel.util.UsersAdminUtil;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
 import java.io.Serializable;
@@ -138,51 +138,6 @@ public class OrganizationLocalServiceImpl
 			OrganizationConstants.TYPE_REGULAR_ORGANIZATION, 0, 0,
 			ListTypeConstants.ORGANIZATION_STATUS_DEFAULT, StringPool.BLANK,
 			site, null);
-	}
-
-	/**
-	 * Adds an organization.
-	 *
-	 * <p>
-	 * This method handles the creation and bookkeeping of the organization
-	 * including its resources, metadata, and internal data structures. It is
-	 * not necessary to make a subsequent call to {@link
-	 * #addOrganizationResources(long, Organization)}.
-	 * </p>
-	 *
-	 * @param      userId the primary key of the creator/owner of the
-	 *             organization
-	 * @param      parentOrganizationId the primary key of the organization's
-	 *             parent organization
-	 * @param      name the organization's name
-	 * @param      type the organization's type
-	 * @param      recursable whether the permissions of the organization are to
-	 *             be inherited by its suborganizations
-	 * @param      regionId the primary key of the organization's region
-	 * @param      countryId the primary key of the organization's country
-	 * @param      statusId the organization's workflow status
-	 * @param      comments the comments about the organization
-	 * @param      site whether the organization is to be associated with a main
-	 *             site
-	 * @param      serviceContext the service context to be applied (optionally
-	 *             <code>null</code>). Can set asset category IDs, asset tag
-	 *             names, and expando bridge attributes for the organization.
-	 * @return     the organization
-	 * @deprecated As of 6.2.0, replaced by {@link #addOrganization(long, long,
-	 *             String, String, long, long, int, String, boolean,
-	 *             ServiceContext)}
-	 */
-	@Deprecated
-	@Override
-	public Organization addOrganization(
-			long userId, long parentOrganizationId, String name, String type,
-			boolean recursable, long regionId, long countryId, long statusId,
-			String comments, boolean site, ServiceContext serviceContext)
-		throws PortalException {
-
-		return addOrganization(
-			userId, parentOrganizationId, name, type, regionId, countryId,
-			statusId, comments, site, serviceContext);
 	}
 
 	/**
@@ -1663,47 +1618,6 @@ public class OrganizationLocalServiceImpl
 			organization.getUuid(), 0, assetCategoryIds, assetTagNames, false,
 			null, null, null, null, organization.getName(), StringPool.BLANK,
 			null, null, null, 0, 0, null);
-	}
-
-	/**
-	 * Updates the organization.
-	 *
-	 * @param      companyId the primary key of the organization's company
-	 * @param      organizationId the primary key of the organization
-	 * @param      parentOrganizationId the primary key of organization's parent
-	 *             organization
-	 * @param      name the organization's name
-	 * @param      type the organization's type
-	 * @param      recursable whether permissions of the organization are to be
-	 *             inherited by its suborganizations
-	 * @param      regionId the primary key of the organization's region
-	 * @param      countryId the primary key of the organization's country
-	 * @param      statusId the organization's workflow status
-	 * @param      comments the comments about the organization
-	 * @param      site whether the organization is to be associated with a main
-	 *             site
-	 * @param      serviceContext the service context to be applied (optionally
-	 *             <code>null</code>). Can set asset category IDs and asset tag
-	 *             names for the organization, and merge expando bridge
-	 *             attributes for the organization.
-	 * @return     the organization
-	 * @deprecated As of 6.2.0, replaced by {@link #updateOrganization(long,
-	 *             long, long, String, String, long, long, int, String, boolean,
-	 *             byte[], boolean, ServiceContext)}
-	 */
-	@Deprecated
-	@Override
-	public Organization updateOrganization(
-			long companyId, long organizationId, long parentOrganizationId,
-			String name, String type, boolean recursable, long regionId,
-			long countryId, long statusId, String comments, boolean site,
-			ServiceContext serviceContext)
-		throws PortalException {
-
-		return updateOrganization(
-			companyId, organizationId, parentOrganizationId, name, type,
-			regionId, countryId, statusId, comments, true, null, site,
-			serviceContext);
 	}
 
 	/**

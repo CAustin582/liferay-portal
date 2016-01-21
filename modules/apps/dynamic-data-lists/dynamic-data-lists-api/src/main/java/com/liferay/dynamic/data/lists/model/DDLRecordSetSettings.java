@@ -28,11 +28,13 @@ import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutRow;
 @DDMFormLayout(
 	{
 		@DDMFormLayoutPage(
-			title = "%basic-options", value = {
+			title = "%form-options",
+			value = {
 				@DDMFormLayoutRow(
 					{
 						@DDMFormLayoutColumn(
-							size = 12, value = {
+							size = 12,
+							value = {
 								"requireCaptcha", "redirectURL",
 								"workflowDefinition"
 							}
@@ -42,11 +44,13 @@ import com.liferay.dynamic.data.mapping.annotations.DDMFormLayoutRow;
 			}
 		),
 		@DDMFormLayoutPage(
-			title = "%email-notifications", value = {
+			title = "%email-notifications",
+			value = {
 				@DDMFormLayoutRow(
 					{
 						@DDMFormLayoutColumn(
-							size = 12, value = {
+							size = 12,
+							value = {
 								"sendEmailNotification", "emailFromName",
 								"emailFromAddress", "emailToAddress",
 								"emailSubject", "published"
@@ -100,20 +104,19 @@ public interface DDLRecordSetSettings {
 	public String redirectURL();
 
 	@DDMFormField(
-		label = "%require-captcha-to-submit-the-form",
-		properties = {"showAsSwitcher=true"},
+		label = "%require-captcha", properties = {"showAsSwitcher=true"},
 		type = "checkbox"
 	)
 	public boolean requireCaptcha();
 
 	@DDMFormField(
-		label = "%send-email-notification-for-each-entry",
+		label = "%send-an-email-notification-for-each-entry",
 		properties = {"showAsSwitcher=true"}, type = "checkbox"
 	)
 	public boolean sendEmailNotification();
 
 	@DDMFormField(
-		label = "%workflow", properties = {"dataSourceType=manual"},
+		label = "%select-a-workflow", properties = {"dataSourceType=manual"},
 		type = "select"
 	)
 	public String workflowDefinition();

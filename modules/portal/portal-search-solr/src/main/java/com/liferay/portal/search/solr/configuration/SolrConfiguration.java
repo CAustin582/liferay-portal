@@ -16,12 +16,12 @@ package com.liferay.portal.search.solr.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.configuration.admin.ConfigurationAdmin;
+import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * @author Michael C. Han
  */
-@ConfigurationAdmin(category = "platform")
+@ExtendedObjectClassDefinition(category = "platform")
 @Meta.OCD(
 	id = "com.liferay.portal.search.solr.configuration.SolrConfiguration",
 	localization = "content/Language", name = "%solr.configuration.name"
@@ -30,8 +30,7 @@ public interface SolrConfiguration {
 
 	@Meta.AD(
 		deflt = "BASIC", optionLabels = {"Basic", "Cert"},
-		optionValues = {"BASIC", "CERT"},
-		required = false
+		optionValues = {"BASIC", "CERT"}, required = false
 	)
 	public String authenticationMode();
 

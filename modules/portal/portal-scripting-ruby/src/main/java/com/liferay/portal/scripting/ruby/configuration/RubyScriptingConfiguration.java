@@ -16,12 +16,12 @@ package com.liferay.portal.scripting.ruby.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
-import com.liferay.configuration.admin.ConfigurationAdmin;
+import com.liferay.portal.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
  * @author Michael C. Han
  */
-@ConfigurationAdmin(category = "platform")
+@ExtendedObjectClassDefinition(category = "platform")
 @Meta.OCD(
 	id = "com.liferay.portal.scripting.ruby.configuration.RubyScriptingConfiguration",
 	localization = "content/Language",
@@ -31,8 +31,7 @@ import com.liferay.configuration.admin.ConfigurationAdmin;
 public interface RubyScriptingConfiguration {
 
 	@Meta.AD(
-		deflt = "jit", optionValues = {"force", "jit", "none"},
-		required = false
+		deflt = "jit", optionValues = {"force", "jit", "none"}, required = false
 	)
 	public String compileMode();
 

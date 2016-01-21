@@ -47,10 +47,10 @@ import org.osgi.service.component.annotations.Reference;
 public class PanelAppRegistry {
 
 	public PanelApp getFirstPanelApp(
-		PanelCategory parentPanelCategory, PermissionChecker permissionChecker,
+		String parentPanelCategoryKey, PermissionChecker permissionChecker,
 		Group group) {
 
-		List<PanelApp> panelApps = getPanelApps(parentPanelCategory);
+		List<PanelApp> panelApps = getPanelApps(parentPanelCategoryKey);
 
 		for (PanelApp panelApp : panelApps) {
 			try {
@@ -185,6 +185,13 @@ public class PanelAppRegistry {
 			else if (_log.isDebugEnabled()) {
 				_log.debug("Unable to get portlet " + panelApp.getPortletId());
 			}
+		}
+
+		@Override
+		public void keyRemoved(
+			ServiceTrackerMap<String, List<PanelApp>> serviceTrackerMap,
+			String panelCategoryKey, PanelApp panelApp,
+			List<PanelApp> panelApps) {
 		}
 
 	}

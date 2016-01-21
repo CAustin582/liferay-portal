@@ -310,8 +310,9 @@ portletURL.setParameter("tabs3", "current-and-previous");
 											</liferay-util:buffer>
 
 											<liferay-ui:icon
-												iconCssClass="icon-calendar"
+												iconCssClass="calendar"
 												label="<%= true %>"
+												markupView="lexicon"
 												message='<%= LanguageUtil.get(request, "date-range") + selectedLabelsHTML %>'
 											/>
 										</li>
@@ -438,12 +439,7 @@ portletURL.setParameter("tabs3", "current-and-previous");
 							<liferay-staging:deletions cmd="<%= Constants.PUBLISH %>" />
 
 							<aui:fieldset cssClass="options-group" label="permissions">
-
-								<%
-								Map<String, String[]> parameterMap = Collections.emptyMap();
-								%>
-
-								<%@ include file="/permissions.jspf" %>
+								<aui:input helpMessage='<%= group.isCompany() ? "publish-global-permissions-help" : "export-import-permissions-help" %>' label="permissions" name="<%= PortletDataHandlerKeys.PERMISSIONS %>" type="toggle-switch" />
 							</aui:fieldset>
 						</c:if>
 

@@ -14,6 +14,9 @@
 
 package com.liferay.portlet.asset.model;
 
+import com.liferay.dynamic.data.mapping.kernel.DDMForm;
+import com.liferay.dynamic.data.mapping.kernel.DDMFormFieldValue;
+import com.liferay.dynamic.data.mapping.kernel.DDMFormValues;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
@@ -33,9 +36,6 @@ import com.liferay.portal.theme.PortletDisplay;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portlet.asset.AssetRendererFactoryRegistryUtil;
-import com.liferay.portlet.dynamicdatamapping.DDMForm;
-import com.liferay.portlet.dynamicdatamapping.DDMFormFieldValue;
-import com.liferay.portlet.dynamicdatamapping.DDMFormValues;
 import com.liferay.portlet.trash.util.TrashUtil;
 
 import java.util.Collections;
@@ -91,15 +91,6 @@ public abstract class BaseAssetRenderer<T> implements AssetRenderer<T> {
 		return _AVAILABLE_LANGUAGE_IDS;
 	}
 
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #getAvailableLanguageIds}
-	 */
-	@Deprecated
-	@Override
-	public String[] getAvailableLocales() {
-		return getAvailableLanguageIds();
-	}
-
 	@Override
 	public DDMFormValuesReader getDDMFormValuesReader() {
 		return _nullDDMFormValuesReader;
@@ -121,12 +112,13 @@ public abstract class BaseAssetRenderer<T> implements AssetRenderer<T> {
 		return getAssetRendererFactory().getIconCssClass();
 	}
 
+	/**
+	 * @deprecated As of 7.0.0, with no direct replacement
+	 */
+	@Deprecated
 	@Override
 	public String getIconPath(PortletRequest portletRequest) {
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return getIconPath(themeDisplay);
+		return StringPool.BLANK;
 	}
 
 	@Override
@@ -180,11 +172,7 @@ public abstract class BaseAssetRenderer<T> implements AssetRenderer<T> {
 	public String getThumbnailPath(PortletRequest portletRequest)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
-		return themeDisplay.getPathThemeImages() +
-			"/file_system/large/default.png";
+		return null;
 	}
 
 	@Override
@@ -276,12 +264,12 @@ public abstract class BaseAssetRenderer<T> implements AssetRenderer<T> {
 	}
 
 	@Override
-	public PortletURL getURLView(
+	public String getURLView(
 			LiferayPortletResponse liferayPortletResponse,
 			WindowState windowState)
 		throws Exception {
 
-		return null;
+		return StringPool.BLANK;
 	}
 
 	@Override
@@ -396,10 +384,6 @@ public abstract class BaseAssetRenderer<T> implements AssetRenderer<T> {
 		throws PortalException {
 
 		return PortalUtil.getControlPanelPlid(themeDisplay.getCompanyId());
-	}
-
-	protected String getIconPath(ThemeDisplay themeDisplay) {
-		return themeDisplay.getPathThemeImages() + "/common/page.png";
 	}
 
 	protected Locale getLocale(PortletRequest portletRequest) {

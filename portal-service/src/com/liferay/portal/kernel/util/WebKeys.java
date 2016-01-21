@@ -313,6 +313,8 @@ public interface WebKeys {
 
 	public static final String MESSAGE_BOARDS_MESSAGE = "MESSAGE_BOARDS_MESSAGE";
 
+	public static final String MESSAGE_BOARDS_MESSAGE_DISPLAY = "MESSAGE_BOARDS_MESSAGE_DISPLAY";
+
 	public static final String MESSAGE_BOARDS_TREE_WALKER = "MESSAGE_BOARDS_TREE_WALKER";
 
 	public static final String MESSAGE_BOARDS_TREE_WALKER_CATEGORY = "MESSAGE_BOARDS_TREE_WALKER_CATEGORY";
@@ -583,6 +585,8 @@ public interface WebKeys {
 	public static final String TASK_LIST = "TASK_LIST";
 
 	public static final String TEAM = "TEAM";
+
+	public static final String TEMPLATE = "TEMPLATE";
 
 	public static final String THEME = "THEME";
 

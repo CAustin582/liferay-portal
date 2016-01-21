@@ -2,6 +2,10 @@
 	<command name="assertSiteScopeSearch">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="AssertClick" locator1="Configuration#SOURCE_SCOPE_SELECT" value1="Select" />
 		<execute function="AssertClick" locator1="MenuItem#OTHER_SITE" value1="Other Site..." />
 		<execute function="SelectFrame" value1="relative=top" />
@@ -20,6 +24,10 @@
 
 	<command name="configureAddSiteScopes">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
 
 		<if>
 			<isset var="globalSite" />
@@ -57,11 +65,15 @@
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureAnyCategoriesFilterPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Filter" />
+		</execute>
 
 		<execute function="Select" locator1="APConfiguration#FILTER_CATEGORIZATION_SELECT" value1="Categories" />
 		<execute function="Click" locator1="APConfiguration#FILTER_CATEGORIES_SELECT_BUTTON" />
@@ -77,16 +89,20 @@
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureAnyTagsFilterPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Filter" />
+		</execute>
+
 		<execute function="Type" locator1="APConfiguration#FILTER_TAGS_FIELD" value1="${tagNames}" />
 		<execute function="Type" locator1="Button#ADD_TAGS" />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureAPSelectMoreThanOnePG">
@@ -96,6 +112,11 @@
 		</execute>
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="Select More Than One..." />
 
 		<for list="${selectContent}" param="contentName">
@@ -115,17 +136,21 @@
 		</for>
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureAssetDisplayOrderPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Ordering and Grouping" />
+		</execute>
+
 		<execute function="Select" locator1="APConfiguration#ORDERING_AND_GROUPING_ORDER_BY_SELECT" value1="${fieldNameOrder}" />
 		<execute function="Select" locator1="APConfiguration#ORDERING_AND_GROUPING_ORDER_DIRECTION_SELECT" value1="${sortOrder}" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureAssetLinkBehaviorPG">
@@ -136,16 +161,20 @@
 		<execute function="Select" locator1="APConfigurationDisplaysettings#ASSET_LINK_BEHAVIOR_SELECT" value1="${assetLinkBehavior}" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureAssetTypePG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${selectedAsset}" />
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_SUBTYPE_SELECT" value1="${assetSubtype}" />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureDisplayConversionsPG">
@@ -171,7 +200,7 @@
 		</for>
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureDisplayFullContentPG">
@@ -182,16 +211,20 @@
 		<execute function="Select" locator1="APConfigurationDisplaysettings#DISPLAY_TEMPLATE_SELECT" value1="Full Content" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 		<execute function="AssertChecked#assertCheckedToggleSwitch" locator1="APConfiguration#FILTER_ONLY_LAYOUT_ASSETS_CHECKBOX" value1="Show only assets with Test Page as its display page." />
 	</command>
 
 	<command name="configureDisplayPagePG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="Check#checkToggleSwitch" locator1="APConfiguration#FILTER_ONLY_LAYOUT_ASSETS_CHECKBOX" value1="Show only assets with Test Page as its display page." />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureDisplayTemplatePG">
@@ -200,13 +233,17 @@
 
 		<execute function="Select" locator1="APConfigurationDisplaysettings#DISPLAY_TEMPLATE_SELECT" value1="${displayTemplate}" />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 
 		<execute function="SelectFrame" value1="relative=top" />
 	</command>
 
 	<command name="configureFilterByFieldPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
 
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${selectedAsset}" />
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_SUBTYPE_SELECT" value1="${assetSubtype}" />
@@ -245,7 +282,7 @@
 		</if>
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 		<execute function="AssertSelectedLabel" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${selectedAsset}" />
 		<execute function="AssertSelectedLabel" locator1="APConfiguration#SOURCE_SCOPE_ASSET_SUBTYPE_SELECT" value1="${assetSubtype}" />
 	</command>
@@ -273,7 +310,7 @@
 		<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLE_COMMENT_RATINGS" />
 		<execute function="Check" locator1="Checkbox#ENABLE_SOCIAL_BOOKMARKS" />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 		<execute function="SelectFrameTop" value1="relative=top" />
 	</command>
 
@@ -297,7 +334,7 @@
 		</if>
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureManualAssetSelectionPG">
@@ -313,6 +350,10 @@
 		<if>
 			<isset var="assetTitle" />
 			<then>
+				<execute macro="Panel#expandPanel">
+					<var name="panelHeading" value="Asset Entries" />
+				</execute>
+
 				<execute function="Click" locator1="APConfiguration#ASSET_SELECTION_MANUAL_ASSET_ENTRIES_SELECT_BUTTON" />
 
 				<var name="key_assetType" value="${assetType}" />
@@ -334,7 +375,7 @@
 		</if>
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 		<execute function="SelectFrameTop" />
 	</command>
 
@@ -347,22 +388,30 @@
 		<execute function="Select" locator1="APConfigurationDisplaysettings#PAGINATION_TYPE_SELECT" value1="${paginationType}" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureSelectedPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${selectedAsset}" />
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 	</command>
 
 	<command name="configureShowMetadataFieldsPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
 		<execute function="AssertClick" locator1="NavTab#DISPLAY_SETTINGS" value1="Display Settings" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Show Metadata" />
+		</execute>
 
 		<if>
 			<equals arg1="${addMetadata}" arg2="true" />
@@ -384,7 +433,7 @@
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 
 		<execute function="SelectFrameTop" />
 	</command>
@@ -394,22 +443,46 @@
 
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="AssertClick" locator1="Configuration#SOURCE_SCOPE_SELECT" value1="Select" />
+
 		<execute function="AssertClick" locator1="MenuItem#OTHER_SITE" value1="Other Site..." />
 
 		<execute function="SelectFrame" value1="relative=top" />
+
 		<execute function="SelectFrame" locator1="IFrame#SELECT_SITES" />
+
 		<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_TYPE" value1="${siteScopeType}" />
+
 		<execute function="ClickNoError" locator1="SitesSelectSite#SITES_TABLE_CHOOSE_SITE_LINK" />
+
 		<execute function="SelectFrame" value1="relative=top" />
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="AssertTextEquals#assertPartialText" locator1="APConfiguration#SOURCE_SCOPE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="APConfiguration#SOURCE_SCOPE_TYPE" value1="${siteScopeType}" />
+
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<execute function="AssertTextEquals#assertPartialText" locator1="APConfiguration#SOURCE_SCOPE_NAME" value1="${siteName}" />
 		<execute function="AssertTextEquals" locator1="APConfiguration#SOURCE_SCOPE_TYPE" value1="${siteScopeType}" />
 		<execute function="AssertElementPresent" locator1="APConfiguration#SOURCE_SCOPE_DELETE" />
@@ -427,11 +500,15 @@
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<var name="key_siteName" value="${siteName}" />
 
 		<execute function="Click" locator1="APConfiguration#SOURCE_SCOPE_DELETE" />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 		<execute function="AssertTextNotPresent" locator1="APConfiguration#SOURCE_SCOPE_NAME" value1="${siteName}" />
 		<execute function="AssertTextNotPresent" locator1="APConfiguration#SOURCE_SCOPE_TYPE" value1="${siteScopeType}" />
 
@@ -449,7 +526,7 @@
 		<execute function="Click" locator1="APConfigurationArchivedsetup#ARCHIVED_SETUPS_TABLE_DROPDOWN" />
 		<execute function="AssertClickNoError" locator1="MenuItem#DELETE" value1="Delete" />
 		<execute function="Confirm" value1="Are you sure you want to delete this? It will be deleted immediately." />
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
 
 		<execute function="AssertTextEquals" locator1="Message#EMPTY_INFO" value1="There are no archived setups." />
 	</command>
@@ -470,10 +547,10 @@
 		</execute>
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
+	</command>
 
-		<execute macro="Panel#expandPanel">
-			<var name="panelHeading" value="Source" />
-		</execute>
+	<command name="gotoViewInContext">
+		<execute function="AssertClick" locator1="Link#VIEW_IN_CONTEXT" value1="View in Context »" />
 	</command>
 
 	<command name="rate4StarsPG">
@@ -483,6 +560,10 @@
 	<command name="removeSiteScope">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
+
 		<for list="${removeSiteScopes}" param="removeSiteScope">
 			<var name="key_siteName" value="${removeSiteScope}" />
 
@@ -491,7 +572,7 @@
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 
 		<execute function="SelectFrameTop" />
 	</command>
@@ -527,7 +608,7 @@
 
 		<execute function="AssertTextEquals" locator1="APConfigurationArchivedsetup#ARCHIVED_SETUPS_TABLE_NAME" value1="${archiveName}" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="Your request completed successfully." />
+		<execute macro="Alert#viewRequestCompletedSuccessMessage" />
 
 		<execute function="SelectFrameTop" />
 	</command>
@@ -568,6 +649,10 @@
 
 	<command name="viewAssetTypeNotAvailable">
 		<execute function="SelectFrame" locator1="BasePortletConfiguration#CONFIGURATION_IFRAME" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
 
 		<execute function="AssertTextNotEquals" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${assetType}" />
 
@@ -633,13 +718,17 @@
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
-		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="You have successfully updated the setup." />
+		<execute macro="Alert#viewSetupUpdatedSuccessMessage" />
 
 		<execute function="SelectFrameTop" />
 	</command>
 
 	<command name="viewConfigureSiteScopeContentSharingPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
 
 		<execute function="AssertClick" locator1="Configuration#SOURCE_SCOPE_SELECT" value1="Select" />
 		<execute function="AssertClick" locator1="MenuItem#OTHER_SITE" value1="Other Site..." />
@@ -658,15 +747,15 @@
 
 				<var name="key_siteName" value="${liferaySiteName}" />
 
-				<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_NAME" value1="${liferaySiteName}" />
-				<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_TYPE" value1="${liferaySiteType}" />
-
 				<if>
 					<isset var="currentSite" />
 					<then>
-						<execute function="AssertElementPresent" locator1="APConfigurationSites#SITES_TABLE_CHOOSE_BUTTON_DISABLED" />
+						<execute function="AssertElementNotPresent" locator1="APConfigurationSites#SITES_TABLE_NAME" />
+						<execute function="AssertElementNotPresent" locator1="APConfigurationSites#SITES_TABLE_TYPE" />
 					</then>
 					<else>
+						<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_NAME" value1="${liferaySiteName}" />
+						<execute function="AssertTextEquals" locator1="APConfigurationSites#SITES_TABLE_TYPE" value1="${liferaySiteType}" />
 						<execute function="AssertElementPresent" locator1="SitesSelectSite#SITES_TABLE_CHOOSE_SITE_LINK" />
 					</else>
 				</if>
@@ -774,6 +863,10 @@
 
 	<command name="viewFilterAndFieldsPG">
 		<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
+
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Source" />
+		</execute>
 
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${selectedAsset}" />
 		<execute function="Select" locator1="APConfiguration#SOURCE_SCOPE_ASSET_SUBTYPE_SELECT" value1="${assetSubtype}" />
@@ -937,6 +1030,10 @@
 
 		<execute function="SelectFrame" locator1="IFrame#DIALOG" />
 
+		<execute macro="Panel#expandPanel">
+			<var name="panelHeading" value="Asset Entries" />
+		</execute>
+
 		<execute function="AssertTextEquals" locator1="Message#INFO" value1="No assets selected." />
 
 		<execute function="SelectFrameTop" />
@@ -950,12 +1047,20 @@
 
 				<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
 
+				<execute macro="Panel#expandPanel">
+					<var name="panelHeading" value="Source" />
+				</execute>
+
 				<execute function="AssertSelectedLabel" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${selectedAssetConfiguration}" />
 			</then>
 			<else>
 				<execute function="AssertTextEquals" locator1="AP#ADD_NEW_DROPDOWN" value1="Add ${selectedAsset}" />
 
 				<execute macro="AssetPublisherPortlet#gotoConfigurationPG" />
+
+				<execute macro="Panel#expandPanel">
+					<var name="panelHeading" value="Source" />
+				</execute>
 
 				<execute function="AssertSelectedLabel" locator1="APConfiguration#SOURCE_SCOPE_ASSET_TYPE_SELECT" value1="${selectedAssetConfiguration}" />
 			</else>

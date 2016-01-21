@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Portal Tools Service Builder
 Bundle-SymbolicName: com.liferay.portal.tools.service.builder
-Bundle-Version: 1.0.68
+Bundle-Version: 1.0.72
 Import-Package:\
 	!javax.portlet.*,\
 	!javax.servlet.*,\
@@ -8,7 +8,6 @@ Import-Package:\
 	!org.apache.tools.ant.*,\
 	*
 Include-Resource:\
-	classes,\
 	{META-INF/maven/plugin.xml=src/main/resources/META-INF/maven/plugin.xml},\
 	com/liferay/dynamic/data/lists/service.xml=../../../modules/apps/dynamic-data-lists/dynamic-data-lists-service/service.xml,\
 	com/liferay/dynamic/data/mapping/service.xml=../../../modules/apps/dynamic-data-mapping/dynamic-data-mapping-service/service.xml,\

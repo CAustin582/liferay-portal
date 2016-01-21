@@ -75,7 +75,7 @@ page import="com.liferay.dynamic.data.mapping.web.configuration.DDMWebConfigurat
 page import="com.liferay.dynamic.data.mapping.web.configuration.DDMWebConfigurationUtil" %><%@
 page import="com.liferay.dynamic.data.mapping.web.context.util.DDMWebRequestHelper" %><%@
 page import="com.liferay.portal.LocaleException" %><%@
-page import="com.liferay.portal.PortletPreferencesException" %><%@
+page import="com.liferay.portal.exception.PortletPreferencesException" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.configuration.Filter" %><%@
 page import="com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker" %><%@
@@ -139,6 +139,8 @@ page import="javax.portlet.WindowState" %>
 
 <portlet:defineObjects />
 
+<liferay-frontend:defineObjects />
+
 <liferay-theme:defineObjects />
 
 <%
@@ -166,14 +168,8 @@ String scopeTemplateType = ddmDisplay.getTemplateType();
 
 String storageTypeValue = StringPool.BLANK;
 
-if (scopeStorageType.equals("expando")) {
-	storageTypeValue = StorageType.EXPANDO.getValue();
-}
-else if (scopeStorageType.equals("json")) {
+if (scopeStorageType.equals("json")) {
 	storageTypeValue = StorageType.JSON.getValue();
-}
-else if (scopeStorageType.equals("xml")) {
-	storageTypeValue = StorageType.XML.getValue();
 }
 
 String templateTypeValue = StringPool.BLANK;

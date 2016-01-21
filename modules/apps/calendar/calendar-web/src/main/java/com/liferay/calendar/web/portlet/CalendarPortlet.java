@@ -643,6 +643,21 @@ public class CalendarPortlet extends MVCPortlet {
 		if ((recurrenceObj.getFrequency() == Frequency.WEEKLY) &&
 			!daysOfWeek.contains(startTimeDayOfWeek)) {
 
+			java.util.Calendar firstDayJCalendar = JCalendarUtil.getJCalendar(
+				calendarBooking.getStartTime(), timeZone);
+
+			firstDayJCalendar.set(
+				java.util.Calendar.DAY_OF_WEEK_IN_MONTH,
+				startTimeJCalendar.get(
+					java.util.Calendar.DAY_OF_WEEK_IN_MONTH));
+
+			firstDayJCalendar.set(java.util.Calendar.DAY_OF_WEEK, 7);
+
+			calendarBooking.setStartTime(firstDayJCalendar.getTimeInMillis());
+			calendarBooking.setEndTime(
+				firstDayJCalendar.getTimeInMillis() +
+					calendarBooking.getDuration());
+
 			calendarBooking.setRecurrence(
 				RecurrenceSerializer.serialize(recurrenceObj));
 
@@ -722,8 +737,13 @@ public class CalendarPortlet extends MVCPortlet {
 			if (!JCalendarUtil.isSameDayOfWeek(
 					startTimeJCalendar, firstInstanceJCalendar)) {
 
+				java.util.Calendar currentInstanceJCalendar =
+					CalendarFactoryUtil.getCalendar(
+						calendarBooking.getStartTime(),
+						calendarBooking.getTimeZone());
+
 				startTimeJCalendar = JCalendarUtil.mergeJCalendar(
-					firstInstanceJCalendar, startTimeJCalendar,
+					currentInstanceJCalendar, startTimeJCalendar,
 					calendarBooking.getTimeZone());
 
 				startTime = startTimeJCalendar.getTimeInMillis();
@@ -1439,14 +1459,14 @@ public class CalendarPortlet extends MVCPortlet {
 		return calendarBooking;
 	}
 
-	private volatile CalendarBookingLocalService _calendarBookingLocalService;
-	private volatile CalendarBookingService _calendarBookingService;
-	private volatile CalendarLocalService _calendarLocalService;
-	private volatile CalendarNotificationTemplateService
+	private CalendarBookingLocalService _calendarBookingLocalService;
+	private CalendarBookingService _calendarBookingService;
+	private CalendarLocalService _calendarLocalService;
+	private CalendarNotificationTemplateService
 		_calendarNotificationTemplateService;
-	private volatile CalendarResourceService _calendarResourceService;
-	private volatile CalendarService _calendarService;
-	private volatile GroupLocalService _groupLocalService;
-	private volatile UserLocalService _userLocalService;
+	private CalendarResourceService _calendarResourceService;
+	private CalendarService _calendarService;
+	private GroupLocalService _groupLocalService;
+	private UserLocalService _userLocalService;
 
 }

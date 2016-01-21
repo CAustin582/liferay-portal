@@ -14,7 +14,7 @@
 
 package com.liferay.portal.service.persistence.impl;
 
-import com.liferay.portal.NoSuchModelException;
+import com.liferay.portal.exception.NoSuchModelException;
 import com.liferay.portal.kernel.configuration.Filter;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
@@ -252,7 +252,9 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	@Override
 	public SystemException processException(Exception e) {
 		if (!(e instanceof ORMException)) {
-			_log.error("Caught unexpected exception " + e.getClass().getName());
+			Class<?> clazz = e.getClass();
+
+			_log.error("Caught unexpected exception " + clazz.getName());
 		}
 
 		if (_log.isDebugEnabled()) {

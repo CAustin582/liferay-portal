@@ -14,8 +14,8 @@
 
 package com.liferay.portlet.sites.util;
 
-import com.liferay.portal.RequiredLayoutException;
 import com.liferay.portal.events.EventsProcessorUtil;
+import com.liferay.portal.exception.RequiredLayoutException;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTask;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskManagerUtil;
 import com.liferay.portal.kernel.backgroundtask.BackgroundTaskThreadLocal;
@@ -104,6 +104,7 @@ import com.liferay.portlet.exportimport.service.ExportImportConfigurationLocalSe
 import com.liferay.portlet.exportimport.service.ExportImportLocalServiceUtil;
 import com.liferay.portlet.exportimport.service.ExportImportServiceUtil;
 import com.liferay.portlet.exportimport.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.sites.kernel.util.Sites;
 
 import java.io.File;
 import java.io.InputStream;
@@ -1242,18 +1243,6 @@ public class SitesImpl implements Sites {
 		doMergeLayoutPrototypeLayout(group, layout);
 	}
 
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #mergeLayoutPrototypeLayout(Group, Layout)}
-	 */
-	@Deprecated
-	@Override
-	public void mergeLayoutProtypeLayout(Group group, Layout layout)
-		throws Exception {
-
-		mergeLayoutPrototypeLayout(group, layout);
-	}
-
 	@Override
 	public void mergeLayoutSetPrototypeLayouts(Group group, LayoutSet layoutSet)
 		throws Exception {
@@ -1362,18 +1351,6 @@ public class SitesImpl implements Sites {
 				LayoutLocalServiceVirtualLayoutsAdvice.class.getName(),
 				String.valueOf(layoutSet.getLayoutSetId()), owner);
 		}
-	}
-
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link
-	 *             #mergeLayoutSetPrototypeLayouts(Group, LayoutSet)}
-	 */
-	@Deprecated
-	@Override
-	public void mergeLayoutSetProtypeLayouts(Group group, LayoutSet layoutSet)
-		throws Exception {
-
-		mergeLayoutSetPrototypeLayouts(group, layoutSet);
 	}
 
 	@Override

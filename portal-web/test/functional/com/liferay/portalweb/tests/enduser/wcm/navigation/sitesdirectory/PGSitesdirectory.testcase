@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="Navigation" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -43,10 +36,10 @@
 			<var name="portlet" value="Sites" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
+			<var name="pageName" value="Site Page" />
 			<var name="siteName" value="Site Name" />
-			<var name="sitePageName" value="Site Page" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -72,10 +65,10 @@
 			<var name="portlet" value="Sites" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
+			<var name="pageName" value="Site Page" />
 			<var name="siteName" value="Child SiteName 1" />
-			<var name="sitePageName" value="Site Page" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
@@ -91,10 +84,10 @@
 			<var name="portlet" value="Sites" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
+			<var name="pageName" value="Site Page" />
 			<var name="siteName" value="Child SiteName 2" />
-			<var name="sitePageName" value="Site Page" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelSites">
@@ -110,10 +103,10 @@
 			<var name="portlet" value="Sites" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
+			<var name="pageName" value="Site Page" />
 			<var name="siteName" value="Child SiteName 3" />
-			<var name="sitePageName" value="Site Page" />
 		</execute>
 
 		<execute macro="Page#gotoPG">

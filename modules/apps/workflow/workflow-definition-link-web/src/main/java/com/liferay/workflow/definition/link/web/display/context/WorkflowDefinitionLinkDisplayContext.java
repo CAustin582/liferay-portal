@@ -14,7 +14,7 @@
 
 package com.liferay.workflow.definition.link.web.display.context;
 
-import com.liferay.portal.NoSuchWorkflowDefinitionLinkException;
+import com.liferay.portal.exception.NoSuchWorkflowDefinitionLinkException;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -346,12 +346,12 @@ public class WorkflowDefinitionLinkDisplayContext {
 		PredicateFilter<WorkflowHandler<?>> predicateFilter =
 			new PredicateFilter<WorkflowHandler<?>>() {
 
-			@Override
-			public boolean filter(WorkflowHandler<?> workflowHandler) {
-				return workflowHandler.isVisible();
-			}
+				@Override
+				public boolean filter(WorkflowHandler<?> workflowHandler) {
+					return workflowHandler.isVisible();
+				}
 
-		};
+			};
 
 		return ListUtil.filter(workflowHandlers, predicateFilter);
 	}

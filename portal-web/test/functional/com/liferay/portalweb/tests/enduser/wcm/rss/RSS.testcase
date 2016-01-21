@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="RSS" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 
@@ -25,9 +18,9 @@
 			<var name="page" value="Public Pages" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
-			<var name="sitePageName" value="Site Page Name" />
+			<var name="pageName" value="Site Page Name" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 	</set-up>
@@ -337,7 +330,7 @@
 			<var name="pageName" value="Welcome" />
 		</execute>
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Page Name" />
 		</execute>
 
@@ -438,9 +431,9 @@
 			<var name="site" value="Site Name" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
-			<var name="sitePageName" value="Site Page Name 2" />
+			<var name="pageName" value="Site Page Name 2" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
@@ -478,7 +471,9 @@
 
 		<execute macro="AssetPublisherPortlet#enableRSSSubscription" />
 
-		<execute macro="RSS#save" />
+		<execute macro="IFrame#selectTopFrame" />
+
+		<execute macro="Button#clickSave" />
 
 		<execute macro="Page#gotoPG">
 			<var name="pageName" value="Site Page Name 2" />
@@ -533,7 +528,7 @@
 			<var name="pageName" value="Welcome" />
 		</execute>
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Page Name" />
 		</execute>
 

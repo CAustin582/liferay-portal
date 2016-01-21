@@ -14,8 +14,8 @@
 
 package com.liferay.portal.servlet.filters.virtualhost;
 
-import com.liferay.portal.LayoutFriendlyURLException;
-import com.liferay.portal.NoSuchLayoutException;
+import com.liferay.portal.exception.LayoutFriendlyURLException;
+import com.liferay.portal.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -199,6 +199,7 @@ public class VirtualHostFilter extends BasePortalFilter {
 		}
 
 		String i18nLanguageId = null;
+		String i18nLanguageIdLowerCase = null;
 
 		Set<String> languageIds = I18nServlet.getLanguageIds();
 
@@ -211,6 +212,11 @@ public class VirtualHostFilter extends BasePortalFilter {
 					 !StringUtil.equalsIgnoreCase(friendlyURL, languageId))) {
 
 					continue;
+				}
+
+				if (!friendlyURL.startsWith(languageId)) {
+					i18nLanguageIdLowerCase = StringUtil.toLowerCase(
+						languageId);
 				}
 
 				if (pos == -1) {
@@ -238,11 +244,25 @@ public class VirtualHostFilter extends BasePortalFilter {
 
 			_log.debug("Friendly URL is not valid");
 
-			processFilter(
-				VirtualHostFilter.class.getName(), request, response,
-				filterChain);
+			if (Validator.isNotNull(i18nLanguageIdLowerCase)) {
+				String forwardURL = StringUtil.replace(
+					originalFriendlyURL, i18nLanguageIdLowerCase,
+					i18nLanguageId);
 
-			return;
+				RequestDispatcher requestDispatcher =
+					_servletContext.getRequestDispatcher(forwardURL);
+
+				requestDispatcher.forward(request, response);
+
+				return;
+			}
+			else {
+				processFilter(
+					VirtualHostFilter.class.getName(), request, response,
+					filterChain);
+
+				return;
+			}
 		}
 
 		LayoutSet layoutSet = (LayoutSet)request.getAttribute(
@@ -262,7 +282,8 @@ public class VirtualHostFilter extends BasePortalFilter {
 
 		try {
 			LastPath lastPath = new LastPath(
-				originalContextPath, friendlyURL, request.getParameterMap());
+				originalContextPath, friendlyURL,
+				HttpUtil.parameterMapToString(request.getParameterMap()));
 
 			request.setAttribute(WebKeys.LAST_PATH, lastPath);
 

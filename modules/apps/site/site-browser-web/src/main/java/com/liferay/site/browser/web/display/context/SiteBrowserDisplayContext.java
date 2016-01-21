@@ -31,9 +31,9 @@ import com.liferay.portal.service.GroupLocalServiceUtil;
 import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.sites.util.SitesUtil;
 import com.liferay.portlet.usersadmin.search.GroupSearch;
 import com.liferay.portlet.usersadmin.search.GroupSearchTerms;
+import com.liferay.sites.kernel.util.SitesUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -278,6 +278,8 @@ public class SiteBrowserDisplayContext {
 			ParamUtil.getString(_request, "selectedGroupIds"), 0L);
 		boolean includeCompany = ParamUtil.getBoolean(
 			_request, "includeCompany");
+		boolean includeCurrentGroup = ParamUtil.getBoolean(
+			_request, "includeCurrentGroup", true);
 		boolean includeUserPersonalSite = ParamUtil.getBoolean(
 			_request, "includeUserPersonalSite");
 		String eventName = ParamUtil.getString(
@@ -293,6 +295,8 @@ public class SiteBrowserDisplayContext {
 		portletURL.setParameter("filter", getFilter());
 		portletURL.setParameter(
 			"includeCompany", String.valueOf(includeCompany));
+		portletURL.setParameter(
+			"includeCurrentGroup", String.valueOf(includeCurrentGroup));
 		portletURL.setParameter(
 			"includeUserPersonalSite", String.valueOf(includeUserPersonalSite));
 		portletURL.setParameter(

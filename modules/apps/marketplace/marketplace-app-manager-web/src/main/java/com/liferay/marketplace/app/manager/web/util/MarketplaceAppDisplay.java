@@ -15,8 +15,15 @@
 package com.liferay.marketplace.app.manager.web.util;
 
 import com.liferay.marketplace.model.App;
+import com.liferay.marketplace.store.web.constants.MarketplaceStorePortletKeys;
+import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.util.StringPool;
+import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portlet.PortletURLFactoryUtil;
 
 import javax.portlet.MimeResponse;
+import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,10 +45,12 @@ public class MarketplaceAppDisplay extends BaseAppDisplay {
 		return _app;
 	}
 
+	@Override
 	public String getDescription() {
 		return _app.getDescription();
 	}
 
+	@Override
 	public String getDisplayURL(MimeResponse mimeResponse) {
 		PortletURL portletURL = mimeResponse.createRenderURL();
 
@@ -57,14 +66,39 @@ public class MarketplaceAppDisplay extends BaseAppDisplay {
 		return portletURL.toString();
 	}
 
+	@Override
 	public String getIconURL(HttpServletRequest request) {
 		return _app.getIconURL();
 	}
 
+	@Override
+	public String getStoreURL(HttpServletRequest request) {
+		try {
+			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
+			PortletURL portletURL = PortletURLFactoryUtil.create(
+				request, MarketplaceStorePortletKeys.MARKETPLACE_STORE,
+				themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+
+			portletURL.setParameter(
+				"appEntryId", String.valueOf(_app.getRemoteAppId()));
+			portletURL.setWindowState(LiferayWindowState.MAXIMIZED);
+
+			return portletURL.toString();
+		}
+		catch (Exception e) {
+		}
+
+		return StringPool.BLANK;
+	}
+
+	@Override
 	public String getTitle() {
 		return _app.getTitle();
 	}
 
+	@Override
 	public String getVersion() {
 		return _app.getVersion();
 	}

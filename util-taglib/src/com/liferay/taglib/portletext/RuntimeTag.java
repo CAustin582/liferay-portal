@@ -72,8 +72,8 @@ public class RuntimeTag extends TagSupport {
 			String portletProviderClassName,
 			PortletProvider.Action portletProviderAction, String instanceId,
 			String queryString, String defaultPreferences,
-			PageContext pageContext, HttpServletRequest request,
-			HttpServletResponse response)
+			boolean persistSettings, PageContext pageContext,
+			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
 		String portletId = PortletProviderUtil.getPortletId(
@@ -82,7 +82,8 @@ public class RuntimeTag extends TagSupport {
 		if (Validator.isNotNull(portletId)) {
 			doTag(
 				portletId, instanceId, queryString, _SETTINGS_SCOPE_DEFAULT,
-				defaultPreferences, pageContext, request, response);
+				defaultPreferences, persistSettings, pageContext, request,
+				response);
 		}
 		else {
 			ThemeDisplay themeDisplay = (ThemeDisplay)request.getAttribute(
@@ -125,7 +126,7 @@ public class RuntimeTag extends TagSupport {
 
 		doTag(
 			portletName, StringPool.BLANK, queryString, _SETTINGS_SCOPE_DEFAULT,
-			defaultPreferences, pageContext, request, response);
+			defaultPreferences, true, pageContext, request, response);
 	}
 
 	public static void doTag(
@@ -136,14 +137,14 @@ public class RuntimeTag extends TagSupport {
 
 		doTag(
 			portletName, instanceId, queryString, _SETTINGS_SCOPE_DEFAULT,
-			defaultPreferences, pageContext, request, response);
+			defaultPreferences, true, pageContext, request, response);
 	}
 
 	public static void doTag(
 			String portletName, String instanceId, String queryString,
 			String settingsScope, String defaultPreferences,
-			PageContext pageContext, HttpServletRequest request,
-			HttpServletResponse response)
+			boolean persistSettings, PageContext pageContext,
+			HttpServletRequest request, HttpServletResponse response)
 		throws Exception {
 
 		if (pageContext != null) {
@@ -212,10 +213,11 @@ public class RuntimeTag extends TagSupport {
 
 			boolean writeJSONObject = false;
 
-			if (PortletPreferencesLocalServiceUtil.getPortletPreferencesCount(
-					themeDisplay.getScopeGroupId(),
-					PortletKeys.PREFS_OWNER_TYPE_LAYOUT,
-					PortletKeys.PREFS_PLID_SHARED, portlet, false) < 1) {
+			LayoutTypePortlet layoutTypePortlet =
+				themeDisplay.getLayoutTypePortlet();
+
+			if (persistSettings &&
+				!layoutTypePortlet.isPortletEmbedded(portlet.getPortletId())) {
 
 				PortletPreferencesFactoryUtil.getLayoutPortletSetup(
 					themeDisplay.getCompanyId(), themeDisplay.getScopeGroupId(),
@@ -292,13 +294,14 @@ public class RuntimeTag extends TagSupport {
 
 				doTag(
 					_portletProviderClassName, _portletProviderAction,
-					_instanceId, _queryString, _defaultPreferences, pageContext,
-					request, response);
+					_instanceId, _queryString, _defaultPreferences,
+					_persistSettings, pageContext, request, response);
 			}
 			else {
 				doTag(
 					_portletName, _instanceId, _queryString, _settingsScope,
-					_defaultPreferences, pageContext, request, response);
+					_defaultPreferences, _persistSettings, pageContext, request,
+					response);
 			}
 
 			return EVAL_PAGE;
@@ -316,6 +319,10 @@ public class RuntimeTag extends TagSupport {
 
 	public void setInstanceId(String instanceId) {
 		_instanceId = instanceId;
+	}
+
+	public void setPersistSettings(boolean persistSettings) {
+		_persistSettings = persistSettings;
 	}
 
 	public void setPortletName(String portletName) {
@@ -372,6 +379,7 @@ public class RuntimeTag extends TagSupport {
 
 	private String _defaultPreferences;
 	private String _instanceId;
+	private boolean _persistSettings = true;
 	private String _portletName;
 	private PortletProvider.Action _portletProviderAction;
 	private String _portletProviderClassName;

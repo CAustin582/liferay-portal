@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="Site Administration" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -63,16 +56,14 @@
 			<var name="site" value="Staging Site Name" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
-			<var name="sitePageName" value="Site Page Name" />
+			<var name="pageName" value="Site Page Name" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
-		<execute macro="Page#gotoPublishingTools">
-			<var name="portletName" value="Staging Processes" />
-			<var name="siteScopeName" value="Staging Site Name" />
-			<var name="siteScopeSelected" value="true" />
+		<execute macro="ProductMenu#gotoSitesPublishingTools">
+			<var name="portlet" value="Staging" />
 		</execute>
 
 		<execute macro="Staging#activateStagingCP">
@@ -154,9 +145,9 @@
 
 		<execute function="Refresh" />
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Pages" />
-			<var name="sitePageName" value="Video" />
+			<var name="pageName" value="Video" />
 			<var name="sitePageType" value="2 Columns (70/30)" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
@@ -166,7 +157,7 @@
 		</execute>
 
 		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Video" />
+			<var name="page" value="Public Pages" />
 		</execute>
 
 		<execute macro="Portlet#addPG">
@@ -199,7 +190,7 @@
 		</execute>
 
 		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="home" />
+			<var name="page" value="Public Pages" />
 		</execute>
 
 		<execute macro="WebContent#addPGViaWCD">

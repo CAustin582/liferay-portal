@@ -20,9 +20,9 @@ import com.liferay.gradle.plugins.extensions.LiferayExtension;
 import com.liferay.gradle.plugins.extensions.LiferayOSGiExtension;
 import com.liferay.gradle.plugins.tasks.DirectDeployTask;
 import com.liferay.gradle.plugins.util.FileUtil;
+import com.liferay.gradle.plugins.util.GradleUtil;
 import com.liferay.gradle.plugins.wsdd.builder.BuildWSDDTask;
 import com.liferay.gradle.plugins.wsdd.builder.WSDDBuilderPlugin;
-import com.liferay.gradle.util.GradleUtil;
 
 import groovy.lang.Closure;
 
@@ -80,6 +80,7 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 		super.apply(project);
 
 		configureArchivesBaseName(project);
+		configureDescription(project);
 		configureSourceSetMain(project);
 		configureVersion(project);
 
@@ -137,7 +138,7 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 
 		directDeployTask.setAppServerDeployDir(
 			directDeployTask.getTemporaryDir());
-		directDeployTask.setArgAppServerType("tomcat");
+		directDeployTask.setAppServerType("tomcat");
 
 		directDeployTask.setWebAppFile(
 			new Callable<File>() {
@@ -332,6 +333,17 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 
 					jarBuilder.withBase(BundleUtils.getBase(project));
 
+					SourceSet sourceSet = GradleUtil.getSourceSet(
+						project, SourceSet.MAIN_SOURCE_SET_NAME);
+
+					SourceSetOutput sourceSetOutput = sourceSet.getOutput();
+
+					jarBuilder.withClasspath(
+						new File[] {
+							sourceSetOutput.getClassesDir(),
+							sourceSetOutput.getResourcesDir()
+						});
+
 					LiferayOSGiExtension liferayOSGiExtension =
 						GradleUtil.getExtension(
 							project, LiferayOSGiExtension.class);
@@ -373,6 +385,9 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 
 					jarBuilder.withProperties(properties);
 
+					jarBuilder.withName(
+						properties.get(Constants.BUNDLE_SYMBOLICNAME));
+					jarBuilder.withResources(new File[0]);
 					jarBuilder.withSourcepath(BundleUtils.getSources(project));
 					jarBuilder.withTrace(bundleExtension.isTrace());
 					jarBuilder.withVersion(BundleUtils.getVersion(project));
@@ -501,6 +516,13 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 		}
 	}
 
+	protected void configureDescription(Project project) {
+		String bundleName = getBundleInstruction(
+			project, Constants.BUNDLE_NAME);
+
+		project.setDescription(bundleName);
+	}
+
 	protected void configureSourceSetMain(Project project) {
 		File docrootDir = project.file("docroot");
 
@@ -622,7 +644,7 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 			while (iterator.hasNext()) {
 				File file = iterator.next();
 
-				if (_classpathFiles.contains(file)) {
+				if (_classpathFiles.contains(file) || !file.exists()) {
 					iterator.remove();
 
 					continue;
@@ -649,7 +671,7 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 			while (iterator.hasNext()) {
 				File file = iterator.next();
 
-				if (_resourceFiles.contains(file)) {
+				if (_resourceFiles.contains(file) || !file.exists()) {
 					iterator.remove();
 
 					continue;
@@ -676,9 +698,7 @@ public class LiferayOSGiPlugin extends LiferayJavaPlugin {
 
 		@Override
 		public JarBuilder create() {
-			LiferayJarBuilder liferayJarBuilder = new LiferayJarBuilder();
-
-			return liferayJarBuilder;
+			return new LiferayJarBuilder();
 		}
 
 	}

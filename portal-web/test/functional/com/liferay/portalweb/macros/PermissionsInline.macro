@@ -21,7 +21,7 @@
 		</for>
 
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals" locator1="Permissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Permissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="assertDefaultPG">
@@ -77,18 +77,23 @@
 	</command>
 
 	<command name="gotoBlogsCP">
-		<execute macro="Page#gotoContentCP">
-			<var name="friendlyURL" value="${friendlyURL}" />
-			<var name="nodePort" value="${nodePort}" />
-			<var name="pageAccess" value="${pageAccess}" />
-			<var name="pageStaging" value="${pageStaging}" />
-			<var name="portletName" value="Blogs" />
-			<var name="siteName" value="${siteName}" />
-			<var name="siteNameURL" value="${siteNameURL}" />
-			<var name="siteScopeName" value="${siteScopeName}" />
-			<var name="siteURL" value="${siteURL}" />
-			<var name="specificURL" value="${specificURL}" />
-			<var name="virtualHostsURL" value="${virtualHostsURL}" />
+		<if>
+			<isset var="siteName" />
+			<then>
+				<execute macro="Navigator#gotoSitePage">
+					<var name="pageName" value="${pageName}" />
+					<var name="siteName" value="${siteName}" />
+				</execute>
+			</then>
+			<else>
+				<execute macro="Navigator#gotoPage">
+					<var name="pageName" value="${pageName}" />
+				</execute>
+			</else>
+		</if>
+
+		<execute macro="ProductMenu#gotoSitesContent">
+			<var name="portlet" value="Blogs" />
 		</execute>
 
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
@@ -291,7 +296,8 @@
 		<var name="key_pollsQuestionTitle" value="${pollsQuestionTitle}" />
 
 		<execute function="Click" locator1="Polls#POLLS_TABLE_ACTION" />
-		<execute function="AssertClick" locator1="MenuItem#PERMISSIONS" value1="Permissions" />
+
+		<execute function="AssertClick" locator1="Polls#ACTIONS_DROPDOWN_PERMISSIONS" value1="Permissions" />
 
 		<execute function="SelectFrame" locator1="Permissions#PERMISSIONS_IFRAME" />
 	</command>
@@ -309,9 +315,12 @@
 	</command>
 
 	<command name="gotoSiteTeamsCP">
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="${portletName}" />
-			<var name="siteScopeName" value="${siteScopeName}" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="${siteScopeName}" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="${portletName}" />
 		</execute>
 
 		<var name="key_rowEntry" value="${teamName}" />
@@ -356,7 +365,10 @@
 		<execute function="AssertClick" locator1="MenuItem#PERMISSIONS_LEXICON" value1="Permissions" />
 
 		<execute function="SelectFrame" locator1="Permissions#PERMISSIONS_IFRAME" />
-		<execute function="AssertTextEquals" locator1="Permissions#HEADER_TITLE" value1="${webContentTitle}" />
+
+		<var name="key_assetTitle" value="${webContentTitle}" />
+
+		<execute function="AssertTextEquals" locator1="Permissions#ASSET_TITLE" value1="${webContentTitle}" />
 	</command>
 
 	<command name="viewPermissionsChecked">

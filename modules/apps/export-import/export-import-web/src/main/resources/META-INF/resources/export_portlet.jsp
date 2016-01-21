@@ -255,8 +255,9 @@ Layout exportableLayout = ExportImportHelperUtil.getExportableLayout(themeDispla
 									</liferay-util:buffer>
 
 									<liferay-ui:icon
-										iconCssClass="icon-calendar"
+										icon="calendar"
 										label="<%= true %>"
+										markupView="lexicon"
 										message='<%= LanguageUtil.get(request, "date-range") + selectedLabelsHTML %>'
 									/>
 								</li>
@@ -393,10 +394,9 @@ Layout exportableLayout = ExportImportHelperUtil.getExportableLayout(themeDispla
 
 						<%
 						Group group = themeDisplay.getScopeGroup();
-						Map<String, String[]> parameterMap = Collections.emptyMap();
 						%>
 
-						<%@ include file="/permissions.jspf" %>
+						<aui:input helpMessage='<%= group.isCompany() ? "publish-global-permissions-help" : "export-import-permissions-help" %>' label="permissions" name="<%= PortletDataHandlerKeys.PERMISSIONS %>" type="toggle-switch" />
 					</aui:fieldset>
 				</c:if>
 

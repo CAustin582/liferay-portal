@@ -14,13 +14,13 @@
 
 package com.liferay.portal.service.impl;
 
-import com.liferay.portal.AccountNameException;
-import com.liferay.portal.CompanyMxException;
-import com.liferay.portal.CompanyVirtualHostException;
-import com.liferay.portal.CompanyWebIdException;
 import com.liferay.portal.LocaleException;
-import com.liferay.portal.NoSuchVirtualHostException;
-import com.liferay.portal.RequiredCompanyException;
+import com.liferay.portal.exception.AccountNameException;
+import com.liferay.portal.exception.CompanyMxException;
+import com.liferay.portal.exception.CompanyVirtualHostException;
+import com.liferay.portal.exception.CompanyWebIdException;
+import com.liferay.portal.exception.NoSuchVirtualHostException;
+import com.liferay.portal.exception.RequiredCompanyException;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -39,7 +39,9 @@ import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.facet.AssetEntriesFacet;
 import com.liferay.portal.kernel.search.facet.Facet;
 import com.liferay.portal.kernel.search.facet.ScopeFacet;
+import com.liferay.portal.kernel.transaction.Isolation;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
+import com.liferay.portal.kernel.transaction.Transactional;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Base64;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -80,6 +82,9 @@ import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsUtil;
 import com.liferay.portal.util.PropsValues;
+import com.liferay.registry.Registry;
+import com.liferay.registry.RegistryUtil;
+import com.liferay.registry.ServiceRegistration;
 import com.liferay.util.Encryptor;
 import com.liferay.util.EncryptorException;
 
@@ -90,6 +95,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -143,6 +149,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		Company company = checkCompany(webId, mx);
 
+		company = companyPersistence.fetchByPrimaryKey(company.getCompanyId());
+
 		company.setMx(mx);
 		company.setSystem(system);
 		company.setMaxUsers(maxUsers);
@@ -152,7 +160,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Virtual host
 
-		updateVirtualHostname(company.getCompanyId(), virtualHostname);
+		company = updateVirtualHostname(
+			company.getCompanyId(), virtualHostname);
 
 		return company;
 	}
@@ -185,6 +194,10 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 	 * @return the company with the web domain and mail domain
 	 */
 	@Override
+	@Transactional(
+		isolation = Isolation.PORTAL,
+		rollbackFor = {PortalException.class, SystemException.class}
+	)
 	public Company checkCompany(String webId, String mx)
 		throws PortalException {
 
@@ -236,7 +249,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			// Virtual host
 
 			if (webId.equals(PropsValues.COMPANY_DEFAULT_WEB_ID)) {
-				updateVirtualHostname(companyId, _DEFAULT_VIRTUAL_HOST);
+				company = updateVirtualHostname(
+					companyId, _DEFAULT_VIRTUAL_HOST);
 			}
 
 			// Demo settings
@@ -270,18 +284,14 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			}
 		}
 
-		// Search engine
-
 		CompanyProvider currentCompanyProvider =
 			_companyProviderWrapper.getCompanyProvider();
 
 		try {
-			long companyId = company.getCompanyId();
+			final long companyId = company.getCompanyId();
 
 			_companyProviderWrapper.setCompanyProvider(
 				new CustomCompanyProvider(companyId));
-
-			SearchEngineHelperUtil.initialize(companyId);
 
 			// Key
 
@@ -408,6 +418,35 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			// Portlets
 
 			portletLocalService.checkPortlets(companyId);
+
+			final Company finalCompany = company;
+
+			TransactionCommitCallbackUtil.registerCallback(
+				new Callable<Void>() {
+
+					@Override
+					public Void call() throws Exception {
+
+						synchronized (_companyServiceRegistrations) {
+							if (!_companyServiceRegistrations.containsKey(
+									companyId)) {
+
+								Registry registry = RegistryUtil.getRegistry();
+
+								ServiceRegistration<Company>
+									serviceRegistration =
+										registry.registerService(
+											Company.class, finalCompany);
+
+								_companyServiceRegistrations.put(
+									companyId, serviceRegistration);
+							}
+						}
+
+						return null;
+					}
+
+				});
 		}
 		finally {
 			_companyProviderWrapper.setCompanyProvider(currentCompanyProvider);
@@ -830,7 +869,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Virtual host
 
-		updateVirtualHostname(companyId, virtualHostname);
+		company = updateVirtualHostname(companyId, virtualHostname);
 
 		return company;
 	}
@@ -901,7 +940,7 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 		// Virtual host
 
-		updateVirtualHostname(companyId, virtualHostname);
+		company = updateVirtualHostname(companyId, virtualHostname);
 
 		return company;
 	}
@@ -1353,6 +1392,17 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 			public Void call() throws Exception {
 				PortalInstances.removeCompany(companyId);
 
+				SearchEngineHelperUtil.removeCompany(companyId);
+
+				synchronized (_companyServiceRegistrations) {
+					ServiceRegistration<Company> serviceRegistration =
+						_companyServiceRegistrations.remove(companyId);
+
+					if (serviceRegistration != null) {
+						serviceRegistration.unregister();
+					}
+				}
+
 				return null;
 			}
 
@@ -1398,7 +1448,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 		accountPersistence.update(account);
 	}
 
-	protected void updateVirtualHostname(long companyId, String virtualHostname)
+	protected Company updateVirtualHostname(
+			long companyId, String virtualHostname)
 		throws CompanyVirtualHostException {
 
 		if (Validator.isNotNull(virtualHostname)) {
@@ -1425,6 +1476,8 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 				virtualHostPersistence.remove(virtualHost);
 			}
 		}
+
+		return companyPersistence.fetchByPrimaryKey(companyId);
 	}
 
 	protected void validateLanguageIds(String languageIds)
@@ -1647,6 +1700,9 @@ public class CompanyLocalServiceImpl extends CompanyLocalServiceBaseImpl {
 
 	@BeanReference(type = CompanyProviderWrapper.class)
 	private CompanyProviderWrapper _companyProviderWrapper;
+
+	private final Map<Long, ServiceRegistration<Company>>
+		_companyServiceRegistrations = new HashMap<>();
 
 	private class CustomCompanyProvider implements CompanyProvider {
 

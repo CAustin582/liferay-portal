@@ -47,7 +47,6 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true,
 	property = {
-		"javax.portlet.name=" + WikiPortletKeys.WIKI,
 		"javax.portlet.name=" + WikiPortletKeys.WIKI_ADMIN,
 		"mvc.command.name=/wiki/import_pages"
 	},
@@ -131,6 +130,6 @@ public class ImportPagesMVCActionCommand extends BaseMVCActionCommand {
 		_wikiNodeService = wikiNodeService;
 	}
 
-	private volatile WikiNodeService _wikiNodeService;
+	private WikiNodeService _wikiNodeService;
 
 }

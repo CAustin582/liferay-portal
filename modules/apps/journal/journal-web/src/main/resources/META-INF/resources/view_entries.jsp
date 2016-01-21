@@ -107,7 +107,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 							%>
 
 							<h6 class="text-default">
-								<liferay-ui:message arguments="<%= new String[] {curArticle.getUserName(), modifiedDateDescription} %>" key="x-modified-x-ago" />
+								<liferay-ui:message arguments="<%= new String[] {HtmlUtil.escape(curArticle.getUserName()), modifiedDateDescription} %>" key="x-modified-x-ago" />
 							</h6>
 
 							<h5>
@@ -155,7 +155,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 									</liferay-frontend:vertical-card>
 								</c:when>
 								<c:otherwise>
-									 <liferay-frontend:icon-vertical-card
+									<liferay-frontend:icon-vertical-card
 										actionJsp='<%= journalDisplayContext.isShowEditActions() ? "/article_action.jsp" : null %>'
 										actionJspServletContext="<%= application %>"
 										icon="web-content"
@@ -164,7 +164,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 										title="<%= curArticle.getTitle(locale) %>"
 										url="<%= rowURL != null ? rowURL.toString() : null %>"
 									>
-										 <%@ include file="/article_vertical_card.jspf" %>
+										<%@ include file="/article_vertical_card.jspf" %>
 									</liferay-frontend:icon-vertical-card>
 								</c:otherwise>
 							</c:choose>
@@ -185,7 +185,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 
 						<liferay-ui:search-container-column-text
 							name="author"
-							value="<%= PortalUtil.getUserName(curArticle) %>"
+							value="<%= HtmlUtil.escape(PortalUtil.getUserName(curArticle)) %>"
 						/>
 
 						<liferay-ui:search-container-column-status
@@ -260,7 +260,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 							%>
 
 							<h6 class="text-default">
-								<liferay-ui:message arguments="<%= new String[] {curFolder.getUserName(), createDateDescription} %>" key="x-modified-x-ago" />
+								<liferay-ui:message arguments="<%= new String[] {HtmlUtil.escape(curFolder.getUserName()), createDateDescription} %>" key="x-modified-x-ago" />
 							</h6>
 
 							<h5>
@@ -270,7 +270,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 							</h5>
 
 							<h6 class="text-default">
-								<span><%= curFolder.getDescription() %></span>
+								<span><%= HtmlUtil.escape(curFolder.getDescription()) %></span>
 							</h6>
 						</liferay-ui:search-container-column-text>
 
@@ -315,7 +315,7 @@ String searchContainerId = ParamUtil.getString(request, "searchContainerId");
 
 						<liferay-ui:search-container-column-text
 							name="author"
-							value="<%= PortalUtil.getUserName(curFolder) %>"
+							value="<%= HtmlUtil.escape(PortalUtil.getUserName(curFolder)) %>"
 						/>
 
 						<liferay-ui:search-container-column-text

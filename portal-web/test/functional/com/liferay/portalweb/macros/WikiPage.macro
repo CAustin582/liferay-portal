@@ -4,7 +4,7 @@
 	<command name="_editEmptyFrontPage">
 		<execute function="AssertClick" locator1="Wiki#FRONTPAGE_DEFAULT_MESSAGE" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 	</command>
 
 	<command name="addAttachmentViaPageDetailsPG">
@@ -32,9 +32,9 @@
 
 		<var name="key_wikiChildPageTitle" value="${wikiChildPageTitle}" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiChildPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiChildPageTitle}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiChildPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiChildPageContent}" />
 
 		<execute function="Click" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -46,13 +46,13 @@
 
 		<var name="key_wikiChildPageTitle" value="${wikiChildPageTitle}" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiChildPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiChildPageTitle}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiChildPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiChildPageContent}" />
 
 		<execute function="Click" locator1="Button#PUBLISH" value1="Publish" />
 
-		<execute function="AssertTextEquals" locator1="PGWikidisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikidisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addComment">
@@ -111,9 +111,9 @@
 
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiPageTitle}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -125,9 +125,9 @@
 
 		<var name="key_wikiChildPageTitle" value="${wikiChildPageTitle}" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiChildPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiChildPageTitle}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiChildPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiChildPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -140,9 +140,9 @@
 
 		<var name="key_wikiChildPageTitle" value="${wikiChildPageTitle}" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiChildPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiChildPageTitle}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiChildPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiChildPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -153,7 +153,8 @@
 	<command name="addFrontPageCP">
 		<execute function="AssertClick" locator1="Message#INFO_LINK" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiFrontPageContent}" />
+		<execute function="AssertTextEquals" locator1="Message#INFO_2" value1="This page does not exist yet. Use the form below to create it." />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiFrontPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -162,6 +163,8 @@
 
 	<command name="addFrontPageDraftPG">
 		<execute function="AssertTextEquals" locator1="Wiki#FRONTPAGE_DEFAULT_MESSAGE" value1="This page is empty. Edit it to add some text." />
+
+		<execute function="AssertTextEquals" locator1="Message#INFO_2" value1="This page does not exist yet. Use the form below to create it." />
 		<execute function="AssertTextNotPresent" value1="${wikiPageContent}" />
 
 		<execute function="AssertClick" locator1="Wiki#LINK_EDIT" value1="Edit" />
@@ -187,14 +190,16 @@
 			</then>
 		</if>
 
-		<execute function="AssertClick" locator1="Wiki#FRONTPAGE_DEFAULT_MESSAGE" value1="This page is empty. Edit it to add some text." />
+		<execute function="AssertClick#assertTextClickAtAndPause" locator1="Wiki#FRONTPAGE_DEFAULT_MESSAGE" value1="This page is empty. Edit it to add some text." />
+
+		<execute function="AssertTextEquals" locator1="Message#INFO_2" value1="This page does not exist yet. Use the form below to create it." />
 
 		<if>
 			<equals arg1="${creoleSource}" arg2="true" />
 			<then>
 				<execute function="Select#pauseSelect" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="Creole" />
 
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+				<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 			</then>
 			<elseif>
 				<equals arg1="${htmlSource}" arg2="true" />
@@ -202,11 +207,11 @@
 					<execute function="SelectNoError#pauseSelect" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="HTML" />
 					<execute function="Confirm" value1="You may lose some formatting when switching from Creole to HTML. Do you want to continue?" />
 
-					<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+					<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 				</then>
 			</elseif>
 			<else>
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+				<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 			</else>
 		</if>
 
@@ -239,21 +244,21 @@
 
 		<execute function="AssertClick" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="Source" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
-		<execute function="AssertTextEquals" locator1="PGWikidisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikidisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addFrontPagePGViaWD">
 		<execute function="AssertClick" locator1="PGWikidisplay#ADD_FRONTPAGE" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
-		<execute function="AssertTextEquals" locator1="PGWikidisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikidisplay#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addFrontPageWithWorkflowPG">
@@ -283,7 +288,7 @@
 
 		<execute function="Click" locator1="Button#PUBLISH_LOCALIZED" />
 
-		<execute function="AssertTextEquals" locator1="Message#SUCCESS_LOCALIZED" value1="${successMessage}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS_LOCALIZED" value1="${successMessage}" />
 
 		<execute function="AssertElementPresent" locator1="//html[@dir='${textDirection}']" />
 
@@ -295,25 +300,25 @@
 	<command name="addPageWithWorkflowPG">
 		<execute function="Click#makeVisibleClickAt" locator1="Portlet#ICON_PLUS_SIGN" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiPageTitle}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#SUBMIT_FOR_PUBLICATION" value1="Submit for Publication" />
 
-		<execute function="AssertTextEquals" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addPageWithWorkflowPGViaWD">
 		<execute function="Click#makeVisibleClickAt" locator1="Portlet#ICON_PLUS_SIGN" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiPageTitle}" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#SUBMIT_FOR_PUBLICATION" value1="Submit for Publication" />
 
-		<execute function="AssertTextEquals" locator1="PGWikidisplayAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikidisplayAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addPermissionsPGCmd">
@@ -345,7 +350,7 @@
 	<command name="addPG">
 		<execute function="Click#makeVisibleClickAt" locator1="Portlet#ICON_PLUS_SIGN" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiPageTitle}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiPageTitle}" />
 
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
@@ -356,37 +361,7 @@
 			</then>
 		</if>
 
-		<if>
-			<equals arg1="${creoleSource}" arg2="true" />
-			<then>
-				<execute function="Select#pauseSelect" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="Creole" />
-
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
-			</then>
-			<elseif>
-				<equals arg1="${htmlSource}" arg2="true" />
-				<then>
-					<execute function="SelectNoError#pauseSelect" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="HTML" />
-
-					<execute function="Confirm" value1="You may lose some formatting when switching from Creole to HTML. Do you want to continue?" />
-
-					<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${welcomeToLiferay}" />
-				</then>
-			</elseif>
-			<elseif>
-				<equals arg1="${mediawikiSource}" arg2="true" />
-				<then>
-					<execute function="SelectNoError#pauseSelect" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="MediaWiki" />
-
-					<execute function="Confirm" value1="You may lose some formatting when switching from Creole to MediaWiki. Do you want to continue?" />
-
-					<execute function="Type" locator1="Wiki#BODY_FIELD_MEDIAWIKI" value1="${wikiPageMediaWikiContent}" />
-				</then>
-			</elseif>
-			<else>
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
-			</else>
-		</if>
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 
 		<if>
 			<equals arg1="${viewCKEditorResizer}" arg2="true" />
@@ -427,7 +402,7 @@
 		</if>
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
-		<execute function="AssertTextEquals" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="addTagPGCmd">
@@ -576,6 +551,8 @@
 				<execute function="AssertTextEquals" locator1="PGWikiWikipageHistory#COMPARE_VERSIONS_TEXT_MODE_TABLE_CONTENT_NEW_1" value1="${wikiPageContentCompareNew}" />
 			</then>
 			<else>
+				<var name="key_wikiPageVersionDiff" value="${wikiPageVersionDiff}" />
+
 				<execute function="AssertTextEquals" locator1="Wiki#COMPARE_VERSIONS_DIFF" value1="${wikiPageVersionDiff}" />
 			</else>
 		</if>
@@ -584,18 +561,18 @@
 	<command name="copyPG">
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MenuItem#COPY" value1="Copy" />
 
-		<execute function="Type" locator1="TextInput#TITLE" value1="${wikiPageTitleCopy}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#TITLE_FIELD" value1="${wikiPageTitleCopy}" />
 
 		<if>
 			<equals arg1="${creole}" arg2="true" />
 			<then>
 				<execute function="Select#pauseSelect" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="Creole" />
 
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+				<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 			</then>
 			<elseif>
 				<equals arg1="${html}" arg2="true" />
@@ -604,7 +581,7 @@
 
 					<execute function="Confirm" value1="You may lose some formatting when switching from Creole to HTML. Do you want to continue?" />
 
-					<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${welcomeToLiferay}" />
+					<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${welcomeToLiferay}" />
 				</then>
 			</elseif>
 			<elseif>
@@ -618,11 +595,11 @@
 				</then>
 			</elseif>
 			<else>
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContentCopy}" />
+				<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContentCopy}" />
 
 				<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
-				<execute function="AssertTextEquals" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+				<execute function="AssertTextEquals#assertPartialText" locator1="PGWikiAllpages#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 			</else>
 		</if>
 	</command>
@@ -651,7 +628,7 @@
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
 		<execute function="AssertTextEquals" locator1="Wiki#ALL_PAGES_TABLE_PAGE_NAME" value1="${wikiPageTitle}" />
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 		<execute function="AssertClick" locator1="MenuItem#MOVE_TO_THE_RECYCLE_BIN" value1="Move to the Recycle Bin" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="The ${assetType} ${wikiPageTitle} was moved to the Recycle Bin. Undo" />
 	</command>
@@ -659,7 +636,7 @@
 	<command name="deleteFrontPagePGViaWD">
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 		<execute function="AssertClick" locator1="PGWikidisplayAllpages#WIKI_PAGE_MENULIST_RECYCLE_BIN" value1="Move to the Recycle Bin" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="The ${assetType} ${wikiPageTitle} was moved to the Recycle Bin. Undo" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="Wiki#ALL_PAGES_TABLE_REVISION" value1="1.0" />
@@ -670,7 +647,7 @@
 	<command name="deletePG">
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 		<execute function="AssertClick" locator1="MenuItem#MOVE_TO_THE_RECYCLE_BIN" value1="Move to the Recycle Bin" />
 		<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS" value1="The ${assetType} ${wikiPageTitle} was moved to the Recycle Bin. Undo" />
 
@@ -717,7 +694,9 @@
 	<command name="editFrontPagePG">
 		<execute function="AssertClick" locator1="Wiki#LINK_EDIT" value1="Edit" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContentEdit}" />
+		<execute function="Pause" locator1="3000" />
+
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContentEdit}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -731,7 +710,7 @@
 		<execute function="Click" locator1="Wiki#DESCRIPTIVE_VIEW_ACTIONS" />
 		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContentEdit}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContentEdit}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -741,10 +720,10 @@
 	<command name="editPagePG">
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContentEdit}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContentEdit}" />
 
 		<if>
 			<equals arg1="${minorEdit}" arg2="true" />
@@ -769,7 +748,7 @@
 	<command name="linkOrphanPageHtmlPG">
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
 
@@ -843,14 +822,14 @@
 					<![CDATA[<p>${wikiPageContent} <a href="${siteNameURL}${pageNameURL}/-/wiki${wikiNodeNameURL}${wikiPage2TitleURL}">Link to ${wikiPage2Title}</a></p>]]>
 				</var>
 
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContentURL}" />
+				<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContentURL}" />
 			</then>
 			<else>
 				<var name="wikiPageContentLinkHTML">
 					<![CDATA[<p>${wikiPageContent} <a href="${pageAccessURL}${siteNameURL}${pageStagingURL}${pageNameURL}/-/wiki${wikiNodeNameURL}${wikiPage2TitleURL}">Link to ${wikiPage2Title}</a></p>]]>
 				</var>
 
-				<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContentLinkHTML}" />
+				<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContentLinkHTML}" />
 			</else>
 		</if>
 
@@ -868,7 +847,7 @@
 
 		<execute function="Select" locator1="Wiki#ADD_PAGE_FORMAT_DROPDOWN" value1="Creole" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPage2Link}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPage2Link}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -941,7 +920,7 @@
 		<execute function="AssertTextEquals" locator1="PGWikiWikipageRedirect#INFO_MESSAGE" value1="This page is currently redirected to ${wikiPageTitleRename}." />
 		<execute function="AssertClick" locator1="Button#REMOVE_REDIRECT" value1="Remove Redirect" />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPage2Content}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPage2Content}" />
 
 		<execute function="AssertClick" locator1="Button#PUBLISH" value1="Publish" />
 
@@ -957,10 +936,17 @@
 		<execute function="AssertClick" locator1="Wiki#LINK_PERMISSIONS" value1="Permissions" />
 
 		<execute function="SelectFrame" locator1="Permissions#PERMISSIONS_IFRAME" />
-		<execute function="AssertTextEquals" locator1="Permissions#HEADER_TITLE" value1="${wikiPageTitle}" />
+
+		<var name="key_assetTitle" value="${wikiPageTitle}" />
+
+		<execute function="AssertTextEquals" locator1="Permissions#ASSET_TITLE" value1="${wikiPageTitle}" />
+
 		<execute function="Uncheck" locator1="Permissions#CONFIGURATION_PERMISSIONS_VIEW_CHECKBOX" />
+
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
-		<execute function="AssertTextEquals" locator1="Permissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+
+		<execute function="AssertTextEquals#assertPartialText" locator1="Permissions#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+
 		<execute function="SelectFrame" value1="relative=top" />
 	</command>
 
@@ -1007,7 +993,7 @@
 
 		<execute function="AssertClick" locator1="Wiki#HISTORY_VERSIONS_REVERT_LINK" value1="Revert" />
 
-		<execute function="AssertTextEquals" locator1="PGWikiWikipageHistory#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikiWikipageHistory#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<var name="key_wikiPageRevision" value="1.2" />
 		<var name="key_wikiVersionSummary" value="${wikiVersion2Summary}" />
@@ -1029,7 +1015,7 @@
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
 		<execute function="AssertClick" locator1="Wiki#HISTORY_VERSIONS_REVERT_LINK" value1="Revert" />
-		<execute function="AssertTextEquals" locator1="PGWikiWikipageHistory#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikiWikipageHistory#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 
 		<var name="key_wikiPageRevision" value="${wikiPageRevisionNew}" />
 		<var name="key_wikiVersionSummary" value="${wikiVersionSummary}" />
@@ -1040,7 +1026,7 @@
 	<command name="saveAsDraftFrontPagePG">
 		<execute function="AssertClick" locator1="Wiki#FRONTPAGE_DEFAULT_MESSAGE" value1="This page is empty. Edit it to add some text." />
 
-		<execute function="Type#typeAlloyEditor" locator1="Wiki#RICH_TEXT_EDITOR" value1="${wikiPageContent}" />
+		<execute function="Type#typeAlloyEditor" locator1="AlloyEditor#CONTENT_FIELD" value1="${wikiPageContent}" />
 
 		<execute function="AssertClick" locator1="Button#SAVE_AS_DRAFT" value1="Save as Draft" />
 
@@ -1084,7 +1070,7 @@
 		<execute function="AssertClick" locator1="Wiki#LINK_DETAILS" value1="Details" />
 
 		<execute function="AssertClick" locator1="Wiki#LINK_SUBSCRIBE_TO_PAGE" value1="Subscribe" />
-		<execute function="AssertTextEquals" locator1="PGWikiWikipageDetails#SUCCESS_MESSAGE" value1="Your request completed successfully." />
+		<execute function="AssertTextEquals#assertPartialText" locator1="PGWikiWikipageDetails#SUCCESS_MESSAGE" value1="Your request completed successfully." />
 	</command>
 
 	<command name="tearDownCP">
@@ -1171,6 +1157,8 @@
 				<execute function="AssertElementPresent" locator1="Wiki#ATTACHMENT_TABLE_SIZE" />
 			</else>
 		</if>
+
+		<execute function="Click" locator1="Icon#BODY_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertTextEquals" locator1="Wiki#ATTACHMENT_TABLE_REMOVE" value1="Remove" />
 	</command>

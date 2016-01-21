@@ -14,7 +14,7 @@
 
 package com.liferay.portal.security.sso.openid.internal.portlet.action;
 
-import com.liferay.portal.UserEmailAddressException;
+import com.liferay.portal.exception.UserEmailAddressException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.openid.OpenId;
@@ -141,7 +141,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Jorge Ferrer
  */
 @Component(
-	configurationPid = "com.liferay.portal.security.sso.openid.module.configuration.OpenIdConfiguration",
+	configurationPid = "com.liferay.portal.security.sso.openid.configuration.OpenIdConfiguration",
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + PortletKeys.FAST_LOGIN,
@@ -589,8 +589,8 @@ public class OpenIdLoginMVCActionCommand extends BaseMVCActionCommand {
 		OpenIdLoginMVCActionCommand.class);
 
 	private ConsumerManager _consumerManager;
-	private volatile OpenId _openId;
-	private volatile OpenIdProviderRegistry _openIdProviderRegistry;
-	private volatile UserLocalService _userLocalService;
+	private OpenId _openId;
+	private OpenIdProviderRegistry _openIdProviderRegistry;
+	private UserLocalService _userLocalService;
 
 }

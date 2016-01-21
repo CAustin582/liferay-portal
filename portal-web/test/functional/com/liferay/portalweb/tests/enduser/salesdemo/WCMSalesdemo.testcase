@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="Web Content Display" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -37,7 +30,7 @@
 	</tear-down>
 
 	<command name="IFrameDemo" priority="4">
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="columnName" value="1_column" />
 			<var name="pageName" value="IFrame Page" />
 			<var name="pageType" value="Empty Page" />
@@ -139,7 +132,7 @@
 			<var name="webContentContent" value="DHS Content" />
 		</execute>
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Sales Page" />
 		</execute>
 

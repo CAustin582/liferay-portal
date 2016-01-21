@@ -15,7 +15,7 @@
 package com.liferay.exportimport.content.processor.base;
 
 import com.liferay.exportimport.content.processor.ExportImportContentProcessor;
-import com.liferay.portal.NoSuchLayoutException;
+import com.liferay.portal.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -46,7 +46,7 @@ import com.liferay.portal.service.LayoutLocalServiceUtil;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portlet.documentlibrary.NoSuchFileEntryException;
+import com.liferay.portlet.documentlibrary.exception.NoSuchFileEntryException;
 import com.liferay.portlet.documentlibrary.model.DLFileEntry;
 import com.liferay.portlet.documentlibrary.service.DLAppLocalServiceUtil;
 import com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil;
@@ -115,7 +115,7 @@ public class BaseExportImportContentProcessor
 
 		validateDLReferences(groupId, content);
 		validateLayoutReferences(groupId, content);
-		validateLinksToLayoutsReferences(groupId, content);
+		validateLinksToLayoutsReferences(content);
 	}
 
 	protected void deleteTimestampParameters(StringBuilder sb, int beginPos) {
@@ -515,7 +515,7 @@ public class BaseExportImportContentProcessor
 
 			String url = content.substring(beginPos + offset, endPos);
 
-			StringBundler urlSB = new StringBundler(5);
+			StringBundler urlSB = new StringBundler(6);
 
 			try {
 				url = replaceExportHostname(
@@ -707,7 +707,7 @@ public class BaseExportImportContentProcessor
 
 				String oldLinkToLayout = matcher.group(0);
 
-				StringBundler sb = new StringBundler(5);
+				StringBundler sb = new StringBundler(3);
 
 				sb.append(type);
 				sb.append(StringPool.AT);
@@ -1095,7 +1095,7 @@ public class BaseExportImportContentProcessor
 
 			String url = content.substring(beginPos + offset, endPos);
 
-			StringBundler urlSB = new StringBundler(5);
+			StringBundler urlSB = new StringBundler(1);
 
 			url = replaceExportHostname(groupId, url, urlSB);
 
@@ -1203,18 +1203,19 @@ public class BaseExportImportContentProcessor
 		}
 	}
 
-	protected void validateLinksToLayoutsReferences(
-			long groupId, String content)
+	protected void validateLinksToLayoutsReferences(String content)
 		throws PortalException {
 
 		Matcher matcher = exportLinksToLayoutPattern.matcher(content);
 
 		while (matcher.find()) {
-			long layoutId = GetterUtil.getLong(matcher.group(1));
+			long groupId = GetterUtil.getLong(matcher.group(5));
 
 			String type = matcher.group(2);
 
 			boolean privateLayout = type.startsWith("private");
+
+			long layoutId = GetterUtil.getLong(matcher.group(1));
 
 			Layout layout = LayoutLocalServiceUtil.fetchLayout(
 				groupId, privateLayout, layoutId);
@@ -1279,17 +1280,17 @@ public class BaseExportImportContentProcessor
 	protected static final String PRIVATE_GROUP_SERVLET_MAPPING =
 		PropsUtil.get(
 			PropsKeys.LAYOUT_FRIENDLY_URL_PRIVATE_GROUP_SERVLET_MAPPING) +
-			StringPool.SLASH;
+				StringPool.SLASH;
 
 	protected static final String PRIVATE_USER_SERVLET_MAPPING =
 		PropsUtil.get(
 			PropsKeys.LAYOUT_FRIENDLY_URL_PRIVATE_USER_SERVLET_MAPPING) +
-			StringPool.SLASH;
+				StringPool.SLASH;
 
 	protected static final String PUBLIC_GROUP_SERVLET_MAPPING =
 		PropsUtil.get(
 			PropsKeys.LAYOUT_FRIENDLY_URL_PUBLIC_SERVLET_MAPPING) +
-			StringPool.SLASH;
+				StringPool.SLASH;
 
 	protected static final Pattern exportLinksToLayoutPattern = Pattern.compile(
 		"\\[([\\d]+)@(private(-group|-user)?|public)(@([\\d]+))?\\]");

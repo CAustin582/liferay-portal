@@ -127,7 +127,7 @@ if (portletTitleBasedNavigation) {
 			<aui:fieldset>
 				<c:if test="<%= !validMoveFolders.isEmpty() %>">
 					<div class="move-list-info">
-						<h4><liferay-ui:message arguments="<%= validMoveFolders.size() %>" key="x-folders-ready-to-be-moved" translateArguments="<%= false %>" /></h4>
+						<h4><liferay-ui:message arguments="<%= validMoveFolders.size() %>" key="x-folders-are-ready-to-be-moved" translateArguments="<%= false %>" /></h4>
 					</div>
 
 					<div class="move-list">
@@ -141,7 +141,7 @@ if (portletTitleBasedNavigation) {
 							%>
 
 								<li class="move-folder">
-									<i class="<%= assetRenderer.getIconCssClass() %>"></i>
+									<liferay-ui:icon icon="<%= assetRenderer.getIconCssClass() %>" markupView="lexicon" />
 
 									<span class="folder-title">
 										<%= HtmlUtil.escape(folder.getName()) %>
@@ -172,7 +172,7 @@ if (portletTitleBasedNavigation) {
 							%>
 
 								<li class="icon-warning-sign move-error move-folder">
-									<i class="<%= assetRenderer.getIconCssClass() %>"></i>
+									<liferay-ui:icon icon="<%= assetRenderer.getIconCssClass() %>" markupView="lexicon" />
 
 									<span class="folder-title">
 										<%= HtmlUtil.escape(folder.getName()) %>
@@ -202,7 +202,7 @@ if (portletTitleBasedNavigation) {
 
 				<c:if test="<%= !validMoveFileEntries.isEmpty() %>">
 					<div class="move-list-info">
-						<h4><liferay-ui:message arguments="<%= validMoveFileEntries.size() %>" key="x-files-ready-to-be-moved" translateArguments="<%= false %>" /></h4>
+						<h4><liferay-ui:message arguments="<%= validMoveFileEntries.size() %>" key="x-files-are-ready-to-be-moved" translateArguments="<%= false %>" /></h4>
 					</div>
 
 					<div class="move-list">
@@ -216,7 +216,7 @@ if (portletTitleBasedNavigation) {
 							%>
 
 								<li class="move-file">
-									<i class="<%= assetRenderer.getIconCssClass() %>"></i>
+									<liferay-ui:icon icon="<%= assetRenderer.getIconCssClass() %>" markupView="lexicon" />
 
 									<span class="file-title" title="<%= HtmlUtil.escapeAttribute(validMoveFileEntry.getTitle()) %>">
 										<%= HtmlUtil.escape(validMoveFileEntry.getTitle()) %>
@@ -249,7 +249,7 @@ if (portletTitleBasedNavigation) {
 							%>
 
 								<li class="icon-warning-sign move-error move-file">
-									<i class="<%= assetRenderer.getIconCssClass() %>"></i>
+									<liferay-ui:icon icon="<%= assetRenderer.getIconCssClass() %>" markupView="lexicon" />
 
 									<span class="file-title" title="<%= HtmlUtil.escapeAttribute(invalidMoveFileEntry.getTitle()) %>">
 										<%= HtmlUtil.escape(invalidMoveFileEntry.getTitle()) %>
@@ -279,7 +279,7 @@ if (portletTitleBasedNavigation) {
 
 				<c:if test="<%= !validShortcutEntries.isEmpty() %>">
 					<div class="move-list-info">
-						<h4><liferay-ui:message arguments="<%= validShortcutEntries.size() %>" key="x-shortcuts-ready-to-be-moved" translateArguments="<%= false %>" /></h4>
+						<h4><liferay-ui:message arguments="<%= validShortcutEntries.size() %>" key="x-shortcuts-are-ready-to-be-moved" translateArguments="<%= false %>" /></h4>
 					</div>
 
 					<div class="move-list">
@@ -374,6 +374,7 @@ if (portletTitleBasedNavigation) {
 				{
 					dialog: {
 						constrain: true,
+						destroyOnHide: true,
 						modal: true,
 						width: 680
 					},

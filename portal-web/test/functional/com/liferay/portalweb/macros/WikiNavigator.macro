@@ -69,7 +69,7 @@
 	<command name="gotoEntryCopyViaPGTable">
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" value1="${wikiPageTitle}" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MenuItem#COPY" value1="Copy" />
 	</command>
@@ -77,7 +77,9 @@
 	<command name="gotoEntryEditViaPGTable">
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="AssertClick" locator1="Wiki#ALL_PAGES_TABLE_WIKI_PAGE_TITLE" value1="${wikiPageTitle}" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
+
+		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
 	</command>
 
 	<command name="gotoEntryMoveViaTable">
@@ -85,7 +87,7 @@
 
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_ACTIONS_DROPDOWN" value1="${wikiPageTitle}" />
+		<execute function="Click" locator1="Wiki#ALL_PAGES_TABLE_VERTICAL_ELLIPSIS" />
 
 		<execute function="AssertClick" locator1="MenuItem#MOVE" value1="Move" />
 	</command>
@@ -139,7 +141,7 @@
 
 		<var name="key_wikiPageTitle" value="${wikiPageTitle}" />
 
-		<execute function="AssertClick" locator1="Wiki#ALL_PAGES_TABLE_PAGE_NAME" value1="${wikiPageTitle}" />
+		<execute function="AssertClick#assertTextClickAtAndWait" locator1="Wiki#ALL_PAGES_TABLE_PAGE_NAME" value1="${wikiPageTitle}" />
 	</command>
 
 	<command name="gotoPGViaWD">

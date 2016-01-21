@@ -42,6 +42,8 @@ portletURL.setParameter("app", app);
 portletURL.setParameter("state", state);
 portletURL.setParameter("orderByType", orderByType);
 
+renderResponse.setTitle(appDisplay.getTitle());
+
 MarketplaceAppManagerUtil.addPortletBreadcrumbEntry(appDisplay, request, renderResponse);
 %>
 
@@ -53,7 +55,7 @@ MarketplaceAppManagerUtil.addPortletBreadcrumbEntry(appDisplay, request, renderR
 
 		<aui:nav-item
 			href="<%= viewURL %>"
-			label="module-groups"
+			label="apps"
 			selected="<%= true %>"
 		/>
 	</aui:nav>
@@ -95,7 +97,7 @@ MarketplaceAppManagerUtil.addPortletBreadcrumbEntry(appDisplay, request, renderR
 	/>
 
 	<liferay-ui:search-container
-		emptyResultsMessage="no-module-groups-were-found"
+		emptyResultsMessage="no-apps-were-found"
 		id="moduleGroupDisplays"
 		iteratorURL="<%= portletURL %>"
 	>

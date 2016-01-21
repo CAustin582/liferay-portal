@@ -92,7 +92,13 @@ if (portletTitleBasedNavigation) {
 
 		<aui:fieldset-group markupView="lexicon">
 			<aui:fieldset>
-				<c:if test="<%= folder != null %>">
+				<aui:input autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>" name="name" />
+
+				<aui:input name="description" />
+			</aui:fieldset>
+
+			<c:if test="<%= folder != null %>">
+				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="parent-folder">
 
 					<%
 					String parentFolderName = LanguageUtil.get(request, "home");
@@ -119,6 +125,7 @@ if (portletTitleBasedNavigation) {
 										{
 											dialog: {
 												constrain: true,
+												destroyOnHide: true,
 												modal: true,
 												width: 680
 											},
@@ -148,13 +155,9 @@ if (portletTitleBasedNavigation) {
 						<aui:button disabled="<%= (parentFolderId <= 0) %>" name="removeFolderButton" onClick="<%= taglibRemoveFolder %>" value="remove" />
 					</div>
 
-					<aui:input disabled="<%= mergeWithParentFolderDisabled %>" label="merge-with-parent-folder" name="mergeWithParentFolder" type="checkbox" />
-				</c:if>
-
-				<aui:input autoFocus="<%= windowState.equals(WindowState.MAXIMIZED) %>" name="name" />
-
-				<aui:input name="description" />
-			</aui:fieldset>
+					<aui:input disabled="<%= mergeWithParentFolderDisabled %>" label="merge-with-parent-folder" name="mergeWithParentFolder" type="toggle-switch" />
+				</aui:fieldset>
+			</c:if>
 
 			<liferay-ui:custom-attributes-available className="<%= BookmarksFolder.class.getName() %>">
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="custom-fields">

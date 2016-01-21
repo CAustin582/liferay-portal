@@ -16,11 +16,15 @@ package com.liferay.layout.admin.web.portlet.configuration.icon;
 
 import com.liferay.portal.kernel.portlet.configuration.icon.BasePortletConfigurationIcon;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.model.Group;
 import com.liferay.portal.model.Layout;
 import com.liferay.portal.model.LayoutConstants;
+import com.liferay.portal.model.LayoutRevision;
 import com.liferay.portal.security.permission.ActionKeys;
 import com.liferay.portal.service.LayoutLocalService;
 import com.liferay.portal.service.permission.LayoutPermissionUtil;
+import com.liferay.portlet.exportimport.staging.LayoutStagingUtil;
+import com.liferay.portlet.exportimport.staging.StagingUtil;
 
 import javax.portlet.PortletRequest;
 
@@ -59,6 +63,32 @@ public class CopyApplicationsPortletConfigurationIcon
 			Layout layout = getLayout();
 
 			if (layout == null) {
+				return false;
+			}
+
+			// Check if layout is incomplete
+
+			LayoutRevision layoutRevision = LayoutStagingUtil.getLayoutRevision(
+				layout);
+
+			boolean incomplete = false;
+
+			if (layoutRevision != null) {
+				long layoutSetBranchId = layoutRevision.getLayoutSetBranchId();
+
+				incomplete = StagingUtil.isIncomplete(
+					layout, layoutSetBranchId);
+			}
+
+			if (incomplete) {
+				return false;
+			}
+
+			// Check if layout is a layout prototype
+
+			Group group = layout.getGroup();
+
+			if (group.isLayoutPrototype()) {
 				return false;
 			}
 

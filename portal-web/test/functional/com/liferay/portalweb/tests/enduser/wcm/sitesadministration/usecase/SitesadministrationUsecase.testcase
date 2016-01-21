@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="Site Administration" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -52,6 +45,8 @@
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
 
+		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
+
 		<execute macro="Organization#addSiteCP">
 			<var name="organizationSite" value="Community Site" />
 			<var name="orgName" value="Organization Name 1" />
@@ -60,6 +55,8 @@
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
+
+		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
 
 		<execute macro="Organization#manageMembershipOptionsInSites">
 			<var name="allowManualMembershipManagement" value="true" />
@@ -90,6 +87,8 @@
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
 
+		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
+
 		<execute macro="Organization#addSiteCP">
 			<var name="organizationSite" value="Intranet Site" />
 			<var name="orgName" value="Organization Name 2" />
@@ -98,6 +97,8 @@
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
+
+		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
 
 		<execute macro="Organization#manageMembershipOptionsInSites">
 			<var name="allowManualMembershipManagement" value="true" />
@@ -215,23 +216,24 @@
 			<var name="siteName" value="Site A" />
 		</execute>
 
-		<execute macro="Page#gotoConfigurationCP">
-			<var name="portletName" value="Site Settings" />
-			<var name="siteScopeName" value="Site A" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site A" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Site Settings" />
 		</execute>
 
 		<execute function="Select" locator1="SitesEditSite#APPLICATION_ADAPTER_SELECT" value1="Sample Application Adapter Hook" />
 		<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
 
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Public Pages" />
+		<execute macro="ProductMenu#gotoControlPanelSites">
+			<var name="portlet" value="Sites" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
-			<var name="page" value="Public Pages" />
+		<execute macro="Page#add">
+			<var name="pageName" value="Test Page A" />
 			<var name="siteName" value="Site A" />
-			<var name="sitePageName" value="Test Page A" />
-			<var name="siteScopeSelected" value="true" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -256,15 +258,13 @@
 			<var name="siteName" value="Site B" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Public Pages" />
+		<execute macro="ProductMenu#gotoControlPanelSites">
+			<var name="portlet" value="Sites" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
-			<var name="page" value="Public Pages" />
+		<execute macro="Page#add">
+			<var name="pageName" value="Test Page B" />
 			<var name="siteName" value="Site B" />
-			<var name="sitePageName" value="Test Page B" />
-			<var name="siteScopeSelected" value="true" />
 		</execute>
 
 		<execute macro="Page#gotoPG">
@@ -281,9 +281,12 @@
 
 		<execute function="AssertTextNotPresent" locator1="BasePortlet#PORTLET_BODY" value1="This was modified by the Sample Application Adapter." />
 
-		<execute macro="Page#gotoConfigurationCP">
-			<var name="portletName" value="Site Settings" />
-			<var name="siteScopeName" value="Site B" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site B" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Site Settings" />
 		</execute>
 
 		<execute function="Select" locator1="SitesEditSite#APPLICATION_ADAPTER_SELECT" value1="Sample Application Adapter Hook" />
@@ -299,9 +302,12 @@
 
 		<execute function="AssertTextEquals#assertPartialText" locator1="BasePortlet#PORTLET_BODY" value1="This was modified by the Sample Application Adapter." />
 
-		<execute macro="Page#gotoConfigurationCP">
-			<var name="portletName" value="Site Settings" />
-			<var name="siteScopeName" value="Site B" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site B" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Site Settings" />
 		</execute>
 
 		<execute function="Select" locator1="SitesEditSite#APPLICATION_ADAPTER_SELECT" value1="None" />
@@ -343,6 +349,8 @@
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
 
+		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
+
 		<execute macro="Organization#addSiteCP">
 			<var name="organizationSite" value="Community Site" />
 			<var name="orgName" value="Site Organization Name" />
@@ -351,6 +359,8 @@
 		<execute macro="ProductMenu#gotoControlPanelUsers">
 			<var name="portlet" value="Users and Organizations" />
 		</execute>
+
+		<execute macro="UsersAndOrganizationsNavigator#gotoOrganizations" />
 
 		<execute macro="Organization#addMemberCP">
 			<var name="orgName" value="Site Organization Name" />
@@ -493,9 +503,10 @@
 			<var name="userLoginFullName" value="userfn userln" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="nonAdminUser" value="true" />
-			<var name="portletName" value="Site Memberships" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Memberships" />
 		</execute>
 
 		<execute macro="Site#assignRoleCP">
@@ -505,9 +516,10 @@
 			<var name="userScreenName" value="usersn" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="nonAdminUser" value="true" />
-			<var name="portletName" value="Site Memberships" />
+		<execute macro="Navigator#openURL" />
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Memberships" />
 		</execute>
 
 		<execute macro="Site#assignSiteRolesUserGroupsCP">
@@ -537,9 +549,9 @@
 			<var name="page" value="Private Pages" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Private Pages" />
-			<var name="sitePageName" value="Test Private Page" />
+			<var name="pageName" value="Test Private Page" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
@@ -646,9 +658,9 @@
 			<var name="page" value="Public Pages" />
 		</execute>
 
-		<execute macro="SitePage#addCP">
+		<execute macro="Page#add">
 			<var name="page" value="Public Pages" />
-			<var name="sitePageName" value="Site Page Name" />
+			<var name="pageName" value="Site Page Name" />
 			<var name="siteScopeSelected" value="true" />
 		</execute>
 
@@ -821,7 +833,7 @@
 			<var name="userEmailAddress" value="test@liferay.com" />
 		</execute>
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Site Page Name" />
 		</execute>
 
@@ -872,9 +884,12 @@
 			<var name="siteName" value="Site2 Name" />
 		</execute>
 
-		<execute macro="Page#gotoConfigurationCP">
-			<var name="portletName" value="Site Settings" />
-			<var name="siteScopeName" value="Site2 Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site2 Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Site Settings" />
 		</execute>
 
 		<execute macro="Site#editCP">
@@ -927,9 +942,12 @@
 			<var name="userEmailAddress" value="test@liferay.com" />
 		</execute>
 
-		<execute macro="Page#gotoConfigurationCP">
-			<var name="portletName" value="Site Settings" />
-			<var name="siteScopeName" value="Site1 Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site1 Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesConfiguration">
+			<var name="portlet" value="Site Settings" />
 		</execute>
 
 		<execute macro="Site#inactivateCP">
@@ -983,24 +1001,19 @@
 			<var name="siteFriendlyURLEdit" value="/russia2018" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Public Pages" />
-		</execute>
+		<execute macro="ProductMenu#gotoPublicPages" />
 
 		<for list="Home,Arenas" param="publicPageName" >
-			<execute macro="SitePage#addCP">
-				<var name="page" value="Public Pages" />
-				<var name="sitePageName" value="${publicPageName}" />
+			<execute macro="Page#add">
+				<var name="pageName" value="${publicPageName}" />
 				<var name="siteScopeSelected" value="true" />
 			</execute>
 		</for>
 
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Public Pages" />
-		</execute>
+		<execute macro="ProductMenu#gotoPublicPages" />
 
 		<for list="Arena Baltika,Zenit Arena,Kazan Arena" param="childPageName" >
-			<execute macro="SitePage#addChildCP">
+			<execute macro="Page#addChild">
 				<var name="childSitepageName" value="true" />
 				<var name="page" value="Public Pages" />
 				<var name="siteChildPageName" value="${childPageName}" />
@@ -1009,39 +1022,31 @@
 			</execute>
 		</for>
 
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Private Pages" />
-		</execute>
+		<execute macro="ProductMenu#gotoPrivatePages" />
 
 		<for list="Accomodations,Maps" param="privatePageName" >
-			<execute macro="SitePage#addCP">
-				<var name="page" value="Private Pages" />
-				<var name="sitePageName" value="${privatePageName}" />
+			<execute macro="Page#add">
+				<var name="pageName" value="${privatePageName}" />
+				<var name="sitePagePrivacy" value="Private" />
 				<var name="siteScopeSelected" value="true" />
 			</execute>
 		</for>
 
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Public Pages" />
-		</execute>
+		<execute macro="ProductMenu#gotoPublicPages" />
 
 		<execute macro="Page#changeLogoViaPageCP">
 			<var name="logoFile" value="Document_3.png" />
 			<var name="page" value="Public Pages" />
 		</execute>
 
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Public Pages" />
-		</execute>
+		<execute macro="ProductMenu#gotoPublicPages" />
 
 		<execute macro="SitePage#addJavaScript">
 			<var name="javaScript" value="alert('Welcome to Russia.');" />
-			<var name="page" value="Public Pages" />
+			<var name="sitePageName" value="Arenas" />
 		</execute>
 
 		<execute function="Open#openNoError" locator1="http://localhost:8080/web/russia2018" />
-
-		<execute function="Confirm#waitForConfirmation" value1="Welcome to Russia." />
 
 		<execute macro="Page#viewCustomLogoPG" />
 
@@ -1056,15 +1061,11 @@
 
 		<execute function="Open#openNoError" locator1="http://localhost:8080/web/russia2018" />
 
-		<execute function="Confirm#waitForConfirmation" value1="Welcome to Russia." />
-
-		<execute macro="ProductMenu#gotoSitesPages">
-			<var name="page" value="Public Pages" />
-		</execute>
+		<execute macro="ProductMenu#gotoPublicPages" />
 
 		<execute macro="SitePage#addJavaScript">
 			<var name="javaScript" value=" " />
-			<var name="page" value="Public Pages" />
+			<var name="sitePageName" value="Arenas" />
 		</execute>
 
 		<execute macro="ProductMenu#gotoControlPanelUsers">
@@ -1116,11 +1117,13 @@
 			<var name="pageNameList" value="Accomodations,Maps" />
 		</execute>
 
+		<execute function="Open" locator1="http://localhost:8080/web/russia2018" />
+
 		<execute macro="ProductMenu#gotoSitesPublishingTools">
-			<var name="portlet" value="Export/Import" />
+			<var name="portlet" value="Export" />
 		</execute>
 
-		<execute function="AssertClick" locator1="SitePages#TOOLBAR_EXPORT" value1="Export" />
+		<execute function="Click" locator1="Button#PLUS" />
 
 		<execute function="AssertClick" locator1="SitePagesExport#EXPORT_BUTTON" value1="Export" />
 
@@ -1209,9 +1212,12 @@
 			<var name="userGroupName" value="UG UserGroup2 Name" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Memberships" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Memberships" />
 		</execute>
 
 		<execute macro="Site#addMemberCP">
@@ -1246,9 +1252,12 @@
 			<var name="userScreenName" value="usersn2" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Teams" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Teams" />
 		</execute>
 
 		<execute macro="Team#addCP">
@@ -1256,9 +1265,12 @@
 			<var name="teamName" value="Site Team Name" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Teams" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Teams" />
 		</execute>
 
 		<execute macro="Team#assignMembersCP">
@@ -1266,9 +1278,12 @@
 			<var name="userScreenName" value="usersn1" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Teams" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Teams" />
 		</execute>
 
 		<execute macro="Team#assignMembersCP">
@@ -1277,9 +1292,12 @@
 			<var name="userScreenName" value="usersn2" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Teams" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Teams" />
 		</execute>
 
 		<execute macro="Team#assignUserGroups">
@@ -1287,9 +1305,12 @@
 			<var name="userGroupName" value="UG UserGroup1 Name" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Teams" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Teams" />
 		</execute>
 
 		<execute macro="Team#assignUserGroups">
@@ -1404,16 +1425,19 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Teams" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Teams" />
 		</execute>
 
 		<execute macro="Team#viewDefaultCP">
 			<var name="teamName" value="Site Team Name" />
 		</execute>
 
-		<execute macro="Page#addPG">
+		<execute macro="Page#add">
 			<var name="pageName" value="Blog Page Template" />
 			<var name="pageTemplateName" value="Blog" />
 		</execute>
@@ -1494,9 +1518,12 @@
 			<var name="siteName" value="Site Name" />
 		</execute>
 
-		<execute macro="Page#gotoUsersCP">
-			<var name="portletName" value="Site Teams" />
-			<var name="siteScopeName" value="Site Name" />
+		<execute macro="ProductMenu#gotoSite">
+			<var name="site" value="Site Name" />
+		</execute>
+
+		<execute macro="ProductMenu#gotoSitesUsers">
+			<var name="portlet" value="Site Teams" />
 		</execute>
 
 		<execute macro="Team#addCP">

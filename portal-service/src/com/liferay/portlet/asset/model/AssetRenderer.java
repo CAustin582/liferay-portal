@@ -55,12 +55,6 @@ public interface AssetRenderer<T> extends Renderer {
 
 	public String[] getAvailableLanguageIds() throws Exception;
 
-	/**
-	 * @deprecated As of 6.2.0, replaced by {@link #getAvailableLanguageIds}
-	 */
-	@Deprecated
-	public String[] getAvailableLocales() throws Exception;
-
 	public DDMFormValuesReader getDDMFormValuesReader();
 
 	public String getDiscussionPath();
@@ -120,7 +114,7 @@ public interface AssetRenderer<T> extends Renderer {
 
 	public String getUrlTitle();
 
-	public PortletURL getURLView(
+	public String getURLView(
 			LiferayPortletResponse liferayPortletResponse,
 			WindowState windowState)
 		throws Exception;

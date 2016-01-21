@@ -78,26 +78,6 @@ public class MBMessageServiceWrapper implements MBMessageService,
 			serviceContext);
 	}
 
-	/**
-	* @deprecated As of 6.2.0, replaced by {@link #addMessage(long, String,
-	String, String, List, boolean, double, boolean,
-	ServiceContext)}
-	*/
-	@Deprecated
-	@Override
-	public com.liferay.portlet.messageboards.model.MBMessage addMessage(
-		long groupId, long categoryId, long threadId, long parentMessageId,
-		java.lang.String subject, java.lang.String body,
-		java.lang.String format,
-		java.util.List<com.liferay.portal.kernel.util.ObjectValuePair<java.lang.String, java.io.InputStream>> inputStreamOVPs,
-		boolean anonymous, double priority, boolean allowPingbacks,
-		com.liferay.portal.service.ServiceContext serviceContext)
-		throws com.liferay.portal.kernel.exception.PortalException {
-		return _mbMessageService.addMessage(groupId, categoryId, threadId,
-			parentMessageId, subject, body, format, inputStreamOVPs, anonymous,
-			priority, allowPingbacks, serviceContext);
-	}
-
 	@Override
 	public com.liferay.portlet.messageboards.model.MBMessage addMessage(
 		long parentMessageId, java.lang.String subject, java.lang.String body,
@@ -237,6 +217,19 @@ public class MBMessageServiceWrapper implements MBMessageService,
 		return _mbMessageService.getMessage(messageId);
 	}
 
+	@Override
+	public com.liferay.portlet.messageboards.model.MBMessageDisplay getMessageDisplay(
+		long messageId, int status, boolean includePrevAndNext)
+		throws com.liferay.portal.kernel.exception.PortalException {
+		return _mbMessageService.getMessageDisplay(messageId, status,
+			includePrevAndNext);
+	}
+
+	/**
+	* @deprecated As of 7.0.0, replaced by {@link #getMessageDisplay(long, int,
+	boolean)}
+	*/
+	@Deprecated
 	@Override
 	public com.liferay.portlet.messageboards.model.MBMessageDisplay getMessageDisplay(
 		long messageId, int status, java.lang.String threadView,

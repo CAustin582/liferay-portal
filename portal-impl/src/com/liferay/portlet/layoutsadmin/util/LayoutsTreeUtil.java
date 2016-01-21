@@ -43,7 +43,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.portal.util.SessionClicks;
 import com.liferay.portlet.exportimport.staging.LayoutStagingUtil;
 import com.liferay.portlet.exportimport.staging.StagingUtil;
-import com.liferay.portlet.sites.util.SitesUtil;
+import com.liferay.sites.kernel.util.SitesUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -244,7 +244,7 @@ public class LayoutsTreeUtil {
 			layoutTreeNodes.add(layoutTreeNode);
 		}
 
-		return new LayoutTreeNodes(layoutTreeNodes, layoutTreeNodes.size());
+		return new LayoutTreeNodes(layoutTreeNodes, layouts.size());
 	}
 
 	private static int _getLoadedLayoutsCount(
@@ -267,6 +267,9 @@ public class LayoutsTreeUtil {
 		String paginationJSON = SessionClicks.get(
 			session, key, JSONFactoryUtil.getNullJSON());
 
+		JSONObject paginationJSONObject = JSONFactoryUtil.createJSONObject(
+			paginationJSON);
+
 		if (_log.isDebugEnabled()) {
 			sb = new StringBundler(9);
 
@@ -276,12 +279,6 @@ public class LayoutsTreeUtil {
 			sb.append(layoutId);
 			sb.append(", paginationJSON=");
 			sb.append(paginationJSON);
-		}
-
-		JSONObject paginationJSONObject = JSONFactoryUtil.createJSONObject(
-			paginationJSON);
-
-		if (_log.isDebugEnabled()) {
 			sb.append(", paginationJSONObject");
 			sb.append(paginationJSONObject);
 			sb.append(StringPool.CLOSE_PARENTHESIS);
@@ -429,7 +426,7 @@ public class LayoutsTreeUtil {
 			jsonObject.put("regularURL", layout.getRegularURL(request));
 			jsonObject.put(
 				"sortable",
-					hasManageLayoutsPermission &&
+				hasManageLayoutsPermission &&
 					SitesUtil.isLayoutSortable(layout));
 			jsonObject.put("type", layout.getType());
 			jsonObject.put(

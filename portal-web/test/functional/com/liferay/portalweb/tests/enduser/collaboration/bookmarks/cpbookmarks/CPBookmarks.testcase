@@ -2,14 +2,7 @@
 	<property name="testray.main.component.name" value="Bookmarks" />
 
 	<set-up>
-		<var method="TestPropsUtil#get('test.portal.instance')" name="testPortalInstance" />
-
-		<if>
-			<equals arg1="${testPortalInstance}" arg2="true" />
-			<then>
-				<execute macro="SignIn#signInPortalInstanceSetUp" />
-			</then>
-		</if>
+		<execute macro="TestCase#setUpPortalInstance" />
 
 		<execute macro="User#firstLoginPG" />
 	</set-up>
@@ -69,7 +62,7 @@
 		<var name="bookmark1URL" value="http://www.liferay.com" />
 		<var name="bookmark2Description" value="This is another test bookmark!" />
 		<var name="bookmark2Name" value="Test Bookmark 2" />
-		<var name="bookmark2URL" value="http://www.digg.com" />
+		<var name="bookmark2URL" value="http://digg.com" />
 
 		<execute macro="Navigator#openURL" />
 

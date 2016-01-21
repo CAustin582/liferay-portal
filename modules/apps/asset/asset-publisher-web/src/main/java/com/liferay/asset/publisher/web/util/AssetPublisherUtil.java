@@ -88,16 +88,15 @@ import com.liferay.portlet.asset.service.AssetTagLocalService;
 import com.liferay.portlet.asset.service.persistence.AssetEntryQuery;
 import com.liferay.portlet.asset.util.AssetEntryQueryProcessor;
 import com.liferay.portlet.asset.util.AssetUtil;
+import com.liferay.portlet.configuration.kernel.util.PortletConfigurationUtil;
 import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.portlet.portletconfiguration.util.PortletConfigurationUtil;
-import com.liferay.portlet.sites.util.SitesUtil;
+import com.liferay.sites.kernel.util.SitesUtil;
 
 import java.io.IOException;
 import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -1089,26 +1088,8 @@ public class AssetPublisherUtil {
 				_layoutLocalService.getLayoutByUuidAndGroupId(
 					layoutUuid, siteGroupId, privateLayout);
 
-			Group scopeIdGroup = null;
-
-			if (scopeIdLayout.hasScopeGroup()) {
-				scopeIdGroup = scopeIdLayout.getScopeGroup();
-			}
-			else {
-				Map<Locale, String> nameMap = new HashMap<>();
-
-				nameMap.put(
-					LocaleUtil.getDefault(),
-					String.valueOf(scopeIdLayout.getPlid()));
-
-				scopeIdGroup = _groupLocalService.addGroup(
-					PrincipalThreadLocal.getUserId(),
-					GroupConstants.DEFAULT_PARENT_GROUP_ID,
-					Layout.class.getName(), scopeIdLayout.getPlid(),
-					GroupConstants.DEFAULT_LIVE_GROUP_ID, nameMap, null, 0,
-					true, GroupConstants.DEFAULT_MEMBERSHIP_RESTRICTION, null,
-					false, true, null);
-			}
+			Group scopeIdGroup = _groupLocalService.checkScopeGroup(
+				scopeIdLayout, PrincipalThreadLocal.getUserId());
 
 			return scopeIdGroup.getGroupId();
 		}
