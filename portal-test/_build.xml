@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<project name="portal-test" basedir="." default="compile">
+	<import file="../build-common-java.xml" />
+
+	<property name="deploy.dir" value="${liferay.home}/osgi/test" />
+	<property name="jar.file" value="${ant.project.name}" />
+	<property name="manifest.bundle.name" value="Liferay Portal Test" />
+	<property name="manifest.bundle.symbolic.name" value="portal-test" />
+
+	<path id="portal.test.classpath">
+		<path refid="lib.classpath" />
+		<pathelement location="${project.dir}/modules/core/registry-api/classes" />
+		<pathelement location="${project.dir}/portal-service/classes" />
+	</path>
+
+	<macrodef name="compile-java">
+		<sequential>
+			<compile-java-cmd
+				javac.classpathref="portal.test.classpath"
+			/>
+		</sequential>
+	</macrodef>
+</project>

@@ -1,22 +1,14 @@
 <?xml version="1.0"?>
 
-<project name="portal-service" basedir="." default="compile">
-	<import file="../build-common-java.xml" />
+<project basedir="." name="portal-service" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<import file="../build-common.xml" />
 
-	<property name="deploy.dir" value="${app.server.lib.global.dir}" />
-	<property name="jar.file" value="${ant.project.name}" />
-	<property name="manifest.bundle.name" value="Liferay Portal Service" />
-	<property name="manifest.bundle.symbolic.name" value="portal-service" />
+	<artifact:dependencies pathId="dependency.classpath">
+		<dependency groupId="com.liferay" artifactId="aQute.bnd" version="2.3.0" />
+		<dependency groupId="javax.servlet" artifactId="javax.servlet-api" version="3.0.1" />
+		<dependency groupId="javax.portlet" artifactId="portlet-api" version="2.0" />
+		<dependency groupId="javax.mail" artifactId="mail" version="1.4" />
 
-	<path id="web-lib.classpath">
-		<fileset dir="${project.dir}/lib/development" includes="junit.jar" />
-	</path>
-
-	<macrodef name="compile-java">
-		<sequential>
-			<compile-java-cmd
-				javac.classpathref="web.classpath"
-			/>
-		</sequential>
-	</macrodef>
+		<remoteRepository id="liferay.maven.remote" url="http://cdn.repository.liferay.com/nexus/content/groups/public" />
+	</artifact:dependencies>
 </project>

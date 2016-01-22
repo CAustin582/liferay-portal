@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<project name="util-java" basedir="." default="compile">
+	<import file="../build-common-java.xml" />
+
+	<property name="deploy.dir" value="${app.server.lib.portal.dir}" />
+	<property name="jar.file" value="${ant.project.name}" />
+	<property name="manifest.bundle.name" value="Liferay Util Java" />
+	<property name="manifest.bundle.symbolic.name" value="util-java" />
+
+	<macrodef name="jar-macro">
+		<sequential>
+			<jar-macro-cmd>
+				<jar-post>
+					<copy file="${jar.file}.jar" todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies" preservelastmodified="true" />
+				</jar-post>
+			</jar-macro-cmd>
+		</sequential>
+	</macrodef>
+</project>

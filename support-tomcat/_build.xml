@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<project name="support-tomcat" basedir="." default="compile" xmlns:antelope="antlib:ise.antelope.tasks">
+	<import file="../build-common-java.xml" />
+
+	<property name="deploy.dir" value="${app.server.lib.support.dir}" />
+	<property name="jar.file" value="${ant.project.name}" />
+	<property name="release.info.version" value="6.2.0" />
+
+	<path id="web-lib.classpath">
+		<fileset dir="${project.dir}/lib/development" includes="catalina.jar,jasper.jar,tomcat-coyote.jar" />
+	</path>
+
+	<macrodef name="compile-java">
+		<sequential>
+			<compile-java-cmd
+				javac.classpathref="web.classpath"
+			/>
+		</sequential>
+	</macrodef>
+</project>
