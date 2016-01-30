@@ -2,4 +2,6 @@
 
 <project basedir="." name="portal-test-internal">
 	<import file="../build-common.xml" />
+
+	<extension-point name="dependencies" depends="install.portal-service" />
 </project>

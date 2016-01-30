@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="dependencies">
-	<target
+	<!-- <target
 		name="depend.all"
 		depends="
 			depend.portal-impl,
@@ -29,10 +29,6 @@
 		>
 		<ant dir="portal-impl" target="${target}" />
 	</target>
-
-	<!-- <macrodef name="install-dependencies">
-		<attribute name="" />
-	</macrodef> -->
 
 	<target name="depend.portal-service" depends="depend.registry-api">
 		<ant dir="portal-service" target="install" />
@@ -72,47 +68,47 @@
 
 	<target name="depend.util-taglib" depends="depend.portal-service,depend.util-java">
 		<ant dir="util-taglib" target="install" />
-	</target>
+	</target> -->
 
 	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
-	<!-- <target name="install.portal-service" depends="install.registry-api">
-		<ant dir="portal-service" target="install" />
+	<target name="install.portal-service">
+		<ant dir="../portal-service" target="install" />
 	</target>
 
 	<target name="install.portal-test" depends="install.portal-service">
-		<ant dir="portal-test" target="install" />
+		<ant dir="../portal-test" target="install" />
 	</target>
 
 	<target name="install.portal-test-internal" depends="install.portal-service">
-		<ant dir="portal-test-internal" target="install" />
+		<ant dir="../portal-test-internal" target="install" />
 	</target>
 
 	<target name="install.portal-web">
-		<ant dir="portal-web" target="install" />
+		<ant dir="../portal-web" target="install" />
 	</target>
-
+<!-- 
 	<target name="install.registry-api">
-		<ant dir="support-tomcat" target="install" />
+		<ant dir="modules/core/registry-api" target="install" />
 	</target>
-
+ -->
 	<target name="install.support-tomcat" depends="install.portal-service">
-		<ant dir="support-tomcat" target="install" />
+		<ant dir="../support-tomcat" target="install" />
 	</target>
 
 	<target name="install.util-bridges" depends="install.portal-service">
-		<ant dir="util-bridges" target="install" />
+		<ant dir="../util-bridges" target="install" />
 	</target>
 
 	<target name="install.util-java" depends="install.portal-service">
-		<ant dir="util-java" target="install" />
+		<ant dir="../util-java" target="install" />
 	</target>
 
 	<target name="install.util-slf4j" depends="install.portal-service">
-		<ant dir="util-slf4j" target="install" />
+		<ant dir="../util-slf4j" target="install" />
 	</target>
 
 	<target name="install.util-taglib" depends="install.portal-service,install.util-java">
-		<ant dir="util-taglib" target="install" />
-	</target> -->
+		<ant dir="../util-taglib" target="install" />
+	</target>
 </project>

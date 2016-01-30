@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 
 <project name="build-common-new" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-	<property file="../build.properties" />
+	<property name="lp.version" value="7.0.0-SNAPSHOT" />
+
+	<import file="build-dependencies.xml" />
 
 	<path id="maven.ant.tasks.path">
 		<fileset dir="D:/liferay-portal/lib/development" includes="maven-ant-tasks.jar" />
@@ -30,7 +32,7 @@
 		<delete file="${ant.project.name}-sources.jar" failonerror="false" /> -->
 	</target>
 
-	<target name="compile">
+	<target name="compile" depends="dependencies">
 		<echo>${ant.project.name}: COMPILE</echo>
 
 		<!-- <mkdir dir="classes" />
@@ -52,7 +54,10 @@
 		<echo>${ant.project.name}: DEPLOY</echo>
 	</target>
 
-	<target name="install" depends="jar">
+	<uptodate srcFile="${project.name}-lp.version.jar" property="project.uptodate" />
+	<echo>${project.name} uptodate = ${project.uptodate}</echo>
+
+	<target name="install" depends="jar" unless="${project.uptodate}">
 		<echo>${ant.project.name}: INSTALL</echo>
 		<!-- <attribute name="artifact.dir" default="${basedir}" />
 		<attribute name="artifact.name" /> -->

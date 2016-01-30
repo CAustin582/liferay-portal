@@ -1,25 +1,55 @@
 <?xml version="1.0"?>
 
 <project name="build-new">
-	<import file="build-dependencies.xml" />
-
 	<target name="all" depends="clean">
 		<antcall target="deploy" />
 	</target>
 
+	<target name="testd1">
+		<echo>TESTD1</echo>
+	</target>
+
+	<extension-point name="testex" depends="testd1" />
+
+	<target name="testd2" extensionOf="testex">
+		<echo>TESTD2</echo>
+	</target>
+
+
+	<macrodef name="portal-subant-target">
+		<attribute name="target" />
+
+		<sequential>
+			<subant failonerror="true" target="@{target}">
+				<dirset dir="${basedir}">
+					<include name="portal-impl" />
+					<include name="portal-service" />
+					<include name="portal-test" />
+					<include name="portal-test-internal" />
+					<include name="portal-web" />
+					<include name="modules/registry-api" />
+					<include name="support-tomcat" />
+					<include name="util-bridges" />
+					<include name="util-java" />
+					<include name="util-slf4j" />
+					<include name="util-taglib" />
+				</dirset>
+			</subant>
+		</sequential>
+	</macrodef>
+
 	<target name="clean">
-		<antcall target="depend.all">
-			<param name="target" value="clean" />
-		</antcall>
+		<portal-subant-target target="clean" />
 	</target>
 
 	<target name="compile">
-		<antcall target="depend.all">
+		<portal-subant-target target="compile" />
+		<!-- <antcall target="depend.all">
 			<param name="target" value="compile" />
-		</antcall>
+		</antcall> -->
 	</target>
 
-	<target name="deploy">
+	<!-- <target name="deploy">
 		<antcall target="depend.all">
 			<param name="target" value="deploy" />
 		</antcall>
@@ -35,5 +65,5 @@
 		<antcall target="depend.all">
 			<param name="target" value="jar" />
 		</antcall>
-	</target>
+	</target> -->
 </project>

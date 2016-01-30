@@ -2,4 +2,6 @@
 
 <project basedir="." name="portal-web">
 	<import file="../build-common.xml" />
+
+	<extension-point name="dependencies" />
 </project>

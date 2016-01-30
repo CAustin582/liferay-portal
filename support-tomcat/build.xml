@@ -2,4 +2,6 @@
 
 <project basedir="." name="support-tomcat">
 	<import file="../build-common.xml" />
+
+	<extension-point name="dependencies" depends="install.portal-service" />
 </project>

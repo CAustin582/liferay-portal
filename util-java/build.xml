@@ -2,4 +2,6 @@
 
 <project basedir="." name="util-java">
 	<import file="../build-common.xml" />
+
+	<extension-point name="dependencies" depends="install.portal-service" />
 </project>

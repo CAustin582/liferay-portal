@@ -11,4 +11,6 @@
 
 		<remoteRepository id="liferay.maven.remote" url="http://cdn.repository.liferay.com/nexus/content/groups/public" />
 	</artifact:dependencies>
+
+	<extension-point name="dependencies" />
 </project>

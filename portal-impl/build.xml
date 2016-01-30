@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 
 <project basedir="." name="portal-impl" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<extension-point
+		name="dependencies"
+		depends="
+			install.portal-service,
+			install.portal-service,
+			install.portal-test,
+			install.util-bridges,
+			install.util-java,
+			install.util-slf4j"
+	/>
+
 	<import file="../build-common.xml" />
 
 	<artifact:dependencies pathId="dependency.classpath">
