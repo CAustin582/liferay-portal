@@ -14,16 +14,16 @@
 
 package com.liferay.staging.bar.web.portlet.action;
 
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.model.LayoutSet;
 import com.liferay.portal.model.LayoutSetBranch;
 import com.liferay.portal.service.LayoutSetBranchLocalService;
 import com.liferay.portal.service.LayoutSetLocalService;
-import com.liferay.portal.util.PortalUtil;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 import com.liferay.staging.bar.web.portlet.constants.StagingBarPortletKeys;
 
 import javax.portlet.ActionRequest;

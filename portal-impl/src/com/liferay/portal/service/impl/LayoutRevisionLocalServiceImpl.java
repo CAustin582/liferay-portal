@@ -14,6 +14,8 @@
 
 package com.liferay.portal.service.impl;
 
+import com.liferay.exportimport.kernel.staging.MergeLayoutPrototypesThreadLocal;
+import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.portal.exception.NoSuchLayoutRevisionException;
 import com.liferay.portal.exception.NoSuchPortletPreferencesException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -33,8 +35,6 @@ import com.liferay.portal.model.PortletPreferences;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.base.LayoutRevisionLocalServiceBaseImpl;
-import com.liferay.portlet.exportimport.staging.MergeLayoutPrototypesThreadLocal;
-import com.liferay.portlet.exportimport.staging.StagingUtil;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,8 +54,8 @@ public class LayoutRevisionLocalServiceImpl
 			long portletPreferencesPlid, boolean privateLayout, String name,
 			String title, String description, String keywords, String robots,
 			String typeSettings, boolean iconImage, long iconImageId,
-			String themeId, String colorSchemeId, String wapThemeId,
-			String wapColorSchemeId, String css, ServiceContext serviceContext)
+			String themeId, String colorSchemeId, String css,
+			ServiceContext serviceContext)
 		throws PortalException {
 
 		// Layout revision
@@ -91,8 +91,6 @@ public class LayoutRevisionLocalServiceImpl
 		layoutRevision.setIconImageId(iconImageId);
 		layoutRevision.setThemeId(themeId);
 		layoutRevision.setColorSchemeId(colorSchemeId);
-		layoutRevision.setWapThemeId(wapThemeId);
-		layoutRevision.setWapColorSchemeId(wapColorSchemeId);
 		layoutRevision.setCss(css);
 		layoutRevision.setStatus(WorkflowConstants.STATUS_DRAFT);
 		layoutRevision.setStatusDate(serviceContext.getModifiedDate(now));
@@ -385,8 +383,7 @@ public class LayoutRevisionLocalServiceImpl
 			long userId, long layoutRevisionId, long layoutBranchId,
 			String name, String title, String description, String keywords,
 			String robots, String typeSettings, boolean iconImage,
-			long iconImageId, String themeId, String colorSchemeId,
-			String wapThemeId, String wapColorSchemeId, String css,
+			long iconImageId, String themeId, String colorSchemeId, String css,
 			ServiceContext serviceContext)
 		throws PortalException {
 
@@ -435,8 +432,6 @@ public class LayoutRevisionLocalServiceImpl
 			layoutRevision.setIconImageId(iconImageId);
 			layoutRevision.setThemeId(themeId);
 			layoutRevision.setColorSchemeId(colorSchemeId);
-			layoutRevision.setWapThemeId(wapThemeId);
-			layoutRevision.setWapColorSchemeId(wapColorSchemeId);
 			layoutRevision.setCss(css);
 			layoutRevision.setStatus(WorkflowConstants.STATUS_DRAFT);
 			layoutRevision.setStatusDate(serviceContext.getModifiedDate(now));
@@ -476,8 +471,6 @@ public class LayoutRevisionLocalServiceImpl
 			layoutRevision.setIconImageId(iconImageId);
 			layoutRevision.setThemeId(themeId);
 			layoutRevision.setColorSchemeId(colorSchemeId);
-			layoutRevision.setWapThemeId(wapThemeId);
-			layoutRevision.setWapColorSchemeId(wapColorSchemeId);
 			layoutRevision.setCss(css);
 
 			layoutRevisionPersistence.update(layoutRevision);

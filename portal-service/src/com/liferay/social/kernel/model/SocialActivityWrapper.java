@@ -16,11 +16,11 @@ package com.liferay.social.kernel.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 import com.liferay.portal.service.ServiceContext;
-
-import com.liferay.portlet.expando.model.ExpandoBridge;
 
 import java.io.Serializable;
 
@@ -194,7 +194,7 @@ public class SocialActivityWrapper implements SocialActivity,
 	}
 
 	@Override
-	public com.liferay.portlet.asset.model.AssetEntry getAssetEntry() {
+	public com.liferay.asset.kernel.model.AssetEntry getAssetEntry() {
 		return _socialActivity.getAssetEntry();
 	}
 
@@ -433,7 +433,7 @@ public class SocialActivityWrapper implements SocialActivity,
 
 	@Override
 	public void setAssetEntry(
-		com.liferay.portlet.asset.model.AssetEntry assetEntry) {
+		com.liferay.asset.kernel.model.AssetEntry assetEntry) {
 		_socialActivity.setAssetEntry(assetEntry);
 	}
 

@@ -153,7 +153,7 @@ public class MBMessageLocalServiceWrapper implements MBMessageLocalService,
 	@Override
 	public void addMessageResources(
 		com.liferay.message.boards.kernel.model.MBMessage message,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_mbMessageLocalService.addMessageResources(message, modelPermissions);
 	}
@@ -168,7 +168,7 @@ public class MBMessageLocalServiceWrapper implements MBMessageLocalService,
 
 	@Override
 	public void addMessageResources(long messageId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_mbMessageLocalService.addMessageResources(messageId, modelPermissions);
 	}
@@ -473,7 +473,7 @@ public class MBMessageLocalServiceWrapper implements MBMessageLocalService,
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return _mbMessageLocalService.getExportActionableDynamicQuery(portletDataContext);
 	}
 

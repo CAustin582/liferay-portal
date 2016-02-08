@@ -16,11 +16,12 @@ package com.liferay.portal.model;
 
 import aQute.bnd.annotation.ProviderType;
 
+import com.liferay.expando.kernel.model.ExpandoBridge;
+
+import com.liferay.exportimport.kernel.lar.StagedModelType;
+
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.service.ServiceContext;
-
-import com.liferay.portlet.expando.model.ExpandoBridge;
-import com.liferay.portlet.exportimport.lar.StagedModelType;
 
 import java.io.Serializable;
 
@@ -622,7 +623,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	*/
 	@Override
 	public java.lang.String getDisplayURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getDisplayURL(themeDisplay);
 	}
@@ -660,7 +661,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 	*/
 	@Override
 	public java.lang.String getDisplayURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay,
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay,
 		boolean privateLayout)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getDisplayURL(themeDisplay, privateLayout);
@@ -1113,7 +1114,7 @@ public class UserWrapper implements User, ModelWrapper<User> {
 
 	@Override
 	public java.lang.String getPortraitURL(
-		com.liferay.portal.theme.ThemeDisplay themeDisplay)
+		com.liferay.portal.kernel.theme.ThemeDisplay themeDisplay)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		return _user.getPortraitURL(themeDisplay);
 	}

@@ -2,7 +2,7 @@
 	<command name="activateStagingCP">
 		<execute macro="ProductMenuHelper#openProductMenu" />
 
-		<execute function="AssertTextEquals" locator1="ProductMenu#PRODUCT_MENU_PANEL_SITE_ADMINISTRATION_SITE_NAME" value1="${siteName}" />
+		<execute function="AssertTextEquals#assertPartialText" locator1="ProductMenu#PRODUCT_MENU_PANEL_SITE_ADMINISTRATION_SITE_NAME" value1="${siteName}" />
 
 		<if>
 			<equals arg1="${remoteStaging}" arg2="true" />
@@ -34,7 +34,13 @@
 			</then>
 		</if>
 
-		<for list="Application Display Template,Audience Targeting,Blogs,Bookmarks,Calendar,Documents and Media,Dynamic Data Lists,Message Boards,Mobile Device Families,Polls,Shopping,Web Content,Wiki" param="contentName">
+		<for list="Application Display Template,Blogs,Bookmarks,Calendar,Documents and Media,Dynamic Data Lists,Message Boards,Mobile Device Families,Polls,Shopping,Web Content,Wiki" param="contentName">
+			<var name="key_contentName" value="${contentName}" />
+
+			<execute function="Check#checkToggleSwitch" locator1="Checkbox#STAGED_CONTENT" />
+		</for>
+
+		<for list="Audience Targeting" param="contentName">
 			<var name="key_contentName" value="${contentName}" />
 
 			<if>
@@ -200,18 +206,34 @@
 		<if>
 			<equals arg1="${deleteMissingPages}" arg2="true" />
 			<then>
-				<execute function="AssertClick" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" value1="Change" />
-				<execute function="Check" locator1="PagesConfiguration#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
-				<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+				<if>
+					<condition function="IsElementPresent" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" />
+					<then>
+						<execute function="AssertClick" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" value1="Change" />
+						<execute function="Check" locator1="PagesConfiguration#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
+						<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+					</then>
+					<else>
+						<execute function="Check" locator1="PagesConfiguration#PAGES_DELETE_MISSING_PAGES_CHECKBOX" />
+					</else>
+				</if>
 			</then>
 		</if>
 
 		<if>
 			<equals arg1="${uncheckLogo}" arg2="true" />
 			<then>
-				<execute function="AssertClick" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" value1="Change" />
-				<execute function="Uncheck" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
-				<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+				<if>
+					<condition function="IsElementPresent" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" />
+					<then>
+						<execute function="AssertClick" locator1="StagingPublishToLive#PAGES_CHANGE_LINK" value1="Change" />
+						<execute function="Uncheck" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
+						<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+					</then>
+					<else>
+						<execute function="Uncheck" locator1="PagesConfiguration#PAGES_LOGO_CHECKBOX" />
+					</else>
+				</if>
 			</then>
 		</if>
 
@@ -231,7 +253,12 @@
 					<execute function="Click" locator1="PagesConfiguration#PAGES_SPECIFIC_PAGE_NAME" />
 				</for>
 
-				<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+				<if>
+					<condition function="IsElementPresent" locator1="Button#OK" />
+					<then>
+						<execute function="AssertClick" locator1="Button#OK" value1="OK" />
+					</then>
+				</if>
 			</then>
 		</if>
 
@@ -288,7 +315,6 @@
 		<if>
 			<equals arg1="${contentDeletion}" arg2="true" />
 			<then>
-				<execute function="Check" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_RADIO" />
 				<execute function="Click" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_HEADER" />
 				<execute function="Check#checkToggleSwitch" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_CHECKBOX" />
 			</then>
@@ -312,9 +338,6 @@
 					<execute function="Check" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
 				</for>
 			</then>
-			<else>
-				<echo message="This else block is needed until LIFERAYQA-10632 is resolved." />
-			</else>
 		</if>
 
 		<if>
@@ -328,9 +351,6 @@
 					<execute function="Uncheck" locator1="PagesConfiguration#CONTENT_CHOOSE_CONTENT_CONTENT_CHECKBOX" />
 				</for>
 			</then>
-			<else>
-				<echo message="This else block is needed until LIFERAYQA-10632 is resolved." />
-			</else>
 		</if>
 
 		<if>
@@ -394,7 +414,7 @@
 				<execute function="Check" locator1="SiteSettingsStaging#NONE_RADIO" />
 				<execute function="AssertClickNoError" locator1="Button#SAVE" value1="Save" />
 				<execute function="Confirm" value1="Are you sure you want to deactivate staging for ${siteName}?" />
-				<execute function="AssertTextEquals#assertPartialText" locator1="Message#ERROR_3_ALT" value1="Staging is disabled. Please close this window in order to go to the live site." />
+				<execute function="AssertTextEquals#assertPartialText" locator1="Message#SUCCESS_3" value1="Staging is successfully disabled." />
 			</then>
 		</if>
 

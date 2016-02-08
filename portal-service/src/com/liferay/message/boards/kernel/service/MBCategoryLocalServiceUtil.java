@@ -82,7 +82,7 @@ public class MBCategoryLocalServiceUtil {
 
 	public static void addCategoryResources(
 		com.liferay.message.boards.kernel.model.MBCategory category,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCategoryResources(category, modelPermissions);
 	}
@@ -96,7 +96,7 @@ public class MBCategoryLocalServiceUtil {
 	}
 
 	public static void addCategoryResources(long categoryId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addCategoryResources(categoryId, modelPermissions);
 	}
@@ -410,7 +410,7 @@ public class MBCategoryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 

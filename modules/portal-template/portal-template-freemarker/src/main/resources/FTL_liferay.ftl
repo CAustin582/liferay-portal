@@ -51,7 +51,7 @@ LPS-30525.
 
 <#macro control_menu>
 	<#if themeDisplay.isImpersonated() || (is_setup_complete && is_signed_in)>
-		<@liferay_control_menu["control-menu"] />
+		<@liferay_product_navigation["control-menu"] />
 	</#if>
 </#macro>
 
@@ -109,7 +109,7 @@ ${languageUtil.format(locale, key, arguments)}</#macro>
 		defaultPreferences=default_preferences
 		instanceId=instance_id
 		portletProviderAction=portletProviderAction.VIEW
-		portletProviderClassName="com.liferay.portal.theme.NavItem"
+		portletProviderClassName="com.liferay.portal.kernel.theme.NavItem"
 	/>
 </#macro>
 

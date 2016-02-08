@@ -77,7 +77,7 @@ public class MBCategoryLocalServiceWrapper implements MBCategoryLocalService,
 	@Override
 	public void addCategoryResources(
 		com.liferay.message.boards.kernel.model.MBCategory category,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_mbCategoryLocalService.addCategoryResources(category, modelPermissions);
 	}
@@ -92,7 +92,7 @@ public class MBCategoryLocalServiceWrapper implements MBCategoryLocalService,
 
 	@Override
 	public void addCategoryResources(long categoryId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_mbCategoryLocalService.addCategoryResources(categoryId,
 			modelPermissions);
@@ -456,7 +456,7 @@ public class MBCategoryLocalServiceWrapper implements MBCategoryLocalService,
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return _mbCategoryLocalService.getExportActionableDynamicQuery(portletDataContext);
 	}
 

@@ -26,10 +26,10 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import java.io.IOException;
 
@@ -195,38 +195,19 @@ public class BindConfigurationMVCActionCommand implements MVCActionCommand {
 		return _ddmFormValuesFactory.create(actionRequest, ddmForm);
 	}
 
-	@Reference(unbind = "-")
-	protected void setConfigAdminService(
-		ConfigurationAdmin configurationAdmin) {
-
-		_configurationAdmin = configurationAdmin;
-	}
-
-	@Reference(unbind = "-")
-	protected void setConfigurationModelRetriever(
-		ConfigurationModelRetriever configurationModelRetriever) {
-
-		_configurationModelRetriever = configurationModelRetriever;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMFormValuesFactory(
-		DDMFormValuesFactory ddmFormValuesFactory) {
-
-		_ddmFormValuesFactory = ddmFormValuesFactory;
-	}
-
-	@Reference(unbind = "-")
-	protected void setJSONFactory(JSONFactory jsonFactory) {
-		_jsonFactory = jsonFactory;
-	}
-
 	private static final Log _log = LogFactoryUtil.getLog(
 		BindConfigurationMVCActionCommand.class);
 
+	@Reference
 	private ConfigurationAdmin _configurationAdmin;
+
+	@Reference
 	private ConfigurationModelRetriever _configurationModelRetriever;
+
+	@Reference
 	private DDMFormValuesFactory _ddmFormValuesFactory;
+
+	@Reference
 	private JSONFactory _jsonFactory;
 
 }

@@ -163,7 +163,7 @@ public class DDMTemplateLocalServiceWrapper implements DDMTemplateLocalService,
 	@Override
 	public void addTemplateResources(
 		com.liferay.dynamic.data.mapping.model.DDMTemplate template,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_ddmTemplateLocalService.addTemplateResources(template, modelPermissions);
 	}
@@ -586,7 +586,7 @@ public class DDMTemplateLocalServiceWrapper implements DDMTemplateLocalService,
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return _ddmTemplateLocalService.getExportActionableDynamicQuery(portletDataContext);
 	}
 

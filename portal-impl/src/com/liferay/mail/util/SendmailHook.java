@@ -14,7 +14,8 @@
 
 package com.liferay.mail.util;
 
-import com.liferay.mail.model.Filter;
+import com.liferay.mail.kernel.model.Filter;
+import com.liferay.mail.kernel.util.Hook;
 import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -189,11 +190,11 @@ public class SendmailHook implements Hook {
 			StringBundler sb = new StringBundler();
 
 			try (FileReader fileReader = new FileReader(virtusertable);
-					UnsyncBufferedReader unsyncBufferedReader =
-						new UnsyncBufferedReader(fileReader)) {
+				UnsyncBufferedReader unsyncBufferedReader =
+					new UnsyncBufferedReader(fileReader)) {
 
 				for (String s = unsyncBufferedReader.readLine(); s != null;
-						s = unsyncBufferedReader.readLine()) {
+					s = unsyncBufferedReader.readLine()) {
 
 					if (!s.endsWith(" " + userId)) {
 						sb.append(s);

@@ -150,7 +150,7 @@ public class BlogsEntryLocalServiceUtil {
 
 	public static void addEntryResources(
 		com.liferay.blogs.kernel.model.BlogsEntry entry,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addEntryResources(entry, modelPermissions);
 	}
@@ -163,7 +163,7 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static void addEntryResources(long entryId,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addEntryResources(entryId, modelPermissions);
 	}
@@ -468,7 +468,7 @@ public class BlogsEntryLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 
@@ -718,7 +718,7 @@ public class BlogsEntryLocalServiceUtil {
 
 	public static void updateEntryResources(
 		com.liferay.blogs.kernel.model.BlogsEntry entry,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().updateEntryResources(entry, modelPermissions);
 	}

@@ -21,10 +21,10 @@ import com.liferay.configuration.admin.web.util.ConfigurationModelRetriever;
 import com.liferay.configuration.admin.web.util.DDMFormRendererHelper;
 import com.liferay.dynamic.data.mapping.form.renderer.DDMFormRenderer;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCRenderCommand;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.theme.ThemeDisplay;
 
 import java.util.Map;
 
@@ -97,19 +97,10 @@ public class EditConfigurationMVCRenderCommand implements MVCRenderCommand {
 		return "/edit_configuration.jsp";
 	}
 
-	@Reference(unbind = "-")
-	protected void setConfigurationModelRetriever(
-		ConfigurationModelRetriever configurationModelRetriever) {
-
-		_configurationModelRetriever = configurationModelRetriever;
-	}
-
-	@Reference(unbind = "-")
-	protected void setDDMFormRenderer(DDMFormRenderer ddmFormRenderer) {
-		_ddmFormRenderer = ddmFormRenderer;
-	}
-
+	@Reference
 	private ConfigurationModelRetriever _configurationModelRetriever;
+
+	@Reference
 	private DDMFormRenderer _ddmFormRenderer;
 
 }

@@ -170,7 +170,7 @@ public class DDMTemplateLocalServiceUtil {
 	*/
 	public static void addTemplateResources(
 		com.liferay.dynamic.data.mapping.model.DDMTemplate template,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addTemplateResources(template, modelPermissions);
 	}
@@ -561,7 +561,7 @@ public class DDMTemplateLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 

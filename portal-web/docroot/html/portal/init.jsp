@@ -17,6 +17,7 @@
 <%@ include file="/html/common/init.jsp" %>
 
 <%@ page import="com.liferay.admin.kernel.util.PortalProductMenuApplicationType" %><%@
+page import="com.liferay.exportimport.kernel.lar.DefaultConfigurationPortletDataHandler" %><%@
 page import="com.liferay.portal.exception.LayoutPermissionException" %><%@
 page import="com.liferay.portal.exception.PortletActiveException" %><%@
 page import="com.liferay.portal.exception.RequiredLayoutException" %><%@
@@ -34,14 +35,13 @@ page import="com.liferay.portal.kernel.portlet.PortletConfigurationLayoutUtil" %
 page import="com.liferay.portal.kernel.servlet.HttpHeaders" %><%@
 page import="com.liferay.portal.kernel.templateparser.TransformException" %><%@
 page import="com.liferay.portal.kernel.util.ProgressTracker" %><%@
+page import="com.liferay.portal.kernel.util.TermsOfUseContentProvider" %><%@
+page import="com.liferay.portal.kernel.util.TermsOfUseContentProviderRegistryUtil" %><%@
 page import="com.liferay.portal.setup.SetupWizardUtil" %><%@
 page import="com.liferay.portal.struts.PortletRequestProcessor" %><%@
 page import="com.liferay.portal.util.LicenseUtil" %><%@
 page import="com.liferay.portal.util.PortletCategoryUtil" %><%@
-page import="com.liferay.portal.util.TermsOfUseContentProvider" %><%@
-page import="com.liferay.portal.util.TermsOfUseContentProviderRegistryUtil" %><%@
-page import="com.liferay.portlet.configuration.kernel.util.PortletConfigurationApplicationType" %><%@
-page import="com.liferay.portlet.exportimport.lar.DefaultConfigurationPortletDataHandler" %>
+page import="com.liferay.portlet.configuration.kernel.util.PortletConfigurationApplicationType" %>
 
 <%@ page import="org.apache.struts.action.ActionMapping" %><%@
 page import="org.apache.struts.tiles.ComponentDefinition" %><%@

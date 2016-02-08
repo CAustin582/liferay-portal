@@ -238,7 +238,7 @@ public class DDMStructureLocalServiceWrapper implements DDMStructureLocalService
 	@Override
 	public void addStructureResources(
 		com.liferay.dynamic.data.mapping.model.DDMStructure structure,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		_ddmStructureLocalService.addStructureResources(structure,
 			modelPermissions);
@@ -734,7 +734,7 @@ public class DDMStructureLocalServiceWrapper implements DDMStructureLocalService
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return _ddmStructureLocalService.getExportActionableDynamicQuery(portletDataContext);
 	}
 

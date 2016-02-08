@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.service.LayoutServiceUtil;
@@ -322,7 +323,7 @@ public class LayoutServiceHttp {
 
 	public static java.io.File exportLayoutsAsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutServiceUtil.class,
@@ -390,7 +391,7 @@ public class LayoutServiceHttp {
 
 	public static long exportLayoutsAsFileInBackground(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutServiceUtil.class,
@@ -600,7 +601,7 @@ public class LayoutServiceHttp {
 
 	public static java.io.File exportPortletInfoAsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutServiceUtil.class,
@@ -1124,7 +1125,7 @@ public class LayoutServiceHttp {
 	}
 
 	public static void importLayouts(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1153,7 +1154,7 @@ public class LayoutServiceHttp {
 	}
 
 	public static void importLayouts(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream is)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1342,7 +1343,7 @@ public class LayoutServiceHttp {
 	}
 
 	public static void importPortletInfo(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -1371,7 +1372,7 @@ public class LayoutServiceHttp {
 	}
 
 	public static void importPortletInfo(HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream is)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2007,15 +2008,14 @@ public class LayoutServiceHttp {
 	public static com.liferay.portal.model.Layout updateLookAndFeel(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		long layoutId, java.lang.String themeId,
-		java.lang.String colorSchemeId, java.lang.String css, boolean wapTheme)
+		java.lang.String colorSchemeId, java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutServiceUtil.class,
 					"updateLookAndFeel", _updateLookAndFeelParameterTypes59);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					privateLayout, layoutId, themeId, colorSchemeId, css,
-					wapTheme);
+					privateLayout, layoutId, themeId, colorSchemeId, css);
 
 			Object returnObj = null;
 
@@ -2303,9 +2303,9 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportLayoutsFile(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportLayoutsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2329,7 +2329,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2338,9 +2338,9 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportLayoutsFile(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportLayoutsFile(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2364,7 +2364,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2373,7 +2373,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportLayoutsFile(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportLayoutsFile(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		java.util.Map<java.lang.String, java.lang.String[]> parameterMap,
 		java.io.File file)
@@ -2399,7 +2399,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2408,7 +2408,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportLayoutsFile(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportLayoutsFile(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		java.util.Map<java.lang.String, java.lang.String[]> parameterMap,
 		java.io.InputStream inputStream)
@@ -2434,7 +2434,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2443,9 +2443,9 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportPortletInfo(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportPortletInfo(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.File file)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2469,7 +2469,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2478,9 +2478,9 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportPortletInfo(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportPortletInfo(
 		HttpPrincipal httpPrincipal,
-		com.liferay.portlet.exportimport.model.ExportImportConfiguration exportImportConfiguration,
+		com.liferay.exportimport.kernel.model.ExportImportConfiguration exportImportConfiguration,
 		java.io.InputStream inputStream)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
@@ -2504,7 +2504,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2513,7 +2513,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportPortletInfo(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportPortletInfo(
 		HttpPrincipal httpPrincipal, long plid, long groupId,
 		java.lang.String portletId,
 		java.util.Map<java.lang.String, java.lang.String[]> parameterMap,
@@ -2540,7 +2540,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2549,7 +2549,7 @@ public class LayoutServiceHttp {
 		}
 	}
 
-	public static com.liferay.portlet.exportimport.lar.MissingReferences validateImportPortletInfo(
+	public static com.liferay.exportimport.kernel.lar.MissingReferences validateImportPortletInfo(
 		HttpPrincipal httpPrincipal, long plid, long groupId,
 		java.lang.String portletId,
 		java.util.Map<java.lang.String, java.lang.String[]> parameterMap,
@@ -2576,7 +2576,7 @@ public class LayoutServiceHttp {
 				throw new com.liferay.portal.kernel.exception.SystemException(e);
 			}
 
-			return (com.liferay.portlet.exportimport.lar.MissingReferences)returnObj;
+			return (com.liferay.exportimport.kernel.lar.MissingReferences)returnObj;
 		}
 		catch (com.liferay.portal.kernel.exception.SystemException se) {
 			_log.error(se, se);
@@ -2622,7 +2622,7 @@ public class LayoutServiceHttp {
 			java.util.Date.class
 		};
 	private static final Class<?>[] _exportLayoutsAsFileParameterTypes8 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class
 		};
 	private static final Class<?>[] _exportLayoutsAsFileParameterTypes9 = new Class[] {
 			long.class, boolean.class, long[].class, java.util.Map.class,
@@ -2630,7 +2630,7 @@ public class LayoutServiceHttp {
 		};
 	private static final Class<?>[] _exportLayoutsAsFileInBackgroundParameterTypes10 =
 		new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class
 		};
 	private static final Class<?>[] _exportLayoutsAsFileInBackgroundParameterTypes11 =
 		new Class[] { long.class };
@@ -2654,7 +2654,7 @@ public class LayoutServiceHttp {
 			java.util.Date.class, java.util.Date.class
 		};
 	private static final Class<?>[] _exportPortletInfoAsFileParameterTypes16 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class
 		};
 	private static final Class<?>[] _exportPortletInfoAsFileParameterTypes17 = new Class[] {
 			long.class, long.class, java.lang.String.class, java.util.Map.class,
@@ -2711,11 +2711,11 @@ public class LayoutServiceHttp {
 			long.class, java.lang.String.class
 		};
 	private static final Class<?>[] _importLayoutsParameterTypes32 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _importLayoutsParameterTypes33 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _importLayoutsParameterTypes34 = new Class[] {
@@ -2737,11 +2737,11 @@ public class LayoutServiceHttp {
 			java.util.Map.class, java.io.InputStream.class
 		};
 	private static final Class<?>[] _importPortletInfoParameterTypes39 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _importPortletInfoParameterTypes40 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _importPortletInfoParameterTypes41 = new Class[] {
@@ -2829,7 +2829,7 @@ public class LayoutServiceHttp {
 		};
 	private static final Class<?>[] _updateLookAndFeelParameterTypes59 = new Class[] {
 			long.class, boolean.class, long.class, java.lang.String.class,
-			java.lang.String.class, java.lang.String.class, boolean.class
+			java.lang.String.class, java.lang.String.class
 		};
 	private static final Class<?>[] _updateNameParameterTypes60 = new Class[] {
 			long.class, boolean.class, long.class, java.lang.String.class,
@@ -2856,11 +2856,11 @@ public class LayoutServiceHttp {
 			long.class, int.class
 		};
 	private static final Class<?>[] _validateImportLayoutsFileParameterTypes68 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _validateImportLayoutsFileParameterTypes69 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _validateImportLayoutsFileParameterTypes70 = new Class[] {
@@ -2871,11 +2871,11 @@ public class LayoutServiceHttp {
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _validateImportPortletInfoParameterTypes72 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.File.class
 		};
 	private static final Class<?>[] _validateImportPortletInfoParameterTypes73 = new Class[] {
-			com.liferay.portlet.exportimport.model.ExportImportConfiguration.class,
+			com.liferay.exportimport.kernel.model.ExportImportConfiguration.class,
 			java.io.InputStream.class
 		};
 	private static final Class<?>[] _validateImportPortletInfoParameterTypes74 = new Class[] {

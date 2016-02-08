@@ -14,10 +14,10 @@
 
 package com.liferay.document.library.web.custom.attributes;
 
+import com.liferay.document.library.kernel.model.DLFolder;
 import com.liferay.document.library.web.constants.DLPortletKeys;
-import com.liferay.portlet.documentlibrary.model.DLFolder;
-import com.liferay.portlet.expando.model.BaseCustomAttributesDisplay;
-import com.liferay.portlet.expando.model.CustomAttributesDisplay;
+import com.liferay.expando.kernel.model.BaseCustomAttributesDisplay;
+import com.liferay.expando.kernel.model.CustomAttributesDisplay;
 
 import org.osgi.service.component.annotations.Component;
 

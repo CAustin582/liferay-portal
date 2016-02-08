@@ -177,12 +177,14 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 						data-value="custom"
 						iconCssClass="icon-puzzle"
 						label="custom"
+						selected='<%= publishConfigurationButtons.equals("custom") %>'
 					/>
 
 					<aui:nav-item
 						data-value="saved"
 						iconCssClass="icon-archive"
 						label="publish-templates"
+						selected='<%= publishConfigurationButtons.equals("saved") %>'
 					/>
 
 					<portlet:renderURL var="simplePublishRedirectURL" windowState="<%= LiferayWindowState.POP_UP.toString() %>">
@@ -438,13 +440,10 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 	new Liferay.ExportImport(
 		{
 			commentsNode: '#<%= PortletDataHandlerKeys.COMMENTS %>',
-			deleteMissingLayoutsNode: '#<%= PortletDataHandlerKeys.DELETE_MISSING_LAYOUTS %>',
 			deletionsNode: '#<%= PortletDataHandlerKeys.DELETIONS %>',
 			form: document.<portlet:namespace />exportPagesFm,
 			incompleteProcessMessageNode: '#<portlet:namespace />incompleteProcessMessage',
-			layoutSetSettingsNode: '#<%= PortletDataHandlerKeys.LAYOUT_SET_SETTINGS %>',
 			locale: '<%= locale.toLanguageTag() %>',
-			logoNode: '#<%= PortletDataHandlerKeys.LOGO %>',
 			namespace: '<portlet:namespace />',
 			pageTreeId: '<%= treeId %>',
 			processesNode: '#publishProcesses',
@@ -460,7 +459,6 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 			remotePortNode: '#<portlet:namespace />remotePort',
 			secureConnectionNode: '#secureConnection',
 			setupNode: '#<%= PortletDataHandlerKeys.PORTLET_SETUP_ALL %>',
-			themeReferenceNode: '#<%= PortletDataHandlerKeys.THEME_REFERENCE %>',
 			timeZone: '<%= timeZone.getID() %>',
 			userPreferencesNode: '#<%= PortletDataHandlerKeys.PORTLET_USER_PREFERENCES_ALL %>'
 		}
@@ -476,15 +474,22 @@ response.setHeader("Ajax-ID", request.getHeader("Ajax-ID"));
 		var customConfiguration = A.one('#<portlet:namespace />customConfiguration');
 		var savedConfigurations = A.one('#<portlet:namespace />savedConfigurations');
 
+		var customConfigurationsNavItem = A.one('li[data-value=custom]');
+		var savedConfigurationsNavItem = A.one('li[data-value=saved]');
+
 		if (dataValue === 'custom') {
 			savedConfigurations.hide();
+			savedConfigurationsNavItem.removeClass('active');
 
 			customConfiguration.show();
+			customConfigurationsNavItem.addClass('active');
 		}
 		else if (dataValue === 'saved') {
 			customConfiguration.hide();
+			customConfigurationsNavItem.removeClass('active');
 
 			savedConfigurations.show();
+			savedConfigurationsNavItem.addClass('active');
 		}
 	};
 

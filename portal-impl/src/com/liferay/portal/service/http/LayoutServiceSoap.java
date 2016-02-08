@@ -263,12 +263,12 @@ public class LayoutServiceSoap {
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportService#exportLayoutsAsFileInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportService#exportLayoutsAsFileInBackground(
 	ExportImportConfiguration)}
 	*/
 	@Deprecated
 	public static long exportLayoutsAsFileInBackground(
-		com.liferay.portlet.exportimport.model.ExportImportConfigurationSoap exportImportConfiguration)
+		com.liferay.exportimport.kernel.model.ExportImportConfigurationSoap exportImportConfiguration)
 		throws RemoteException {
 		try {
 			long returnValue = LayoutServiceUtil.exportLayoutsAsFileInBackground(com.liferay.portlet.exportimport.model.impl.ExportImportConfigurationModelImpl.toModel(
@@ -285,7 +285,7 @@ public class LayoutServiceSoap {
 
 	/**
 	* @deprecated As of 7.0.0, replaced by {@link
-	com.liferay.portlet.exportimport.service.ExportImportService#exportLayoutsAsFileInBackground(
+	com.liferay.exportimport.kernel.service.ExportImportService#exportLayoutsAsFileInBackground(
 	long)}
 	*/
 	@Deprecated
@@ -715,17 +715,15 @@ public class LayoutServiceSoap {
 	* @param themeId the primary key of the layout's new theme
 	* @param colorSchemeId the primary key of the layout's new color scheme
 	* @param css the layout's new CSS
-	* @param wapTheme whether the theme is for WAP browsers
 	* @return the updated layout
 	*/
 	public static com.liferay.portal.model.LayoutSoap updateLookAndFeel(
 		long groupId, boolean privateLayout, long layoutId,
 		java.lang.String themeId, java.lang.String colorSchemeId,
-		java.lang.String css, boolean wapTheme) throws RemoteException {
+		java.lang.String css) throws RemoteException {
 		try {
 			com.liferay.portal.model.Layout returnValue = LayoutServiceUtil.updateLookAndFeel(groupId,
-					privateLayout, layoutId, themeId, colorSchemeId, css,
-					wapTheme);
+					privateLayout, layoutId, themeId, colorSchemeId, css);
 
 			return com.liferay.portal.model.LayoutSoap.toSoapModel(returnValue);
 		}

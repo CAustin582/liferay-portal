@@ -242,7 +242,7 @@ public class DDMStructureLocalServiceUtil {
 	*/
 	public static void addStructureResources(
 		com.liferay.dynamic.data.mapping.model.DDMStructure structure,
-		com.liferay.portal.service.permission.ModelPermissions modelPermissions)
+		com.liferay.portal.kernel.service.permission.ModelPermissions modelPermissions)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		getService().addStructureResources(structure, modelPermissions);
 	}
@@ -698,7 +698,7 @@ public class DDMStructureLocalServiceUtil {
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery getExportActionableDynamicQuery(
-		com.liferay.portlet.exportimport.lar.PortletDataContext portletDataContext) {
+		com.liferay.exportimport.kernel.lar.PortletDataContext portletDataContext) {
 		return getService().getExportActionableDynamicQuery(portletDataContext);
 	}
 

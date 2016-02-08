@@ -16,16 +16,16 @@ package com.liferay.counter.model.impl;
 
 import aQute.bnd.annotation.ProviderType;
 
-import com.liferay.counter.model.Counter;
-import com.liferay.counter.model.CounterModel;
+import com.liferay.counter.kernel.model.Counter;
+import com.liferay.counter.kernel.model.CounterModel;
 
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.model.CacheModel;
-import com.liferay.portal.model.impl.BaseModelImpl;
 
 import java.io.Serializable;
 
@@ -75,14 +75,14 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 	public static final String SESSION_FACTORY = "liferaySessionFactory";
 	public static final String TX_MANAGER = "liferayTransactionManager";
 	public static final boolean ENTITY_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.entity.cache.enabled.com.liferay.counter.model.Counter"),
+				"value.object.entity.cache.enabled.com.liferay.counter.kernel.model.Counter"),
 			false);
 	public static final boolean FINDER_CACHE_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
-				"value.object.finder.cache.enabled.com.liferay.counter.model.Counter"),
+				"value.object.finder.cache.enabled.com.liferay.counter.kernel.model.Counter"),
 			false);
 	public static final boolean COLUMN_BITMASK_ENABLED = false;
 	public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
-				"lock.expiration.time.com.liferay.counter.model.Counter"));
+				"lock.expiration.time.com.liferay.counter.kernel.model.Counter"));
 
 	public CounterModelImpl() {
 	}
@@ -275,7 +275,7 @@ public class CounterModelImpl extends BaseModelImpl<Counter>
 		StringBundler sb = new StringBundler(10);
 
 		sb.append("<model><model-name>");
-		sb.append("com.liferay.counter.model.Counter");
+		sb.append("com.liferay.counter.kernel.model.Counter");
 		sb.append("</model-name>");
 
 		sb.append(

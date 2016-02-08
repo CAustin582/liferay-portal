@@ -19,6 +19,7 @@ import aQute.bnd.annotation.ProviderType;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.auth.HttpPrincipal;
+import com.liferay.portal.kernel.service.http.TunnelUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
 import com.liferay.portal.service.LayoutSetServiceUtil;
@@ -201,14 +202,14 @@ public class LayoutSetServiceHttp {
 	public static com.liferay.portal.model.LayoutSet updateLookAndFeel(
 		HttpPrincipal httpPrincipal, long groupId, boolean privateLayout,
 		java.lang.String themeId, java.lang.String colorSchemeId,
-		java.lang.String css, boolean wapTheme)
+		java.lang.String css)
 		throws com.liferay.portal.kernel.exception.PortalException {
 		try {
 			MethodKey methodKey = new MethodKey(LayoutSetServiceUtil.class,
 					"updateLookAndFeel", _updateLookAndFeelParameterTypes5);
 
 			MethodHandler methodHandler = new MethodHandler(methodKey, groupId,
-					privateLayout, themeId, colorSchemeId, css, wapTheme);
+					privateLayout, themeId, colorSchemeId, css);
 
 			Object returnObj = null;
 
@@ -318,7 +319,7 @@ public class LayoutSetServiceHttp {
 		};
 	private static final Class<?>[] _updateLookAndFeelParameterTypes5 = new Class[] {
 			long.class, boolean.class, java.lang.String.class,
-			java.lang.String.class, java.lang.String.class, boolean.class
+			java.lang.String.class, java.lang.String.class
 		};
 	private static final Class<?>[] _updateSettingsParameterTypes6 = new Class[] {
 			long.class, boolean.class, java.lang.String.class

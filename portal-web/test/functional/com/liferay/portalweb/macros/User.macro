@@ -749,6 +749,8 @@
 		<execute function="Click" locator1="UsersAndOrganizations#USER_TABLE_ACTIONS" />
 		<execute function="AssertClick" locator1="MenuItem#EDIT" value1="Edit" />
 
+		<execute function="Pause" locator1="5000" />
+
 		<execute function="AssertClick" locator1="UsersAndOrganizationsEditUser#ROLES_TAB" value1="Roles" />
 		<execute function="AssertClick" locator1="UsersAndOrganizationsEditUser#ROLES_REGULAR_ROLES_SELECT_LINK" value1="Select" />
 
@@ -1504,10 +1506,14 @@
 
 		<execute function="Click" locator1="Button#SIGN_IN" value1="Sign In" />
 
+		<execute function="AssertElementNotPresent" locator1="Button#SIGN_IN" value1="Sign In" />
+
 		<if>
 			<condition function="IsElementPresent" locator1="Button#I_AGREE" value1="I Agree" />
 			<then>
 				<execute function="AssertClick" locator1="Button#I_AGREE" value1="I Agree" />
+
+				<execute function="AssertElementNotPresent" locator1="Button#I_AGREE" value1="I Agree" />
 			</then>
 		</if>
 
@@ -1530,6 +1536,8 @@
 				</if>
 
 				<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+
+				<execute function="AssertElementNotPresent" locator1="TextInput#ENTER_AGAIN" />
 			</then>
 		</if>
 
@@ -1538,6 +1546,8 @@
 			<then>
 				<execute function="Type" locator1="TextInput#ANSWER" value1="test" />
 				<execute function="AssertClick" locator1="Button#SAVE" value1="Save" />
+
+				<execute function="AssertElementNotPresent" locator1="Button#SAVE" value1="Save" />
 			</then>
 		</if>
 
