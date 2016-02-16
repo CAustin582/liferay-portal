@@ -1,6 +1,91 @@
 <?xml version="1.0"?>
 
-<project name="dependencies">
+<project name="dependencies" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<property name="local.repo.dir" location="${user.home}/.m2/repository" />
+
+	<macrodef name="get-artifact-jar">
+		<attribute name="artifactId" />
+		<attribute name="id" />
+
+		<sequential>
+			<loadresource property="@{artifactId}.groupPath">
+				<propertyresource name="@{artifactId}.pom.groupId" />
+				<filterchain>
+					<tokenfilter>
+						<replacestring from="." to="${file.separator}" />
+					</tokenfilter>
+				</filterchain>
+			</loadresource>
+
+			<filelist id="@{id}" dir="${local.repo.dir}">
+				<file name="${@{artifactId}.groupPath}/@{artifactId}/${@{artifactId}.pom.version}/@{artifactId}-${@{artifactId}.pom.version}.${@{artifactId}.pom.packaging}" />
+			</filelist>
+
+			<pathconvert property="@{id}" refid="@{id}" />
+		</sequential>
+	</macrodef>
+
+	<artifact:pom artifactId="artifact" groupId="${groupId}" version="${version}" id="artifact.pom" />
+
+	<echo>${artifactId}</echo>
+	<get-artifact-jar artifactId="${artifactId}" id="artifact.jar" />
+
+	<available file="${artifact.jar}" property="artifact.jar.exists" />
+
+	<uptodate property="artifact.jar.isUpToDate" targetFile="${artifact.jar}">
+		<srcfiles dir="${portal.rootdir}/${artifactId}" includes="${artifactId}.jar" />
+	</uptodate>
+
+	<echo>
+		${artifactId} - ${artifact.pom.groupId} - ${artifact.pom.version}
+		${artifact.jar}
+		${artifact.jar.exists}
+		${artifact.jar.isUpToDate}
+	</echo>
+
+	<!-- <echo>
+		@{artifactId} - ${@{artifactId}.pom.groupId} - ${@{artifactId}.pom.version}
+		${@{artifactId}.jar}
+		${@{artifactId}.jar.exists}
+		${@{artifactId}.jar.isUpToDate}
+	</echo> -->
+
+	<!-- <macrodef name="init-artifact">
+		<attribute name="artifactId" />
+		<attribute name="groupId" default="com.liferay.portal" />
+		<attribute name="version" default="${lp.version}" />
+
+		<sequential>
+			<artifact:pom artifactId="@{artifactId}" groupId="@{groupId}" version="@{version}" id="@{artifactId}.pom" />
+
+			<get-artifact-jar artifactId="@{artifactId}" id="@{artifactId}.jar" />
+
+			<available file="${@{artifactId}.jar}" property="@{artifactId}.jar.exists" />
+
+			<uptodate property="@{artifactId}.jar.isUpToDate" targetFile="${@{artifactId}.jar}">
+				<srcfiles dir="${portal.rootdir}/@{artifactId}" includes="@{artifactId}.jar" />
+			</uptodate>
+
+			<echo>
+				@{artifactId} - ${@{artifactId}.pom.groupId} - ${@{artifactId}.pom.version}
+				${@{artifactId}.jar}
+				${@{artifactId}.jar.exists}
+				${@{artifactId}.jar.isUpToDate}
+			</echo>
+		</sequential>
+	</macrodef> -->
+
+	<!-- <target name="init-artifacts">
+		<init-artifact artifactId="portal-impl" />
+		<init-artifact artifactId="portal-service" />
+		<init-artifact artifactId="portal-test" />
+		<init-artifact artifactId="portal-test-internal" />
+		<init-artifact artifactId="util-bridges" />
+		<init-artifact artifactId="util-java" />
+		<init-artifact artifactId="util-slf4j" />
+		<init-artifact artifactId="util-taglib" />
+	</target> -->
+
 	<!-- <target
 		name="depend.all"
 		depends="
@@ -111,4 +196,82 @@
 	<target name="install.util-taglib" depends="install.portal-service,install.util-java">
 		<ant dir="../util-taglib" target="install" />
 	</target>
+
+	<!-- <artifact:dependencies filesetId="portal-impl.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="portal-impl" version="${lp.version}" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="portal-service.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="portal-service" version="${lp.version}" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="portal-test.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="portal-test" version="${lp.version}" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="portal-test-internal.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="portal-test-internal" version="${lp.version}" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="util-bridges.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="util-bridges" version="${lp.version}" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="util-java.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="util-java" version="${lp.version}" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="util-slf4j.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="util-slf4j" version="${lp.version}" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="util-taglib.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="util-taglib" version="${lp.version}" />
+	</artifact:dependencies> -->
+
+	<!-- <artifact:pom groupId="com.liferay.portal" artifactId="portal-impl" version="${lp.version}" id="portal-impl" />
+	<artifact:pom groupId="com.liferay.portal" artifactId="portal-service" version="${lp.version}" id="portal-service" />
+	<artifact:pom groupId="com.liferay.portal" artifactId="portal-test" version="${lp.version}" id="portal-test" />
+	<artifact:pom groupId="com.liferay.portal" artifactId="portal-test-internal" version="${lp.version}" id="portal-test-internal" />
+	<artifact:pom groupId="com.liferay.portal" artifactId="util-bridges" version="${lp.version}" id="util-bridges" />
+	<artifact:pom groupId="com.liferay.portal" artifactId="util-java" version="${lp.version}" id="util-java" />
+	<artifact:pom groupId="com.liferay.portal" artifactId="util-slf4j" version="${lp.version}" id="util-slf4j" />
+	<artifact:pom groupId="com.liferay.portal" artifactId="util-taglib" version="${lp.version}" id="util-taglib" /> -->
+
+<!-- 	<get-artifact-file-property artifactId="portal-impl" name="portal-impl.file" />
+	<get-artifact-file-property artifactId="portal-service" name="portal-service.file" />
+	<get-artifact-file-property artifactId="portal-test" name="portal-test.file" />
+	<get-artifact-file-property artifactId="portal-test-internal" name="portal-test-internal.file" />
+	<get-artifact-file-property artifactId="util-bridges" name="util-bridges.file" />
+	<get-artifact-file-property artifactId="util-java" name="util-java.file" />
+	<get-artifact-file-property artifactId="util-slf4j" name="util-slf4j.file" />
+	<get-artifact-file-property artifactId="util-taglib" name="util-taglib.file" /> -->
+
+	<!-- <pathconvert property="portal-impl.dependency.file" refid="portal-impl.dependency.file" />
+	<pathconvert property="portal-service.dependency.file" refid="portal-service.dependency.file" />
+	<pathconvert property="portal-test.dependency.file" refid="portal-test.dependency.file" />
+	<pathconvert property="portal-test-internal.dependency.file" refid="portal-test-internal.dependency.file" />
+	<pathconvert property="util-bridges.dependency.file" refid="util-bridges.dependency.file" />
+	<pathconvert property="util-java.dependency.file" refid="util-java.dependency.file" />
+	<pathconvert property="util-slf4j.dependency.file" refid="util-slf4j.dependency.file" />
+	<pathconvert property="util-taglib.dependency.file" refid="util-taglib.dependency.file" />
+
+	<uptodate property="portal-impl.dependency.isUpToDate" srcFile="../portal-impl/portal-impl.jar" targetFile="${portal-impl.dependency.file}" />
+	<uptodate property="portal-service.dependency.isUpToDate" srcFile="../portal-service/portal-service.jar" targetFile="${portal-service.dependency.file}" />
+	<uptodate property="portal-test.dependency.isUpToDate" srcFile="../portal-test/portal-test.jar" targetFile="${portal-test.dependency.file}" />
+	<uptodate property="portal-test-internal.dependency.isUpToDate" srcFile="../portal-test-internal/portal-test-internal.jar" targetFile="${portal-test-internal.dependency.file}" />
+	<uptodate property="util-bridges.dependency.isUpToDate" srcFile="../util-bridges/util-bridges.jar" targetFile="${util-bridges.dependency.file}" />
+	<uptodate property="util-java.dependency.isUpToDate" srcFile="../util-java/util-java.jar" targetFile="${util-java.dependency.file}" />
+	<uptodate property="util-slf4j.dependency.isUpToDate" srcFile="../util-slf4j/util-slf4j.jar" targetFile="${util-slf4j.dependency.file}" />
+	<uptodate property="util-taglib.dependency.isUpToDate" srcFile="../util-taglib/util-taglib.jar" targetFile="${util-taglib.dependency.file}" /> -->
+
+	<!-- <artifact:dependencies filesetId="portal-service.dependency.file">
+		<artifact:pom refid="portal-service" />
+	</artifact:dependencies>
+
+	<artifact:dependencies filesetId="portal-impl.dependency.file">
+		<dependency groupId="com.liferay.portal" artifactId="portal-impl" version="${lp.version}" />
+	</artifact:dependencies>
+	<pathconvert property="portal-service.dependency.file" refid="portal-service.dependency.file" />
+	<pathconvert property="portal-impl.dependency.file" refid="portal-impl.dependency.file" /> -->
 </project>

@@ -1,10 +1,13 @@
 <?xml version="1.0"?>
 
 <project basedir="." name="portal-impl" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<property name="artifactId" value="${ant.project.name}" />
+	<property name="groupId" value="com.liferay.portal" />
+	<property name="version" value="${lp.version}" />
+
 	<extension-point
-		name="dependencies"
+		name="project-compile-dependencies"
 		depends="
-			install.portal-service,
 			install.portal-service,
 			install.portal-test,
 			install.util-bridges,
@@ -14,11 +17,18 @@
 
 	<import file="../build-common.xml" />
 
-	<artifact:dependencies pathId="dependency.classpath">
+	<!-- <artifact:dependencies pathId="project.dependency.classpath" filesetId="project.dependency.fileset">
 		<dependency groupId="com.liferay.portal" artifactId="portal-service" version="${lp.version}" />
 		<dependency groupId="com.liferay.portal" artifactId="portal-test" version="${lp.version}" />
 		<dependency groupId="com.liferay.portal" artifactId="util-bridges" version="${lp.version}" />
 		<dependency groupId="com.liferay.portal" artifactId="util-java" version="${lp.version}" />
 		<dependency groupId="com.liferay.portal" artifactId="util-slf4j" version="${lp.version}" />
-	</artifact:dependencies>
+	</artifact:dependencies> -->
+
+	<!-- <pathconvert refid="dependency.fileset" property="dependency.fileset" /> -->
+
+
+	<!-- <available property="project.dependencies.available">
+		<filepath refid="project.dependency.fileset" />
+	</available> -->
 </project>

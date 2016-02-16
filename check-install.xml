@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<project name="check-install">
+	<condition property="portal-service.isInstalled">
+		<available file="" />
+	</condition>
+
+					<!-- <include name="portal-impl" />
+					<include name="portal-service" />
+					<include name="portal-test" />
+					<include name="portal-test-internal" />
+					<include name="portal-web" />
+					<include name="modules/registry-api" />
+					<include name="support-tomcat" />
+					<include name="util-bridges" />
+					<include name="util-java" />
+					<include name="util-slf4j" />
+					<include name="util-taglib" /> -->
+</project>

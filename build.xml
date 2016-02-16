@@ -1,20 +1,11 @@
 <?xml version="1.0"?>
 
 <project name="build-new">
+	<property name="portal.rootdir" location="." />
+	<import file="build-common.xml" />
 	<target name="all" depends="clean">
 		<antcall target="deploy" />
 	</target>
-
-	<target name="testd1">
-		<echo>TESTD1</echo>
-	</target>
-
-	<extension-point name="testex" depends="testd1" />
-
-	<target name="testd2" extensionOf="testex">
-		<echo>TESTD2</echo>
-	</target>
-
 
 	<macrodef name="portal-subant-target">
 		<attribute name="target" />
