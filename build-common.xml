@@ -13,7 +13,8 @@
 
 	<property name="lp.version" value="7.0.0-SNAPSHOT" />
 
-	<artifact:remoteRepository id="liferay.maven.remote" url="https://cdn.repository.liferay.com/nexus/content/groups/public/" />
+	<artifact:remoteRepository id="liferay.maven.remote" url="https://repository.liferay.com/nexus/content/groups/public" />
+	<!-- <artifact:remoteRepository id="liferay.maven.remote" url="https://cdn.repository.liferay.com/nexus/content/repositories/liferay-snapshots-ce" /> -->
 
 	<import file="build-dependencies.xml" />
 

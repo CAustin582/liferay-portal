@@ -28,13 +28,13 @@
 	<artifact:pom artifactId="artifact" groupId="${groupId}" version="${version}" id="artifact.pom" />
 
 	<echo>${artifactId}</echo>
-	<get-artifact-jar artifactId="${artifactId}" id="artifact.jar" />
+	<!-- <get-artifact-jar artifactId="${artifactId}" id="artifact.jar" />
 
 	<available file="${artifact.jar}" property="artifact.jar.exists" />
 
 	<uptodate property="artifact.jar.isUpToDate" targetFile="${artifact.jar}">
 		<srcfiles dir="${portal.rootdir}/${artifactId}" includes="${artifactId}.jar" />
-	</uptodate>
+	</uptodate> -->
 
 	<echo>
 		${artifactId} - ${artifact.pom.groupId} - ${artifact.pom.version}
