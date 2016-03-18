@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project name="build-app" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<condition property="artifact.properties.exists">
+		<available file="artifact.properties" />
+	</condition>
+
+	<target name="testt">
+
+	</target>
+
+	<target name="add-changelog-">
+		<!-- <property url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" /> --><!-- 
+		<loadproperties>
+			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
+		</loadproperties> -->
+		<loadresource property="changelog">
+			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
+		</loadresource>
+
+		<echo>${changelog}</echo>
+	</target>
+
+	<target name="record-module-version" depends="get-module-artifact">
+		<echo append="true" file="${dist.dir}/" message="" />
+	</target>
+
+	<target name="build-app" depends="check-stale-artifacts,get-module-artifacts,init">
+	<!-- <target name="build-app"> -->
+		<!-- <fail message="This target must be executed from an app suite's root directory.">
+			<condition>
+				<not>
+					<available file="app.bnd" />
+				</not>
+			</condition>
+		</fail>
+
+		<mkdir dir="dist" />
+
+		<property file="${modules.dir}/../build.properties" />
+
+		<pathconvert pathsep="," property="app.module.dirs">
+			<globmapper from="${modules.dir}${file.separator}*" to="*" />
+
+			<path>
+				<dirset dir="${basedir}">
+					<present targetdir="${basedir}">
+						<mapper from="*" to="*/bnd.bnd" type="glob" />
+					</present>
+				</dirset>
+			</path>
+		</pathconvert>
+
+		<subant target="get-module-artifact">
+			<dirset dir="${modules.dir}" excludes="${build.modules.excludes}" includes="${app.module.dirs}" />
+
+			<property name="dist.dir" value="${basedir}/dist" />
+			<property name="stale.artifacts" value="${stale.artifacts}" />
+		</subant>
+
+		<exec executable="${gradle.wrapper.path}">
+			<arg value="buildChangelog" />
+			<arg value="-q" />
+		</exec> -->
+	</target>
+
+	<target name="check-stale-artifacts">
+		<exec executable="${gradle.wrapper.path}" outputproperty="stale.artifacts">
+			<arg value="printStaleArtifact" />
+			<arg value="-q" />
+		</exec>
+
+		<!-- <fail if="${stale.artifacts}" message="Stale artifacts detected:{line.separator}${stale.artifacts}" /> -->
+	</target>
+
+	<target name="clean-app">
+		<delete dir="dist" />
+	</target>
+
+	<target name="get-module-artifact" if="${artifact.properties.exists}">
+		<loadproperties srcFile="artifact.properties">
+			<filterchain>
+				<linecontains>
+					<contains value="artifact.url=" />
+				</linecontains>
+
+				<replacestring from="https://cdn." to="http://" />
+			</filterchain>
+		</loadproperties>
+
+		<get src="${artifact.url}" dest="${dist.dir}" />
+	</target>
+
+	<target name="get-module-artifacts" depends="check-stale-artifacts,init">
+		<subant target="get-module-artifact">
+			<dirset dir="${modules.dir}" excludes="${build.modules.excludes}" includes="${app.module.dirs}" />
+
+			<property name="dist.dir" value="${basedir}/dist" />
+			<property name="stale.artifacts" value="${stale.artifacts}" />
+		</subant>
+	</target>
+
+	<target name="init">
+		<fail message="This target must be executed from an app suite's root directory.">
+			<condition>
+				<not>
+					<available file="app.bnd" />
+				</not>
+			</condition>
+		</fail>
+
+		<typedef classpathref="lib.classpath" resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" />
+
+		<property file="${modules.dir}/../build.properties" />
+
+		<pathconvert pathsep="," property="app.module.dirs">
+			<globmapper from="${modules.dir}${file.separator}*" to="*" />
+
+			<path>
+				<dirset dir="${basedir}">
+					<present targetdir="${basedir}">
+						<mapper from="*" to="*/bnd.bnd" type="glob" />
+					</present>
+				</dirset>
+			</path>
+		</pathconvert>
+
+		<mkdir dir="dist" />
+
+		<copyy from="app.bnd" to="dist/app.properties" />
+	</target>
+</project>
