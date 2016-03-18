@@ -7,15 +7,45 @@
 	</condition>
 
 	<target name="testt">
+		<exec executable="git" outputproperty="tags">
+			<arg value="tag" />
+			<arg value="-l" />
+			<arg value="Collaboration-*" />
+		</exec>
 
+		<loadfile property="tags2">
+			<filterchain>
+				<tailfilter lines="1" />
+			</filterchain>
+
+			<propertyresource name="tags" />
+		</loadfile>
+
+		<exec executable="git" outputproperty="tickets">
+			<arg value="log" />
+			<arg value="${tags2}..HEAD" />
+			<arg value="--pretty=format:%s" />
+		</exec>
+
+		<loadfile property="tickets2">
+			<filterchain>
+				<tailfilter lines="1" />
+			</filterchain>
+
+			<propertyresource name="tickets" />
+		</loadfile>
+
+		<echo>${tickets2}</echo>
 	</target>
 
-	<target name="add-changelog-">
+	<target name="add-module-changelog">
 		<!-- <property url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" /> --><!-- 
 		<loadproperties>
 			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
 		</loadproperties> -->
 		<loadresource property="changelog">
+			<filterchain>
+			</filterchain>
 			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
 		</loadresource>
 
@@ -23,7 +53,7 @@
 	</target>
 
 	<target name="record-module-version" depends="get-module-artifact">
-		<echo append="true" file="${dist.dir}/" message="" />
+		<echo append="true" file="${dist.dir}/app.properties" message="" />
 	</target>
 
 	<target name="build-app" depends="check-stale-artifacts,get-module-artifacts,init">
@@ -128,6 +158,6 @@
 
 		<mkdir dir="dist" />
 
-		<copyy from="app.bnd" to="dist/app.properties" />
+		<copy from="app.bnd" tofile="dist/app.properties" />
 	</target>
 </project>
