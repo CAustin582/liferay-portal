@@ -29,12 +29,8 @@
 	<mkdir dir="${dist.dir}" />
 
 	<target name="testt">
-		<pathconvert property="testt" pathsep=",\${line.separator}&#x0009;">
-			<path>
-				<fileset dir="${dist.dir}" includes="*.jar" />
-			</path>
-		</pathconvert>
-		<echo>${testt}</echo>
+		<loadfile property="testt" srcfile="${modules.dir}/liferay-releng.changelog" />
+		<fail>${testt}</fail>
 		<!-- <basename file="${basedir}" property="app.name" />
 
 		<echo>${app.name}</echo> -->

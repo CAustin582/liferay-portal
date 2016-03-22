@@ -58,6 +58,8 @@
 		if="${app.changelog.exists}"
 	>
 		<property file="${app.dir}/app.changelog" />
+
+		<!-- <property name="module.previous.version" value="filtered.content.from.app.changelog" /> -->
 	</target>
 
 	<target
