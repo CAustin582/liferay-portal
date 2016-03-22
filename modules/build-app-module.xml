@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE project>
+
+<project name="build-app-module" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<target name="testt">
+		<pathconvert property="testt" pathsep=",\${line.separator}&#x0009;">
+			<path>
+				<fileset dir="D:/liferay-portal/modules/apps/collaboration/dist" includes="*.jar" />
+			</path>
+
+			<globmapper from="*.jar" to="*" />
+		</pathconvert>
+		<echo>${testt}</echo>
+		<!-- <basename file="${basedir}" property="app.name" />
+
+		<echo>${app.name}</echo> -->
+	</target>
+
+	<target name="dist-module-artifact" depends="download-module-artifact,record-module-changelog">
+	</target>
+
+	<!-- <target name="get-module-artifact" if="${artifact.properties.exists}"> -->
+	<target
+		name="download-module-artifact"
+		description="Download the module artifact jar from the Liferay Nexus repository."
+	>
+		<fail message="Missing artifact.properties file in ${basedir}.">
+			<condition>
+				<not>
+					<available file="artifact.properties" />
+				</not>
+			</condition>
+		</fail>
+
+		<loadproperties srcFile="artifact.properties">
+			<filterchain>
+				<linecontains>
+					<contains value="artifact.url=" />
+				</linecontains>
+
+				<replacestring from="https://cdn." to="http://" />
+			</filterchain>
+		</loadproperties>
+
+		<get src="${artifact.url}" dest="${dist.dir}" />
+	</target>
+
+	<target
+		name="get-module-changelog-ticket-list"
+		depends="get-module-previous-version"
+		description="Get an aggregated list of tickets from the changelogs of all versions of the current module since the version present in the previous release of this app."
+	>
+	</target>
+
+	<target
+		name="get-module-previous-version"
+		description="Get the version of the current module that was present in the previous release of this app."
+		if="${app.changelog.exists}"
+	>
+		<property file="${app.dir}/app.changelog" />
+	</target>
+
+	<target
+		name="record-module-changelog"
+		depends="get-module-changelog-ticket-list"
+		description="Record the changelog tickets for the current module to app.changelog."
+	>
+		<!-- <property url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" /> --><!-- 
+		<loadproperties>
+			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
+		</loadproperties> -->
+		<loadresource property="changelog">
+			<filterchain>
+			</filterchain>
+			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
+		</loadresource>
+
+		<echo>${changelog}</echo>
+	</target>
+</project>

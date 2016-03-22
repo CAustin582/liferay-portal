@@ -1,0 +1,18 @@
+#
+# Liferay App Version 1.0.0
+#
+changelog-1.0.0=LPS-33093 LPS-33258 LPS-33320 LPS-33413 LPS-33594 LPS-33621 LPS-33847 LPS-34174 LPS-34277 LPS-34483 LPS-34937 LPS-35118 LPS-35131 LPS-35256 LPS-35598 LPS-36310 LPS-36603 LPS-37653 LPS-38632 LPS-39182 LPS-39218 LPS-40019 LPS-40204 LPS-40262 LPS-40384 LPS-40752
+
+modules-1.0.0=\
+	com.liferay.blogs.api-1.0.2.jar,\
+	com.liferay.blogs.editor.config-1.0.0.jar,\
+	com.liferay.blogs.item.selector-1.0.0.jar,\
+	com.liferay.blogs.layout.prototype-1.0.0.jar,\
+	com.liferay.bookmarks.api-1.0.1.jar
+
+#
+# Liferay App Version 1.0.1
+#
+changelog-1.0.1=LPS-42924 LPS-43258
+modules-${app.version}=\
+	

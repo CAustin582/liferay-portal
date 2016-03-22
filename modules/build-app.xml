@@ -2,98 +2,45 @@
 <!DOCTYPE project>
 
 <project name="build-app" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-	<condition property="artifact.properties.exists">
-		<available file="artifact.properties" />
+	<condition property="app.changelog.exists">
+		<available file="app.changelog" />
 	</condition>
 
+	<basename file="${basedir}" property="app.name" />
+
+	<property file="${modules.dir}/../build.properties" />
+
+	<pathconvert pathsep="," property="app.module.dirs">
+		<globmapper from="${modules.dir}${file.separator}*" to="*" />
+
+		<path>
+			<dirset dir="${basedir}">
+				<present targetdir="${basedir}">
+					<mapper from="*" to="*/bnd.bnd" type="glob" />
+				</present>
+			</dirset>
+		</path>
+	</pathconvert>
+
+	<pathconvert property="dist.dir">
+		<dirset dir="${basedir}" includes="dist" />
+	</pathconvert>
+
+	<mkdir dir="${dist.dir}" />
+
 	<target name="testt">
-		<exec executable="git" outputproperty="tags">
-			<arg value="tag" />
-			<arg value="-l" />
-			<arg value="Collaboration-*" />
-		</exec>
-
-		<loadfile property="tags2">
-			<filterchain>
-				<tailfilter lines="1" />
-			</filterchain>
-
-			<propertyresource name="tags" />
-		</loadfile>
-
-		<exec executable="git" outputproperty="tickets">
-			<arg value="log" />
-			<arg value="${tags2}..HEAD" />
-			<arg value="--pretty=format:%s" />
-		</exec>
-
-		<loadfile property="tickets2">
-			<filterchain>
-				<tailfilter lines="1" />
-			</filterchain>
-
-			<propertyresource name="tickets" />
-		</loadfile>
-
-		<echo>${tickets2}</echo>
-	</target>
-
-	<target name="add-module-changelog">
-		<!-- <property url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" /> --><!-- 
-		<loadproperties>
-			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
-		</loadproperties> -->
-		<loadresource property="changelog">
-			<filterchain>
-			</filterchain>
-			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
-		</loadresource>
-
-		<echo>${changelog}</echo>
-	</target>
-
-	<target name="record-module-version" depends="get-module-artifact">
-		<echo append="true" file="${dist.dir}/app.properties" message="" />
-	</target>
-
-	<target name="build-app" depends="check-stale-artifacts,get-module-artifacts,init">
-	<!-- <target name="build-app"> -->
-		<!-- <fail message="This target must be executed from an app suite's root directory.">
-			<condition>
-				<not>
-					<available file="app.bnd" />
-				</not>
-			</condition>
-		</fail>
-
-		<mkdir dir="dist" />
-
-		<property file="${modules.dir}/../build.properties" />
-
-		<pathconvert pathsep="," property="app.module.dirs">
-			<globmapper from="${modules.dir}${file.separator}*" to="*" />
-
+		<pathconvert property="testt" pathsep=",\${line.separator}&#x0009;">
 			<path>
-				<dirset dir="${basedir}">
-					<present targetdir="${basedir}">
-						<mapper from="*" to="*/bnd.bnd" type="glob" />
-					</present>
-				</dirset>
+				<fileset dir="${dist.dir}" includes="*.jar" />
 			</path>
 		</pathconvert>
+		<echo>${testt}</echo>
+		<!-- <basename file="${basedir}" property="app.name" />
 
-		<subant target="get-module-artifact">
-			<dirset dir="${modules.dir}" excludes="${build.modules.excludes}" includes="${app.module.dirs}" />
-
-			<property name="dist.dir" value="${basedir}/dist" />
-			<property name="stale.artifacts" value="${stale.artifacts}" />
-		</subant>
-
-		<exec executable="${gradle.wrapper.path}">
-			<arg value="buildChangelog" />
-			<arg value="-q" />
-		</exec> -->
+		<echo>${app.name}</echo> -->
 	</target>
+
+	<target name="build-app" depends="check-stale-artifacts,dist-module-artifacts,record-module-versions" />
 
 	<target name="check-stale-artifacts">
 		<exec executable="${gradle.wrapper.path}" outputproperty="stale.artifacts">
@@ -105,59 +52,47 @@
 	</target>
 
 	<target name="clean-app">
-		<delete dir="dist" />
+		<delete dir="${dist.dir}" />
 	</target>
 
-	<target name="get-module-artifact" if="${artifact.properties.exists}">
-		<loadproperties srcFile="artifact.properties">
-			<filterchain>
-				<linecontains>
-					<contains value="artifact.url=" />
-				</linecontains>
-
-				<replacestring from="https://cdn." to="http://" />
-			</filterchain>
-		</loadproperties>
-
-		<get src="${artifact.url}" dest="${dist.dir}" />
-	</target>
-
-	<target name="get-module-artifacts" depends="check-stale-artifacts,init">
-		<subant target="get-module-artifact">
+	<target name="dist-module-artifacts" depends="check-stale-artifacts">
+		<subant target="dist-module-artifact">
 			<dirset dir="${modules.dir}" excludes="${build.modules.excludes}" includes="${app.module.dirs}" />
 
-			<property name="dist.dir" value="${basedir}/dist" />
-			<property name="stale.artifacts" value="${stale.artifacts}" />
+			<property name="app.changelog.exists" value="${app.changelog.exists}" />
+			<property name="app.dir" value="${basedir}" />
+			<property name="dist.dir" value="${dist.dir}" />
 		</subant>
 	</target>
 
 	<target name="init">
-		<fail message="This target must be executed from an app suite's root directory.">
+		<!-- <fail message="This target must be executed from an app suite's root directory.">
 			<condition>
 				<not>
 					<available file="app.bnd" />
 				</not>
 			</condition>
-		</fail>
+		</fail> -->
 
-		<typedef classpathref="lib.classpath" resource="org/apache/maven/artifact/ant/antlib.xml" uri="antlib:org.apache.maven.artifact.ant" />
+		<!-- <touch file="dist/app.changelog.tickets.tmp" />
+		<touch file="dist/app.module.versions.tmp" /> -->
 
-		<property file="${modules.dir}/../build.properties" />
+		<!-- <echo append="true" file="app.changelog" message="#${file.separator}" />
+		<echo append="true" file="app.changelog" message="# Liferay App Version ${app.version}${file.separator}" />
+		<echo append="true" file="app.changelog" message="#${file.separator}" /> -->
+	</target>
 
-		<pathconvert pathsep="," property="app.module.dirs">
-			<globmapper from="${modules.dir}${file.separator}*" to="*" />
+	<!-- <target name="record-module-versions" depends="dist-module-artifacts"> -->
+	<target name="record-module-versions">
+		<pathconvert property="module.versions.list" pathsep=",\${line.separator}&#x0009;">
+			<flattenmapper />
 
 			<path>
-				<dirset dir="${basedir}">
-					<present targetdir="${basedir}">
-						<mapper from="*" to="*/bnd.bnd" type="glob" />
-					</present>
-				</dirset>
+				<fileset dir="${dist.dir}" includes="*.jar" />
 			</path>
 		</pathconvert>
 
-		<mkdir dir="dist" />
-
-		<copy from="app.bnd" tofile="dist/app.properties" />
+		<echo append="true" message="${line.separator}modules-${app.version}=\${line.separator}&#x0009;${module.versions.list}" />
+		<!-- <echo append="true" file="app.changelog" message="${line.separator}modules-${app.version}=\${line.separator}&#x0009;${module.versions.list}" /> -->
 	</target>
 </project>

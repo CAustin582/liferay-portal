@@ -2,8 +2,9 @@
 <!DOCTYPE project>
 
 <project name="build-module">
-	<import file="build-app.xml" />
 	<import file="build-common.xml" />
+	<import file="build-app.xml" />
+	<import file="build-app-module.xml" />
 
 	<target name="all">
 		<print-gradle-alternative args="clean deploy" />
