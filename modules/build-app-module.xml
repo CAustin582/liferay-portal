@@ -4,37 +4,32 @@
 <project name="build-app-module" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 	<property file="bnd.bnd" />
 
-	<target name="testt">
-		<pathconvert property="testt" pathsep=",\${line.separator}&#x0009;">
-			<path>
-				<fileset dir="D:/liferay-portal/modules/apps/collaboration/dist" includes="*.jar" />
-			</path>
+	<pathconvert property="releng.dir">
+		<filtermapper>
+			<replacestring from="modules" to="modules${file.separator}.releng" />
+		</filtermapper>
 
-			<globmapper from="*.jar" to="*" />
-		</pathconvert>
-		<echo>${testt}</echo>
-		<!-- <basename file="${basedir}" property="app.name" />
+		<path>
+			<pathelement location="${basedir}" />
+		</path>
+	</pathconvert>
 
-		<echo>${app.name}</echo> -->
+	<target name="dist-module-artifact" depends="download-artifact,record-artifact-change-log">
 	</target>
 
-	<target name="dist-module-artifact" depends="download-module-artifact,record-module-change-log">
-	</target>
-
-	<!-- <target name="get-module-artifact" if="${artifact.properties.exists}"> -->
 	<target
-		name="download-module-artifact"
+		name="download-artifact"
 		description="Download the module artifact jar from the Liferay Nexus repository."
 	>
-		<fail message="Missing artifact.properties file in ${basedir}.">
+		<fail message="Missing artifact.properties file in ${releng.dir}.">
 			<condition>
 				<not>
-					<available file="artifact.properties" />
+					<available file="${releng.dir}/artifact.properties" />
 				</not>
 			</condition>
 		</fail>
 
-		<loadproperties srcFile="artifact.properties">
+		<loadproperties srcFile="${releng.dir}/artifact.properties">
 			<filterchain>
 				<linecontains>
 					<contains value="artifact.url=" />
@@ -48,19 +43,50 @@
 	</target>
 
 	<target
-		name="get-module-change-log-ticket-list"
-		depends="download-module-artifact,get-artifact-version-previous-release"
+		name="get-artifact-change-log-ticket-list"
+		depends="get-artifact-version-previous-release,get-artifact-change-log-ticket-list-since-previous-release,get-artifact-change-log-ticket-list-full"
 		description="Get an aggregated list of tickets from the change logs of all versions of the current module since the version present in the previous release of this app."
+		if="${app.has.artifact.previous.release}"
 	>
-		<!-- <loadfile property="module.change.log.ticket.list" srcfile="src/resources/META-INF/liferay-releng.changelog"> -->
-		<loadfile property="module.change.log.ticket.list">
-			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
+	</target>
 
+	<target
+		name="get-artifact-change-log-ticket-list-full"
+		description=""
+		unless="${app.has.artifact.previous.release}"
+	>
+		<loadfile property="artifact.change.log.ticket.list" srcfile="${releng.dir}/liferay-releng.changelog">
+			<filterchain>
+				<linecontainsregexp>
+					<regexp pattern="[0-9a-f]{40}\^\.\.[0-9a-f]{40}" />
+				</linecontainsregexp>
+
+				<tokenfilter>
+					<filetokenizer />
+
+					<replaceregex flags="g" pattern="[0-9a-f]{40}\^\.\.[0-9a-f]{40}=" replace="" />
+					<replaceregex flags="g" pattern="\n|\r\n" replace=" " />
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+
+		<condition property="artifact.has.change.log.ticket.list">
+			<isset property="artifact.change.log.ticket.list" />
+		</condition>
+	</target>
+
+	<target
+		name="get-artifact-change-log-ticket-list-since-previous-release"
+		depends="get-artifact-version-previous-release"
+		description="Get an aggregated list of tickets from the change logs of all versions of the current module since the version present in the previous release of this app."
+		if="${app.has.artifact.previous.release}"
+	>
+		<loadfile property="artifact.change.log.ticket.list" srcfile="${releng.dir}/liferay-releng.changelog">
 			<filterchain>
 				<tokenfilter>
 					<filetokenizer />
 
-					<replaceregex pattern="[\s\S]* Bundle Version ${p.version}" replace="" />
+					<replaceregex pattern="[\s\S]* Bundle Version ${artifact.version.previous.release}" replace="" />
 				</tokenfilter>
 
 				<linecontainsregexp>
@@ -77,60 +103,46 @@
 				</tokenfilter>
 			</filterchain>
 		</loadfile>
+
+		<condition property="artifact.has.change.log.ticket.list">
+			<isset property="artifact.change.log.ticket.list" />
+		</condition>
 	</target>
 
 	<target
 		name="get-artifact-version-previous-release"
 		description="Get the version of the current module that was present in the previous release of this app."
-		if="${app.changelog.exists}"
+		unless="${app.first.version}"
 	>
 		<loadfile property="artifact.version.previous.release">
-			<propertyresource property="artifact.versions.previous.release" />
+			<propertyresource name="artifact.versions.previous.release" />
 
 			<filterchain>
-				<tokenfilter>
+				<tokenfilter delimOutput="">
 					<stringtokenizer delims="," />
+
+					<containsstring contains="${Bundle-SymbolicName}" />
+
+					<deletecharacters chars="," />
+
+					<replacestring from="${Bundle-SymbolicName}-" to="" />
 				</tokenfilter>
 
-				<containsstring contains="${Bundle-SymbolicName}" />
-
-				<!-- <linecontains>
-					<contains value="${Bundle-SymbolicName}" />
-				</linecontains> -->
+				<striplinebreaks />
 			</filterchain>
 		</loadfile>
 
-		<echo>${artifact.version.previous.release}</echo>
+		<condition property="app.has.artifact.previous.release">
+			<isset property="artifact.version.previous.release" />
+		</condition>
 	</target>
 
-	<!-- <macrodef name="set-module-version-previous">
-		<attribute name="app.version.previous" default="@{app.version.previous}" />
-
-		<sequential>
-			<property file="${app.dir}/app.changelog" />
-
-			<property name="artifact.version.previous" value="${artifacts-@{app.version.previous}}" />
-			<loadproperties name="artifact.version.previous" value="${artifacts-@{app.version.previous}}">
-				<filterchain>
-			</loadproperties>
-		</sequential>
-	</macrodef> -->
-
 	<target
-		name="record-module-change-log"
-		depends="get-module-change-log-ticket-list"
+		name="record-artifact-change-log"
+		depends="get-artifact-change-log-ticket-list"
 		description="Record the change log tickets for the current module to app.changelog."
+		if="${artifact.has.change.log.ticket.list}"
 	>
-		<!-- <property url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" /> --><!-- 
-		<loadproperties>
-			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
-		</loadproperties> -->
-		<loadresource property="change.log">
-			<filterchain>
-			</filterchain>
-			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
-		</loadresource>
-
-		<echo>${change.log}</echo>
+		<echo append="true" file="${dist.dir}/ticket.list.tmp">${artifact.change.log.ticket.list} </echo>
 	</target>
 </project>

@@ -2,8 +2,10 @@
 <!DOCTYPE project>
 
 <project name="build-app" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-	<condition property="app.changelog.exists">
-		<available file="app.changelog" />
+	<condition property="app.first.version">
+		<not>
+			<available file="app.changelog" />
+		</not>
 	</condition>
 
 	<basename file="${basedir}" property="app.name" />
@@ -14,7 +16,7 @@
 		<globmapper from="${modules.dir}${file.separator}*" to="*" />
 
 		<path>
-			<dirset dir="${basedir}">
+			<dirset dir="${basedir}" excludes="**/*-test">
 				<present targetdir="${basedir}">
 					<mapper from="*" to="*/bnd.bnd" type="glob" />
 				</present>
@@ -32,18 +34,11 @@
 		<attribute name="app.version.previous.release" />
 
 		<sequential>
-			<property name="artifact.versions.previous.release" value="${artifact-@{app.version.previous.release}}" />
+			<property name="artifact.versions.previous.release" value="${artifacts-@{app.version.previous.release}}" />
 		</sequential>
 	</macrodef>
 
-	<target name="testt">
-		<fail>${app.version.previous}</fail>
-		<!-- <basename file="${basedir}" property="app.name" />
-
-		<echo>${app.name}</echo> -->
-	</target>
-
-	<target name="build-app" depends="check-stale-artifacts,dist-module-artifacts" />
+	<target name="build-app" depends="dist-module-artifacts,write-app-changelog" />
 
 	<target name="check-stale-artifacts">
 		<exec executable="${gradle.wrapper.path}" outputproperty="stale.artifacts">
@@ -51,7 +46,7 @@
 			<arg value="-q" />
 		</exec>
 
-		<!-- <fail if="${stale.artifacts}" message="Stale artifacts detected:{line.separator}${stale.artifacts}" /> -->
+		<fail if="${stale.artifacts}" message="Stale artifacts detected:{line.separator}${stale.artifacts}" />
 	</target>
 
 	<target name="clean-app">
@@ -62,9 +57,9 @@
 		<subant target="dist-module-artifact">
 			<dirset dir="${modules.dir}" excludes="${build.modules.excludes}" includes="${app.module.dirs}" />
 
-			<!-- <property name="app.version.previous" value="${app.version.previous}" /> -->
-			<property name="artifact.versions.previous.release" value="${artifact.versions.previous.release}" />
 			<property name="app.dir" value="${basedir}" />
+			<property name="app.first.version" value="${app.first.version}" />
+			<property name="artifact.versions.previous.release" value="${artifact.versions.previous.release}" />
 			<property name="dist.dir" value="${dist.dir}" />
 		</subant>
 	</target>
@@ -95,25 +90,27 @@
 		<set-artifact-versions-previous-release app.version.previous.release="${app.version.previous.release}" />
 	</target>
 
-	<target name="init">
-		<!-- <fail message="This target must be executed from an app suite's root directory.">
-			<condition>
-				<not>
-					<available file="app.bnd" />
-				</not>
-			</condition>
-		</fail> -->
+	<target name="record-app-ticket-list" depends="dist-module-artifacts">
+		<condition property="app.change.log.version.separator" value="" else="${line.separator}${line.separator}">
+			<istrue value="${app.first.version}" />
+		</condition>
 
-		<!-- <touch file="dist/app.changelog.tickets.tmp" />
-		<touch file="dist/app.module.versions.tmp" /> -->
+		<echo append="true" file="app.changelog" message="${app.change.log.version.separator}#${line.separator}" />
+		<echo append="true" file="app.changelog" message="# Liferay App Version ${app.version}${line.separator}" />
+		<echo append="true" file="app.changelog" message="#${line.separator}" />
 
-		<!-- <echo append="true" file="app.changelog" message="#${file.separator}" />
-		<echo append="true" file="app.changelog" message="# Liferay App Version ${app.version}${file.separator}" />
-		<echo append="true" file="app.changelog" message="#${file.separator}" /> -->
+		<loadfile failonerror="false" property="app.ticket.list" srcfile="${dist.dir}/ticket.list.tmp">
+			<filterchain>
+				<sortfilter />
+
+				<uniqfilter />
+			</filterchain>
+		</loadfile>
+
+		<echo append="true" file="app.changelog" message="${line.separator}change-log-${app.version}=${app.ticket.list}" />
 	</target>
 
-	<!-- <target name="record-module-versions" depends="dist-module-artifacts"> -->
-	<target name="record-module-versions">
+	<target name="record-app-module-versions" depends="dist-module-artifacts,record-app-ticket-list">
 		<pathconvert property="module.versions.list" pathsep=",\${line.separator}&#x0009;">
 			<flattenmapper />
 
@@ -122,7 +119,8 @@
 			</path>
 		</pathconvert>
 
-		<echo append="true" message="${line.separator}modules-${app.version}=\${line.separator}&#x0009;${module.versions.list}" />
-		<!-- <echo append="true" file="app.changelog" message="${line.separator}modules-${app.version}=\${line.separator}&#x0009;${module.versions.list}" /> -->
+		<echo append="true" file="app.changelog" message="${line.separator}${line.separator}modules-${app.version}=\${line.separator}&#x0009;${module.versions.list}" />
 	</target>
+
+	<target name="write-app-changelog" depends="dist-module-artifacts,record-app-module-versions,record-app-ticket-list" />
 </project>
