@@ -28,15 +28,22 @@
 
 	<mkdir dir="${dist.dir}" />
 
+	<macrodef name="set-artifact-versions-previous-release">
+		<attribute name="app.version.previous.release" />
+
+		<sequential>
+			<property name="artifact.versions.previous.release" value="${artifact-@{app.version.previous.release}}" />
+		</sequential>
+	</macrodef>
+
 	<target name="testt">
-		<loadfile property="testt" srcfile="${modules.dir}/liferay-releng.changelog" />
-		<fail>${testt}</fail>
+		<fail>${app.version.previous}</fail>
 		<!-- <basename file="${basedir}" property="app.name" />
 
 		<echo>${app.name}</echo> -->
 	</target>
 
-	<target name="build-app" depends="check-stale-artifacts,dist-module-artifacts,record-module-versions" />
+	<target name="build-app" depends="check-stale-artifacts,dist-module-artifacts" />
 
 	<target name="check-stale-artifacts">
 		<exec executable="${gradle.wrapper.path}" outputproperty="stale.artifacts">
@@ -51,14 +58,41 @@
 		<delete dir="${dist.dir}" />
 	</target>
 
-	<target name="dist-module-artifacts" depends="check-stale-artifacts">
+	<target name="dist-module-artifacts" depends="check-stale-artifacts,get-artifact-versions-previous-release">
 		<subant target="dist-module-artifact">
 			<dirset dir="${modules.dir}" excludes="${build.modules.excludes}" includes="${app.module.dirs}" />
 
-			<property name="app.changelog.exists" value="${app.changelog.exists}" />
+			<!-- <property name="app.version.previous" value="${app.version.previous}" /> -->
+			<property name="artifact.versions.previous.release" value="${artifact.versions.previous.release}" />
 			<property name="app.dir" value="${basedir}" />
 			<property name="dist.dir" value="${dist.dir}" />
 		</subant>
+	</target>
+
+	<target name="get-app-version-previous-release">
+		<loadfile failonerror="false" property="app.version.previous.release" srcfile="app.changelog">
+			<filterchain>
+				<linecontains>
+					<contains value="# " />
+				</linecontains>
+
+				<striplinebreaks />
+
+				<tailfilter lines="1" />
+
+				<tokenfilter>
+					<replaceregex pattern="^.*?(\d[\d.]+\d)$" replace="\1" />
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
+
+		<property name="app.version.previous" value="0.0.0" />
+	</target>
+
+	<target name="get-artifact-versions-previous-release" depends="get-app-version-previous-release">
+		<property file="app.changelog" />
+
+		<set-artifact-versions-previous-release app.version.previous.release="${app.version.previous.release}" />
 	</target>
 
 	<target name="init">

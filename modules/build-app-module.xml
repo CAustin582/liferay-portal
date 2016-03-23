@@ -2,6 +2,8 @@
 <!DOCTYPE project>
 
 <project name="build-app-module" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+	<property file="bnd.bnd" />
+
 	<target name="testt">
 		<pathconvert property="testt" pathsep=",\${line.separator}&#x0009;">
 			<path>
@@ -16,7 +18,7 @@
 		<echo>${app.name}</echo> -->
 	</target>
 
-	<target name="dist-module-artifact" depends="download-module-artifact,record-module-changelog">
+	<target name="dist-module-artifact" depends="download-module-artifact,record-module-change-log">
 	</target>
 
 	<!-- <target name="get-module-artifact" if="${artifact.properties.exists}"> -->
@@ -46,37 +48,89 @@
 	</target>
 
 	<target
-		name="get-module-changelog-ticket-list"
-		depends="get-module-previous-version"
-		description="Get an aggregated list of tickets from the changelogs of all versions of the current module since the version present in the previous release of this app."
+		name="get-module-change-log-ticket-list"
+		depends="download-module-artifact,get-artifact-version-previous-release"
+		description="Get an aggregated list of tickets from the change logs of all versions of the current module since the version present in the previous release of this app."
 	>
+		<!-- <loadfile property="module.change.log.ticket.list" srcfile="src/resources/META-INF/liferay-releng.changelog"> -->
+		<loadfile property="module.change.log.ticket.list">
+			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
+
+			<filterchain>
+				<tokenfilter>
+					<filetokenizer />
+
+					<replaceregex pattern="[\s\S]* Bundle Version ${p.version}" replace="" />
+				</tokenfilter>
+
+				<linecontainsregexp>
+					<regexp pattern="[0-9a-f]{40}\^\.\.[0-9a-f]{40}" />
+				</linecontainsregexp>
+
+				<headfilter skip="1" />
+
+				<tokenfilter>
+					<filetokenizer />
+
+					<replaceregex flags="g" pattern="[0-9a-f]{40}\^\.\.[0-9a-f]{40}=" replace="" />
+					<replaceregex flags="g" pattern="\n|\r\n" replace=" " />
+				</tokenfilter>
+			</filterchain>
+		</loadfile>
 	</target>
 
 	<target
-		name="get-module-previous-version"
+		name="get-artifact-version-previous-release"
 		description="Get the version of the current module that was present in the previous release of this app."
 		if="${app.changelog.exists}"
 	>
-		<property file="${app.dir}/app.changelog" />
+		<loadfile property="artifact.version.previous.release">
+			<propertyresource property="artifact.versions.previous.release" />
 
-		<!-- <property name="module.previous.version" value="filtered.content.from.app.changelog" /> -->
+			<filterchain>
+				<tokenfilter>
+					<stringtokenizer delims="," />
+				</tokenfilter>
+
+				<containsstring contains="${Bundle-SymbolicName}" />
+
+				<!-- <linecontains>
+					<contains value="${Bundle-SymbolicName}" />
+				</linecontains> -->
+			</filterchain>
+		</loadfile>
+
+		<echo>${artifact.version.previous.release}</echo>
 	</target>
 
+	<!-- <macrodef name="set-module-version-previous">
+		<attribute name="app.version.previous" default="@{app.version.previous}" />
+
+		<sequential>
+			<property file="${app.dir}/app.changelog" />
+
+			<property name="artifact.version.previous" value="${artifacts-@{app.version.previous}}" />
+			<loadproperties name="artifact.version.previous" value="${artifacts-@{app.version.previous}}">
+				<filterchain>
+			</loadproperties>
+		</sequential>
+	</macrodef> -->
+
 	<target
-		name="record-module-changelog"
-		depends="get-module-changelog-ticket-list"
-		description="Record the changelog tickets for the current module to app.changelog."
+		name="record-module-change-log"
+		depends="get-module-change-log-ticket-list"
+		description="Record the change log tickets for the current module to app.changelog."
 	>
 		<!-- <property url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" /> --><!-- 
 		<loadproperties>
 			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
 		</loadproperties> -->
-		<loadresource property="changelog">
+		<loadresource property="change.log">
 			<filterchain>
 			</filterchain>
 			<url url="jar:file:dist/com.liferay.blogs.api-1.0.2.jar!/META-INF/liferay-releng.changelog" />
 		</loadresource>
 
-		<echo>${changelog}</echo>
+		<echo>${change.log}</echo>
 	</target>
 </project>
