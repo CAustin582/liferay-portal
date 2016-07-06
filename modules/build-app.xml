@@ -43,6 +43,13 @@
 		</sequential>
 	</macrodef>
 
+	<target depends="build-app" name="publish-app">
+		<echo message="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.list}" />
+		<exec dir="." executable="curl">
+			<arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.list}" />
+		</exec>
+	</target>
+
 	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
 		<delete file="${dist.dir}/ticket.list.tmp" />
 	</target>
@@ -99,7 +106,7 @@
 	</target>
 
 	<target depends="check-app-version,init-build-app" name="check-stale-artifacts" unless="check.stale.artifacts.skip">
-		<property location="${gradle.wrapper.path}" name="gradle.wrapper.path.absolute" />
+		<!-- <property location="${gradle.wrapper.path}" name="gradle.wrapper.path.absolute" />
 
 		<exec dir="${app.dir}" executable="${gradle.wrapper.path.absolute}" outputproperty="stale.artifacts.output">
 			<arg value="printStaleArtifact" />
@@ -119,7 +126,7 @@
 			<condition>
 				<isset property="module.stale.artifacts" />
 			</condition>
-		</fail>
+		</fail> -->
 	</target>
 
 	<target depends="check-current-branch" if="${current.branch.private}" name="checkout-public-modules-releng">
@@ -357,11 +364,11 @@
 
 		<property file="${basedir}/../build.properties" />
 
-		<pathconvert property="osgi.static.modules">
+		<!-- <pathconvert property="osgi.static.modules">
 			<fileset dir="${osgi.dir}/static" includes="*.jar" />
 
 			<flattenmapper />
-		</pathconvert>
+		</pathconvert> -->
 
 		<pathconvert property="app.bnd.file">
 			<fileset dir="${basedir}" includes="apps/${app.name}/app.bnd,private/apps/${app.name}/app.bnd" />
