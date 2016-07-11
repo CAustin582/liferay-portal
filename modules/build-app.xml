@@ -63,7 +63,7 @@
 
 				<!-- <basename file="@{plugin.file}" property="plugin.file.name" /> -->
 
-				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=&#64;${plugin.file}" />
+				<var name="plugins.binaries.list" value="${plugins.binaries.list}--data-raw plugin${plugins.count}=${plugin.file}" />
 				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=&#64;@{plugin.file};${plugin.file.name}" /> -->
 				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}plugin${plugins.count}=File(&quot;@{plugin.file}&quot;)&amp;" /> -->
 
