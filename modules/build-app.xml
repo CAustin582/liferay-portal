@@ -113,9 +113,9 @@
 			<arg value="-d" />
 			<arg value="${plugins.binaries.list}" /> -->
 
-			<arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&version=${app.version}&amp;changelog=${app.ticket.list.param}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${app.package.plugins.count}&amp;${plugins.binaries.list}" />
+			<arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list.param}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${app.package.plugins.count}&amp;${plugins.binaries.list}" />
 		</exec>
-			<echo><![CDATA[<arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list.param}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${app.package.plugins.count}&amp;${plugins.binaries.list}" />]]></echo>
+			<echo>http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list.param}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${app.package.plugins.count}&amp;${plugins.binaries.list}</echo>
 	</target>
 
 	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
