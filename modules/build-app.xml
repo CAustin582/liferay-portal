@@ -59,7 +59,12 @@
 			</path>
 
 			<sequential>
-				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=File(&quot;@{plugin.file}&quot;) " />
+				<local name="plugin.file.name" />
+
+				<!-- <basename file="@{plugin.file}" property="plugin.file.name" /> -->
+
+				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=&#64;@{plugin.file}" />
+				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=&#64;@{plugin.file};${plugin.file.name}" /> -->
 				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}plugin${plugins.count}=File(&quot;@{plugin.file}&quot;)&amp;" /> -->
 
 				<math datatype="int" result="plugins.count" operand1="${plugins.count}" operand2="1" operation="+" />
@@ -89,13 +94,13 @@
 	<target depends="build-app,get-app-package-plugins-count,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param" name="publish-app">
 		<exec dir="." executable="curl">
 			<arg value="-X POST" />
-			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 			<arg value="-F token=${token}" />
 			<arg value="-F version=${app.version}" />
 			<arg value="-F changelog=&quot;${app.ticket.list}&quot;" />
 			<arg value="-F buildNumber=${buildNumber}" />
 			<arg value="-F appPackagePluginsCount=${app.package.plugins.count}" />
 			<arg value="${plugins.binaries.list}" />
+			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 
 		<echo><![CDATA[		<exec dir="." executable="curl">
