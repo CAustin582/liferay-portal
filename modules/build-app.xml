@@ -78,11 +78,11 @@
 
 	<target depends="build-app,get-app-package-plugins-count,get-app-markteplace-id,get-plugins-binaries-list" name="publish-app">
 
-		<echo message="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.binaries.list}" />
+		<!-- <echo message="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.binaries.list}" /> -->
 		<exec dir="." executable="curl">
 			<arg value="-X" />
 			<arg value="POST" />
-			<arg value="&quot;http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}&quot;" />
+			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 			<arg value="-d" />
 			<arg value="token=${token}" />
 			<arg value="-d" />
