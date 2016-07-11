@@ -43,7 +43,31 @@
 		</sequential>
 	</macrodef>
 
-	<target depends="build-app" name="publish-app">
+	<target name="get-app-package-plugins-count">
+		<resourcecount property="app.package.plugins.count">
+			<fileset dir="${dist.dir}" includes="*.jar" />
+		</resourcecount>
+	</target>
+
+	<target name="get-plugins-binaries-list">
+		<var name="plugins.count" value="0" />
+		<var name="plugins.list" value="" />
+
+		<for param="plugin.file">
+			<path>
+				<fileset dir="${dist.dir}" includes="*.jar" />
+			</path>
+
+			<sequential>
+				<var name="plugins.list" value="${plugins.list}-d plugin${plugins.count}=File(&quot;@{plugin.file}&quot;) " />
+
+				<math datatype="int" result="plugins.count" operand1="${plugins.count}" operand2="1" operation="+" />
+			</sequential>
+		</for>
+	</target>
+
+	<target depends="build-app,get-app-package-plugins-count,get-plugins-binaries-list" name="publish-app">
+
 		<echo message="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.list}" />
 		<exec dir="." executable="curl">
 			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617" />
@@ -52,11 +76,11 @@
 			<arg value="-d" />
 			<arg value="version=${app.version}" />
 			<arg value="-d" />
-			<arg value="changelog=${app.ticket.list}" />
+			<arg value="changelog=&quot;${app.ticket.list}&quot;" />
 			<arg value="-d" />
 			<arg value="buildNumber=${buildNumber}" />
 			<arg value="-d" />
-			<arg value="appPackagePluginsCount=${appPackagePluginsCount}" />
+			<arg value="appPackagePluginsCount=${app.package.plugins.count}" />
 			<arg value="-d" />
 			<arg value="${plugins.list}" />
 			<!-- <arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.list}" /> -->
@@ -119,7 +143,7 @@
 	</target>
 
 	<target depends="check-app-version,init-build-app" name="check-stale-artifacts" unless="check.stale.artifacts.skip">
-		<!-- <property location="${gradle.wrapper.path}" name="gradle.wrapper.path.absolute" />
+		<property location="${gradle.wrapper.path}" name="gradle.wrapper.path.absolute" />
 
 		<exec dir="${app.dir}" executable="${gradle.wrapper.path.absolute}" outputproperty="stale.artifacts.output">
 			<arg value="printStaleArtifact" />
@@ -139,7 +163,7 @@
 			<condition>
 				<isset property="module.stale.artifacts" />
 			</condition>
-		</fail> -->
+		</fail>
 	</target>
 
 	<target depends="check-current-branch" if="${current.branch.private}" name="checkout-public-modules-releng">
