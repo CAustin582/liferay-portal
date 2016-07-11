@@ -78,7 +78,15 @@
 
 	<target depends="build-app,get-app-package-plugins-count,get-app-markteplace-id,get-plugins-binaries-list" name="publish-app">
 		<exec dir="." executable="curl">
-			<arg value="-X" />
+			<arg value="-X POST http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+			<arg value="-d token=${token}" />
+			<arg value="-d version=${app.version}" />
+			<arg value="-d changelog=&quot;${app.ticket.list}&quot;" />
+			<arg value="-d buildNumber=${buildNumber}" />
+			<arg value="-d appPackagePluginsCount=${app.package.plugins.count}" />
+			<arg value="${plugins.binaries.list}" />
+
+			<!-- <arg value="-X" />
 			<arg value="POST" />
 			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 			<arg value="-d" />
@@ -92,7 +100,8 @@
 			<arg value="-d" />
 			<arg value="appPackagePluginsCount=${app.package.plugins.count}" />
 			<arg value="-d" />
-			<arg value="${plugins.binaries.list}" />
+			<arg value="${plugins.binaries.list}" /> -->
+
 			<!-- <arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.binaries.list}" /> -->
 		</exec>
 			<echo><![CDATA[.
@@ -110,7 +119,6 @@
 			<arg value="buildNumber=${buildNumber}" />
 			<arg value="-d" />
 			<arg value="appPackagePluginsCount=${app.package.plugins.count}" />
-			<arg value="-d" />
 			<arg value="${plugins.binaries.list}" />
 		</exec>]]></echo>
 	</target>
