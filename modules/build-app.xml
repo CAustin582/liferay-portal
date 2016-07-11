@@ -63,13 +63,13 @@
 
 				<!-- <basename file="@{plugin.file}" property="plugin.file.name" /> -->
 
-				<var name="plugins.binaries.list" value="${plugins.binaries.list}--data-raw plugin${plugins.count}=@{plugin.file} " />
-				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=&#64;@{plugin.file};${plugin.file.name}" /> -->
+				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}--data-raw plugin${plugins.count}=@{plugin.file} " /> -->
+				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=&#64;@${plugin.file}" />
 				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}plugin${plugins.count}=File(&quot;@{plugin.file}&quot;)&amp;" /> -->
 
 				<math datatype="int" result="plugins.count" operand1="${plugins.count}" operand2="1" operation="+" />
 			</sequential>
-		</for>
+		</for><fail>${plugins.binaries.list}</fail>
 	</target>
 
 	<target name="get-app-markteplace-id">
