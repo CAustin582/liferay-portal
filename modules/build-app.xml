@@ -88,6 +88,7 @@
 
 	<target depends="build-app,get-app-package-plugins-count,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param" name="publish-app">
 		<exec dir="." executable="curl">
+			<arg value="-X POST" />
 			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 			<arg value="-F token=${token}" />
 			<arg value="-F version=${app.version}" />
