@@ -51,7 +51,7 @@
 
 	<target name="get-plugins-binaries-list">
 		<var name="plugins.count" value="0" />
-		<var name="plugins.list" value="" />
+		<var name="plugins.binaries.list" value="" />
 
 		<for param="plugin.file">
 			<path>
@@ -59,18 +59,30 @@
 			</path>
 
 			<sequential>
-				<var name="plugins.list" value="${plugins.list}-d plugin${plugins.count}=File(&quot;@{plugin.file}&quot;) " />
+				<var name="plugins.binaries.list" value="${plugins.binaries.list}-d plugin${plugins.count}=File(&quot;@{plugin.file}&quot;) " />
 
 				<math datatype="int" result="plugins.count" operand1="${plugins.count}" operand2="1" operation="+" />
 			</sequential>
 		</for>
 	</target>
 
-	<target depends="build-app,get-app-package-plugins-count,get-plugins-binaries-list" name="publish-app">
+	<target name="get-app-markteplace-id">
+		<loadproperties srcFile="${releng.app.dir}/app.properties">
+			<filterchain>
+				<linecontains>
+					<contains value="app.marketplace.id" />
+				</linecontains>
+			</filterchain>
+		</loadproperties>
+	</target>
 
-		<echo message="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.list}" />
+	<target depends="build-app,get-app-package-plugins-count,get-app-markteplace-id,get-plugins-binaries-list" name="publish-app">
+
+		<echo message="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.binaries.list}" />
 		<exec dir="." executable="curl">
-			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617" />
+			<arg value="-X" />
+			<arg value="POST" />
+			<arg value="&quot;http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}&quot;" />
 			<arg value="-d" />
 			<arg value="token=${token}" />
 			<arg value="-d" />
@@ -82,8 +94,8 @@
 			<arg value="-d" />
 			<arg value="appPackagePluginsCount=${app.package.plugins.count}" />
 			<arg value="-d" />
-			<arg value="${plugins.list}" />
-			<!-- <arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/74593617?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.list}" /> -->
+			<arg value="${plugins.binaries.list}" />
+			<!-- <arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.binaries.list}" /> -->
 		</exec>
 	</target>
 
