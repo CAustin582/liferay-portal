@@ -69,7 +69,7 @@
 
 				<math datatype="int" result="plugins.count" operand1="${plugins.count}" operand2="1" operation="+" />
 			</sequential>
-		</for>
+		</for><fail>${plugins.binaries.list}</fail>
 	</target>
 
 	<target name="get-app-markteplace-id">
