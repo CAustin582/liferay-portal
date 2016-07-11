@@ -93,6 +93,8 @@
 			<arg value="appPackagePluginsCount=${app.package.plugins.count}" />
 			<arg value="-d" />
 			<arg value="${plugins.binaries.list}" />
+			<!-- <arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.binaries.list}" /> -->
+		</exec>
 			<echo><![CDATA[.
 		<exec dir="." executable="curl">
 			<arg value="-X" />
@@ -111,8 +113,6 @@
 			<arg value="-d" />
 			<arg value="${plugins.binaries.list}" />
 		</exec>]]></echo>
-			<!-- <arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${appPackagePluginsCount}&amp;${plugins.binaries.list}" /> -->
-		</exec>
 	</target>
 
 	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
