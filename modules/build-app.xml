@@ -101,7 +101,7 @@
 			<arg line="-X POST -F version=${app.version} -F changelog=&quot;${app.ticket.list}&quot; -F buildNumber=${buildNumber} -F appPackagePluginsCount=${app.package.plugins.count} ${plugins.binaries.list} https://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}" />
 		</exec>
 
-		<echo>curl -X POST -F version=${app.version} -F changelog=&quot;${app.ticket.list}&quot; -F buildNumber=${buildNumber} -F appPackagePluginsCount=${app.package.plugins.count} ${plugins.binaries.list} https://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}</echo>
+		<echo>curl -X POST -F version=${app.version} -F changelog=&quot;${app.ticket.list}&quot; -F buildNumber=${buildNumber} -F appPackagePluginsCount=${app.package.plugins.count} ${plugins.binaries.list} https://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}</echo>
 		<!-- <exec dir="." executable="curl">
 			<arg value="-X POST" />
 			<arg value="-F token=${token}" />
