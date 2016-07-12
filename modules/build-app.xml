@@ -69,7 +69,7 @@
 				<!-- <basename file="@{plugin.file}" property="plugin.file.name" /> -->
 
 				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}-data-raw plugin${plugins.count}=@{plugin.file} " /> -->
-				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F &quot;plugin${plugins.count}=&#64;${plugin.file};filename=${plugin.file.name}&quot; " />
+				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin${plugins.count}=&#64;&quot;${plugin.file}&quot;;filename=&quot;${plugin.file.name}&quot; " />
 				<!-- <var name="plugins.binaries.list" value="${plugins.binaries.list}plugin${plugins.count}=File(&quot;@{plugin.file}&quot;)&amp;" /> -->
 
 				<math datatype="int" result="plugins.count" operand1="${plugins.count}" operand2="1" operation="+" />
@@ -101,7 +101,7 @@
 			<arg line="-X POST -F token=${token} -F version=${app.version} -F changelog=&quot;${app.ticket.list}&quot; -F buildNumber=${buildNumber} -F appPackagePluginsCount=${app.package.plugins.count} ${plugins.binaries.list} http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 
-		<echo>curl -X POST -F token=${token} -F version=${app.version} -F changelog=&quot;${app.ticket.list}&quot; -F buildNumber=${buildNumber} -F appPackagePluginsCount=${app.package.plugins.count} -F ${plugins.binaries.list} http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}</echo>
+		<echo>curl -X POST -F token=${token} -F version=${app.version} -F changelog=&quot;${app.ticket.list}&quot; -F buildNumber=${buildNumber} -F appPackagePluginsCount=${app.package.plugins.count} ${plugins.binaries.list} http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}</echo>
 		<!-- <exec dir="." executable="curl">
 			<arg value="-X POST" />
 			<arg value="-F token=${token}" />
