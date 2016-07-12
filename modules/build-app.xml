@@ -95,6 +95,9 @@
 
 	<target depends="build-app,get-app-package-plugins-count,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param" name="publish-app">
 		<exec dir="." executable="curl">
+			<arg line="-X POST -F token=${token} -F version=${app.version} -F changelog=&quot;${app.ticket.list}&quot; -F buildNumber=${buildNumber} -F appPackagePluginsCount=${app.package.plugins.count} -F appPackagePluginsCount=${app.package.plugins.count} ${plugins.binaries.list} http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+		</exec>
+		<!-- <exec dir="." executable="curl">
 			<arg value="-X POST" />
 			<arg value="-F token=${token}" />
 			<arg value="-F version=${app.version}" />
@@ -103,17 +106,7 @@
 			<arg value="-F appPackagePluginsCount=${app.package.plugins.count}" />
 			<arg value="${plugins.binaries.list}" />
 			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
-		</exec>
-
-		<echo><![CDATA[		<exec dir="." executable="curl">
-			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
-			<arg value="-F token=${token}" />
-			<arg value="-F version=${app.version}" />
-			<arg value="-F changelog=&quot;${app.ticket.list}&quot;" />
-			<arg value="-F buildNumber=${buildNumber}" />
-			<arg value="-F appPackagePluginsCount=${app.package.plugins.count}" />
-			<arg value="${plugins.binaries.list}" />
-		</exec>]]></echo>
+		</exec> -->
 
 			<!-- <arg value="-X" />
 			<arg value="POST" />
