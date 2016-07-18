@@ -101,7 +101,7 @@
 			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}" />
 		</exec>
 
-		<echo>curl -X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}</echo>
+		<echo>curl -X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}</echo>
 		<!-- <exec dir="." executable="curl">
 			<arg value="-X POST" />
 			<arg value="-F token=${token}" />
@@ -335,6 +335,26 @@
 			</chainedmapper>
 			<fileset dir="${osgi.dir}/marketplace" includes="*.jar" />
 		</pathconvert>
+	</target>
+
+	<target name="index-app">
+		<path id="target.platform.indexer.classpath">
+
+			<!-- Order is important -->
+
+			<fileset dir="${liferay.home}/tools/portal-tools-target-platform-indexer-client" includes="com.liferay.portal.target.platform.indexer.jar,com.liferay.portal.tools.target.platform.indexer.client.jar" />
+			<fileset dir="${osgi.dir}/core" includes="com.liferay.portal.bootstrap.jar,org.eclipse.osgi.jar" />
+		</path>
+
+		<java
+			classname="com.liferay.portal.tools.target.platform.indexer.client.TargetPlatformIndexerClient"
+			classpathref="target.platform.indexer.classpath"
+			fork="true"
+			newenvironment="true"
+		>
+			<jvmarg value="-Dliferay.home=${liferay.home}" />
+			<jvmarg value="-Dportal.lib.dir=${portal.lib.dir}" />
+		</java>
 	</target>
 
 	<target name="index-modules-and-app-lpkgs">
