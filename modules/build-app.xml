@@ -96,7 +96,7 @@
 		</loadfile>
 	</target>
 
-	<target depends="build-app,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param" name="publish-app">
+	<target depends="build-app,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param,index-app" name="publish-app">
 		<exec dir="." executable="curl">
 			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}" />
 		</exec>
@@ -337,7 +337,7 @@
 		</pathconvert>
 	</target>
 
-	<target name="index-app">
+	<target depends="build-app" name="index-app">
 		<path id="target.platform.indexer.classpath">
 
 			<!-- Order is important -->
@@ -352,8 +352,8 @@
 			fork="true"
 			newenvironment="true"
 		>
-			<jvmarg value="-Dliferay.home=${liferay.home}" />
-			<jvmarg value="-Dportal.lib.dir=${portal.lib.dir}" />
+			<jvmarg value="-Dliferay.home=${releng.app.dir}" />
+			<jvmarg value="-Dportal.lib.dir=../lib/development" />
 		</java>
 	</target>
 
