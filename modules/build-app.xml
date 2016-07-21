@@ -96,7 +96,7 @@
 		</loadfile>
 	</target>
 
-	<target depends="build-app,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param,index-app" name="publish-app">
+	<target depends="build-app,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param" name="publish-app">
 		<exec dir="." executable="curl">
 			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}" />
 		</exec>
