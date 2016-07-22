@@ -86,7 +86,7 @@
 			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 
-		<mkdir dir="${basedir}/markteplace" />
+		<mkdir dir="${basedir}/markteplace/${app.name}.lpkg" />
 
 		<get
 			dest="${basedir}/markteplace"
