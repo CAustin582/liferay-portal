@@ -92,7 +92,7 @@
 		<delete file="${dist.dir}/ticket.list.tmp" />
 	</target>
 
-	<target name="build-app-all">
+	<target name="publish-app-all">
 		<pathconvert pathsep="," property="app.names">
 			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
 			<path>
@@ -102,7 +102,7 @@
 
 		<for list="${app.names}" param="app.name">
 			<sequential>
-				<antcall inheritall="false" target="build-app">
+				<antcall inheritall="false" target="publish-app">
 					<param name="app.name" value="@{app.name}" />
 				</antcall>
 			</sequential>
