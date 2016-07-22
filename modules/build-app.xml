@@ -96,7 +96,11 @@
 		<pathconvert pathsep="," property="app.names">
 			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
 			<path>
-				<dirset dir="${basedir}" includes="apps/*" />
+				<dirset dir="${basedir}" includes="apps/*">
+					<present targetdir="${basedir}/.releng">
+						<mapper from="*" to="*${file.separator}app.properties" type="glob" />
+					</present>
+				</dirset>
 			</path>
 		</pathconvert>
 
