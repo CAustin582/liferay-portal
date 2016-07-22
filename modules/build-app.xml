@@ -100,26 +100,27 @@
 		<exec dir="." executable="curl">
 			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}" />
 		</exec>
-
-		<echo>curl -X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}</echo>
-		<!-- <exec dir="." executable="curl">
-			<arg value="-X POST" />
-			<arg value="-F token=${token}" />
-			<arg value="-F version=${app.version}" />
-			<arg value="-F changelog=&quot;${app.ticket.list}&quot;" />
-			<arg value="-F buildNumber=${buildNumber}" />
-			<arg value="-F appPackagePluginsCount=${app.package.plugins.count}" />
-			<arg value="${plugins.binaries.list}" />
-			<arg value="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
-		</exec> -->
-
-			<!-- <arg line="http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list.param}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${app.package.plugins.count}&amp;${plugins.binaries.list}" /> -->
-
-		<!-- <echo>http://www-nightly.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}&amp;version=${app.version}&amp;changelog=${app.ticket.list.param}&amp;buildNumber=${buildNumber}&amp;appPackagePluginsCount=${app.package.plugins.count}&amp;${plugins.binaries.list}</echo> -->
 	</target>
 
 	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
 		<delete file="${dist.dir}/ticket.list.tmp" />
+	</target>
+
+	<target name="build-app-all">
+		<pathconvert pathsep="," property="app.names">
+			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
+			<path>
+				<dirset dir="${basedir}" includes="apps/*" />
+			</path>
+		</pathconvert>
+
+		<for list="${app.names}" param="app.name">
+			<sequential>
+				<antcall inheritall="false" target="build-app">
+					<param name="app.name" value="@{app.name}" />
+				</antcall>
+			</sequential>
+		</for>
 	</target>
 
 	<target depends="dist-module-artifacts-lpkg,write-lpkg-marketplace-properties" name="build-app-lpkg" unless="module.dirs.null">
