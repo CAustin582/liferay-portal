@@ -85,6 +85,13 @@
 		<exec dir="." executable="curl">
 			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
+
+		<mkdir dir="${basedir}/markteplace" />
+
+		<get
+			dest="${basedir}/markteplace"
+			src="https://web-uat.liferay.com/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${buildNumber}/${app.version}/${token}"
+		/>
 	</target>
 
 	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
