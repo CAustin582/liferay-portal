@@ -83,6 +83,7 @@
 
 	<target depends="build-app,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param,get-app-version" name="publish-app">
 		<exec dir="." executable="curl">
+			<echo>-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}</echo>
 			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}?token=${token}" />
 		</exec>
 	</target>
