@@ -62,16 +62,6 @@
 		</for>
 	</target>
 
-	<target name="get-app-markteplace-id">
-		<loadproperties srcFile="${releng.app.dir}/app.properties">
-			<filterchain>
-				<linecontains>
-					<contains value="app.marketplace.id" />
-				</linecontains>
-			</filterchain>
-		</loadproperties>
-	</target>
-
 	<target name="get-app-ticket-list-param">
 		<loadfile property="app.ticket.list.param">
 			<filterchain>
@@ -81,9 +71,9 @@
 		</loadfile>
 	</target>
 
-	<target depends="build-app,get-app-markteplace-id,get-plugins-binaries-list,get-app-ticket-list-param,get-app-version" name="publish-app">
+	<target depends="build-app,get-app-properties,get-app-ticket-list-param,get-app-version,get-plugins-binaries-list" name="publish-app">
 		<exec dir="." executable="curl">
-			<arg line="-X POST -F buildNumber=${buildNumber} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 
 		<mkdir dir="${basedir}/markteplace/${app.name}.lpkg" />
@@ -94,11 +84,23 @@
 		/>
 	</target>
 
-	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
-		<delete file="${dist.dir}/ticket.list.tmp" />
+	<target depends="get-app-properties" name="delete-pending-app">
+		<exec dir="." executable="curl">
+			<arg line="-X DELETE https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+		</exec>
 	</target>
 
-	<target name="publish-app-all">
+	<target depends="get-app-names" name="delete-pending-apps">
+		<for list="${app.names}" param="app.name">
+			<sequential>
+				<antcall inheritall="false" target="delete-pending-app">
+					<param name="app.name" value="@{app.name}" />
+				</antcall>
+			</sequential>
+		</for>
+	</target>
+
+	<target name="get-app-names">
 		<pathconvert pathsep="," property="app.names">
 			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
 			<path>
@@ -109,7 +111,13 @@
 				</dirset>
 			</path>
 		</pathconvert>
+	</target>
 
+	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
+		<delete file="${dist.dir}/ticket.list.tmp" />
+	</target>
+
+	<target depends="get-app-names" name="publish-app-all">
 		<for list="${app.names}" param="app.name">
 			<sequential>
 				<antcall inheritall="false" target="publish-app">
@@ -287,7 +295,7 @@
 		<property name="app.git.id" value="app.git.id-${app.version}=${git.rev.parse.output}" />
 	</target>
 
-	<target depends="get-app-version-previous-release" name="get-app-version">
+	<target depends="get-app-properties" name="get-app-version">
 		<loadfile property="app.major.minor.version.previous.release">
 			<filterchain>
 				<replaceregex pattern="(\d{1,2}\.\d{1,2})\.\d{1,2}" replace="\1" />
@@ -309,23 +317,13 @@
 		<property name="app.version" value="${app.major.minor.version.previous.release}.${app.bug.fix.version}" />
 	</target>
 
-	<target depends="init-build-app" name="get-app-version-previous-release">
-		<loadfile failonerror="false" property="app.version.previous.release" srcfile="${releng.app.dir}/app.properties">
-			<filterchain>
-				<linecontains>
-					<contains value="app.marketplace.version" />
-				</linecontains>
+	<target depends="init-build-app" name="get-app-properties">
+		<property file="${releng.app.dir}/app.properties" />
 
-				<tokenfilter>
-					<replaceregex pattern="app.marketplace.version=" replace="" />
-				</tokenfilter>
-			</filterchain>
-		</loadfile>
-
-		<property name="app.version.previous.release" value="0.0.0" />
+		<property name="app.version.previous.release" value="${app.marketplace.version}" />
 	</target>
 
-	<target depends="get-app-version-previous-release" name="get-artifact-versions-previous-release">
+	<target depends="get-app-properties" name="get-artifact-versions-previous-release">
 		<property file="${releng.app.dir}/app.changelog" />
 
 		<set-artifact-versions-previous-release app.version.previous.release="${app.version.previous.release}" />
