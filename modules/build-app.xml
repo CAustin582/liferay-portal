@@ -43,88 +43,8 @@
 		</sequential>
 	</macrodef>
 
-	<target name="get-plugins-binaries-list">
-		<var name="plugins.count" value="0" />
-		<var name="plugins.binaries.list" value="" />
-
-		<for param="plugin.file">
-			<path>
-				<fileset dir="${dist.dir}" includes="*.jar" />
-			</path>
-
-			<sequential>
-				<local name="plugin.file" />
-
-				<property name="plugin.file" value="@{plugin.file}" />
-
-				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin=&#64;${plugin.file} " />
-			</sequential>
-		</for>
-	</target>
-
-	<target name="get-app-ticket-list-param">
-		<loadfile property="app.ticket.list.param">
-			<filterchain>
-				<replacestring from=" " to="+" />
-			</filterchain>
-			<propertyresource name="app.ticket.list" />
-		</loadfile>
-	</target>
-
-	<target depends="build-app,get-app-properties,get-app-ticket-list-param,get-app-version,get-plugins-binaries-list" name="publish-app">
-		<exec dir="." executable="curl">
-			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
-		</exec>
-
-		<mkdir dir="${basedir}/markteplace/${app.name}.lpkg" />
-
-		<get
-			dest="${basedir}/markteplace"
-			src="https://web-uat.liferay.com/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${buildNumber}/${app.version}/${token}"
-		/>
-	</target>
-
-	<target depends="get-app-properties" name="delete-pending-app">
-		<exec dir="." executable="curl">
-			<arg line="-X DELETE -F token=${token} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
-		</exec>
-	</target>
-
-	<target depends="get-app-names" name="delete-pending-apps">
-		<for list="${app.names}" param="app.name">
-			<sequential>
-				<antcall inheritall="false" target="delete-pending-app">
-					<param name="app.name" value="@{app.name}" />
-				</antcall>
-			</sequential>
-		</for>
-	</target>
-
-	<target name="get-app-names">
-		<pathconvert pathsep="," property="app.names">
-			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
-			<path>
-				<dirset dir="${basedir}" includes="apps/*">
-					<present targetdir="${basedir}/.releng">
-						<mapper from="*" to="*${file.separator}app.properties" type="glob" />
-					</present>
-				</dirset>
-			</path>
-		</pathconvert>
-	</target>
-
 	<target depends="dist-module-artifacts,write-app-change-log" name="build-app">
 		<delete file="${dist.dir}/ticket.list.tmp" />
-	</target>
-
-	<target depends="get-app-names" name="publish-app-all">
-		<for list="${app.names}" param="app.name">
-			<sequential>
-				<antcall inheritall="false" target="publish-app">
-					<param name="app.name" value="@{app.name}" />
-				</antcall>
-			</sequential>
-		</for>
 	</target>
 
 	<target depends="dist-module-artifacts-lpkg,write-lpkg-marketplace-properties" name="build-app-lpkg" unless="module.dirs.null">
@@ -222,6 +142,22 @@
 		</exec>
 	</target>
 
+	<target depends="get-app-names" name="delete-pending-apps">
+		<for list="${app.names}" param="app.name">
+			<sequential>
+				<antcall inheritall="false" target="delete-pending-app">
+					<param name="app.name" value="@{app.name}" />
+				</antcall>
+			</sequential>
+		</for>
+	</target>
+
+	<target depends="get-app-properties" name="delete-pending-app">
+		<exec dir="." executable="curl">
+			<arg line="-X DELETE -F token=${token} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+		</exec>
+	</target>
+
 	<target depends="check-stale-artifacts,get-artifact-versions-previous-release" name="dist-module-artifacts">
 		<mkdir dir="${dist.dir}" />
 
@@ -295,6 +231,34 @@
 		<property name="app.git.id" value="app.git.id-${app.version}=${git.rev.parse.output}" />
 	</target>
 
+	<target name="get-app-names">
+		<pathconvert pathsep="," property="app.names">
+			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
+			<path>
+				<dirset dir="${basedir}" includes="apps/*">
+					<present targetdir="${basedir}/.releng">
+						<mapper from="*" to="*${file.separator}app.properties" type="glob" />
+					</present>
+				</dirset>
+			</path>
+		</pathconvert>
+	</target>
+
+	<target depends="init-build-app" name="get-app-properties">
+		<property file="${releng.app.dir}/app.properties" />
+
+		<property name="app.version.previous.release" value="${app.marketplace.version}" />
+	</target>
+
+	<target name="get-app-ticket-list-param">
+		<loadfile property="app.ticket.list.param">
+			<filterchain>
+				<replacestring from=" " to="+" />
+			</filterchain>
+			<propertyresource name="app.ticket.list" />
+		</loadfile>
+	</target>
+
 	<target depends="get-app-properties" name="get-app-version">
 		<loadfile property="app.major.minor.version.previous.release">
 			<filterchain>
@@ -317,12 +281,6 @@
 		<property name="app.version" value="${app.major.minor.version.previous.release}.${app.bug.fix.version}" />
 	</target>
 
-	<target depends="init-build-app" name="get-app-properties">
-		<property file="${releng.app.dir}/app.properties" />
-
-		<property name="app.version.previous.release" value="${app.marketplace.version}" />
-	</target>
-
 	<target depends="get-app-properties" name="get-artifact-versions-previous-release">
 		<property file="${releng.app.dir}/app.changelog" />
 
@@ -338,6 +296,25 @@
 			</chainedmapper>
 			<fileset dir="${osgi.dir}/marketplace" includes="*.jar" />
 		</pathconvert>
+	</target>
+
+	<target name="get-plugins-binaries-list">
+		<var name="plugins.count" value="0" />
+		<var name="plugins.binaries.list" value="" />
+
+		<for param="plugin.file">
+			<path>
+				<fileset dir="${dist.dir}" includes="*.jar" />
+			</path>
+
+			<sequential>
+				<local name="plugin.file" />
+
+				<property name="plugin.file" value="@{plugin.file}" />
+
+				<var name="plugins.binaries.list" value="${plugins.binaries.list}-F plugin=&#64;${plugin.file} " />
+			</sequential>
+		</for>
 	</target>
 
 	<target name="index-modules-and-app-lpkgs">
@@ -461,6 +438,29 @@
 				</not>
 			</and>
 		</condition>
+	</target>
+
+	<target depends="build-app,get-app-properties,get-app-ticket-list-param,get-app-version,get-plugins-binaries-list" name="publish-app">
+		<exec dir="." executable="curl">
+			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+		</exec>
+
+		<mkdir dir="${basedir}/markteplace/${app.name}.lpkg" />
+
+		<get
+			dest="${basedir}/markteplace"
+			src="https://web-uat.liferay.com/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${buildNumber}/${app.version}/${token}"
+		/>
+	</target>
+
+	<target depends="get-app-names" name="publish-app-all">
+		<for list="${app.names}" param="app.name">
+			<sequential>
+				<antcall inheritall="false" target="publish-app">
+					<param name="app.name" value="@{app.name}" />
+				</antcall>
+			</sequential>
+		</for>
 	</target>
 
 	<target name="reset-all">
