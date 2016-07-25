@@ -142,6 +142,14 @@
 		</exec>
 	</target>
 
+	<target depends="get-app-properties" name="delete-pending-app">
+		<echo message="Deleting pending versions of ${app.marketplace.title}${line.separator}" />
+
+		<exec dir="." executable="curl">
+			<arg line="-X DELETE -F token=${token} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+		</exec>
+	</target>
+
 	<target depends="get-app-names" name="delete-pending-apps">
 		<for list="${app.names}" param="app.name">
 			<sequential>
@@ -150,12 +158,6 @@
 				</antcall>
 			</sequential>
 		</for>
-	</target>
-
-	<target depends="get-app-properties" name="delete-pending-app">
-		<exec dir="." executable="curl">
-			<arg line="-X DELETE -F token=${token} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
-		</exec>
 	</target>
 
 	<target depends="check-stale-artifacts,get-artifact-versions-previous-release" name="dist-module-artifacts">
@@ -441,7 +443,7 @@
 	</target>
 
 	<target depends="build-app,get-app-properties,get-app-ticket-list-param,get-app-version,get-plugins-binaries-list" name="publish-app">
-		<echo message="Publishing ${app.marketplace.title}${line.separator}App Version: ${app.version}}${line.separator}Portal Compatibility Build Number: ${build.number}" />
+		<echo message="Publishing ${app.marketplace.title}${line.separator}App Version: ${app.version}${line.separator}Portal Compatibility Build Number: ${build.number}" />
 
 		<exec dir="." failonerror="true" executable="curl">
 			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
