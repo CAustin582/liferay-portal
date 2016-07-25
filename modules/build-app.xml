@@ -445,15 +445,15 @@
 			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 
-		<mkdir dir="${basedir}/markteplace/${app.name}.lpkg" />
-
 		<get
-			dest="${basedir}/markteplace"
+			dest="${basedir}/markteplace/${app.marketplace.title}.lpkg"
 			src="https://web-uat.liferay.com/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${build.number}/${app.version}/${token}"
 		/>
 	</target>
 
 	<target depends="get-app-names" name="publish-app-all">
+		<mkdir dir="${basedir}/markteplace" />
+
 		<for list="${app.names}" param="app.name">
 			<sequential>
 				<antcall inheritall="false" target="publish-app">
