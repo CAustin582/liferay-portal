@@ -441,7 +441,7 @@
 	</target>
 
 	<target depends="build-app,get-app-properties,get-app-ticket-list-param,get-app-version,get-plugins-binaries-list" name="publish-app">
-		<exec dir="." executable="curl">
+		<exec dir="." failonerror="true" executable="curl">
 			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 
