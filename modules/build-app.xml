@@ -456,6 +456,8 @@
 	</target>
 
 	<target depends="get-app-names" name="publish-app-all">
+		<delete dir="${basedir}/markteplace" />
+
 		<mkdir dir="${basedir}/markteplace" />
 
 		<for list="${app.names}" param="app.name">
