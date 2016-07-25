@@ -449,7 +449,7 @@
 
 		<get
 			dest="${basedir}/markteplace"
-			src="https://web-uat.liferay.com/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${buildNumber}/${app.version}/${token}"
+			src="https://web-uat.liferay.com/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${build.number}/${app.version}/${token}"
 		/>
 	</target>
 
