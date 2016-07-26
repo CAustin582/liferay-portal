@@ -146,7 +146,7 @@
 		<echo message="Deleting pending versions of ${app.marketplace.title}${line.separator}" />
 
 		<exec dir="." executable="curl">
-			<arg line="-X DELETE -F token=${token} https://web-uat.liferay.com/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
+			<arg line="-X DELETE -F token=${token} ${marketplace.server.base.url}/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 	</target>
 
