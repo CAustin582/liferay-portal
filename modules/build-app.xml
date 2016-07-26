@@ -446,12 +446,12 @@
 		<echo message="Publishing ${app.marketplace.title}${line.separator}App Version: ${app.version}${line.separator}Portal Compatibility Build Number: ${build.number}" />
 
 		<exec dir="." failonerror="true" executable="curl">
-			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} ${marketplace.server.base.url}/${app.marketplace.id}" />
+			<arg line="-X POST -F buildNumber=${build.number} -F changelog=&quot;${app.ticket.list}&quot; ${plugins.binaries.list} -F token=${token} -F version=${app.version} ${marketplace.server.base.url}/osb-portlet/mp_release/app_entries/${app.marketplace.id}" />
 		</exec>
 
 		<get
 			dest="${basedir}/markteplace/${app.marketplace.title}.lpkg"
-			src="${marketplace.server.base.url}/${app.marketplace.id}/${build.number}/${app.version}/${token}"
+			src="${marketplace.server.base.url}/web/guest/marketplace/-/mp/application/${app.marketplace.id}/${build.number}/${app.version}/${token}"
 		/>
 	</target>
 
