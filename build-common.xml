@@ -732,6 +732,16 @@ Error-Prone was automatically installed. Please rerun your task.
 				<propertyresource name="gradle.execute.task.attribute" />
 			</loadfile>
 
+			<echo><![CDATA[<gradle-execute dir="@{dir}" failonerror="@{failonerror}" forcedcacheenabled="@{forcedcacheenabled}" task="${gradle.execute.task}">
+				<arg line="${gradle.execute.additional.tasks.arg}" />
+				<arg value="${gradle.execute.build.file.arg}" />
+				<arg value="${gradle.execute.parallel.arg}" />
+				<arg value="${gradle.execute.quiet.arg}" />
+				<arg value="-Dmaven.local.ignore=@{maven.local.ignore}" />
+				<arg value="-Dportal.build=@{portal.build}" />
+				<env key="WAS_HOME" value="${app.server.websphere.dir}" />
+			</gradle-execute>]]></echo>
+
 			<gradle-execute dir="@{dir}" failonerror="@{failonerror}" forcedcacheenabled="@{forcedcacheenabled}" task="${gradle.execute.task}">
 				<arg line="${gradle.execute.additional.tasks.arg}" />
 				<arg value="${gradle.execute.build.file.arg}" />
