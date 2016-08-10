@@ -643,6 +643,18 @@ Error-Prone was automatically installed. Please rerun your task.
 				</else>
 			</if>
 
+			<echo><![CDATA[<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
+				<args />
+				<arg value="--no-daemon" />
+				<arg value="--project-cache-dir=${project.dir}/.gradle" />
+				<arg value="--stacktrace" />
+				<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
+				<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
+				<arg value="-Dliferay.home=${liferay.home}" />
+				<arg value="@{task}" />
+				<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
+			</exec>]]></echo>
+
 			<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
 				<args />
 				<arg value="--no-daemon" />
@@ -1153,6 +1165,9 @@ Error-Prone was automatically installed. Please rerun your task.
 
 			<update-gradle-properties />
 
+			<gradle-execute task="setupPortalTools">
+				<arg value="--build-file=${project.dir}/modules/util.gradle" />
+			</gradle-execute>
 			<gradle-execute-build build.file="${project.dir}/modules/util.gradle" task="setupPortalTools" />
 		</sequential>
 	</macrodef>
