@@ -644,6 +644,7 @@ Error-Prone was automatically installed. Please rerun your task.
 			</if>
 
 			<echo><![CDATA[<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
+				<arg value="@{task}" />
 				<args />
 				<arg value="--no-daemon" />
 				<arg value="--project-cache-dir=${project.dir}/.gradle" />
@@ -651,11 +652,11 @@ Error-Prone was automatically installed. Please rerun your task.
 				<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
 				<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
 				<arg value="-Dliferay.home=${liferay.home}" />
-				<arg value="@{task}" />
 				<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
 			</exec>]]></echo>
 
 			<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
+				<arg value="@{task}" />
 				<args />
 				<arg value="--no-daemon" />
 				<arg value="--project-cache-dir=${project.dir}/.gradle" />
@@ -663,7 +664,6 @@ Error-Prone was automatically installed. Please rerun your task.
 				<arg value="-Dapp.server.parent.dir=${app.server.parent.dir}" />
 				<arg value="-Dforced.cache.enabled=@{forcedcacheenabled}" />
 				<arg value="-Dliferay.home=${liferay.home}" />
-				<arg value="@{task}" />
 				<env key="GRADLE_OPTS" value="${env.ANT_OPTS}" />
 			</exec>
 		</sequential>
