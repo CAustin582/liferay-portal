@@ -656,7 +656,7 @@ Error-Prone was automatically installed. Please rerun your task.
 			</exec>]]></echo>
 
 			<exec dir="@{dir}" executable="${project.dir}/gradlew${gradlew.suffix}" failonerror="@{failonerror}">
-				<args />
+				<!-- <args /> -->
 				<arg value="--no-daemon" />
 				<arg value="--project-cache-dir=${project.dir}/.gradle" />
 				<arg value="--stacktrace" />
@@ -1165,9 +1165,6 @@ Error-Prone was automatically installed. Please rerun your task.
 
 			<update-gradle-properties />
 
-			<gradle-execute task="setupPortalTools">
-				<arg value="--build-file=${project.dir}/modules/util.gradle" />
-			</gradle-execute>
 			<gradle-execute-build build.file="${project.dir}/modules/util.gradle" dir="${basedir}" task="setupPortalTools" />
 		</sequential>
 	</macrodef>
