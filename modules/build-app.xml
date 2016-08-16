@@ -469,6 +469,10 @@
 				</antcall>
 			</sequential>
 		</for>
+
+		<copydir dest="${osgi.dir}/markteplace" src="${basedir}/markteplace" />
+
+		<antcall target="index-modules-and-app-lpkgs" />
 	</target>
 
 	<target name="reset-all">
