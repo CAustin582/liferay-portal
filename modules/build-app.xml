@@ -335,6 +335,7 @@
 			newenvironment="true"
 		>
 			<jvmarg value="-Dliferay.home=${liferay.home}" />
+			<jvmarg value="-Dmodule.framework.marketplace.dir=${liferay.home}/osgi/marketplace" />
 			<jvmarg value="-Dportal.lib.dir=${portal.lib.dir}" />
 		</java>
 	</target>
@@ -470,7 +471,9 @@
 			</sequential>
 		</for>
 
-		<copydir dest="${osgi.dir}/markteplace" src="${basedir}/markteplace" />
+		<copy todir="${osgi.dir}" file="${basedir}/markteplace" />
+
+		<delete dir="${osgi.dir}/modules" />
 
 		<antcall target="index-modules-and-app-lpkgs" />
 	</target>
