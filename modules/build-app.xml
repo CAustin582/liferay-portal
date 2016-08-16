@@ -471,7 +471,11 @@
 			</sequential>
 		</for>
 
-		<copy todir="${osgi.dir}" file="${basedir}/markteplace" />
+		<mkdir dir="${osgi.dir}/marketplace" />
+
+		<copy todir="${osgi.dir}/marketplace">
+			<fileset dir="${basedir}/markteplace" includes="**/*" />
+		</copy>
 
 		<delete dir="${osgi.dir}/modules" />
 
