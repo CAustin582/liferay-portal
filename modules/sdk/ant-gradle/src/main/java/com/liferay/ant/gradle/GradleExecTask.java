@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.ant.gradle.exec;
+package com.liferay.ant.gradle;
 
 import java.io.File;
 
