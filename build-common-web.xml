@@ -163,12 +163,16 @@
 		<install-portal-artifact packaging="war" snapshot="true" />
 	</target>
 
-	<target depends="war" name="publish-portal-release">
-		<publish-portal-artifact packaging="war" />
+	<target depends="war,war-jsp" name="publish-portal-release">
+		<publish-portal-artifact packaging="war">
+			<attach classifier="jsp" file="${artifact.name}-jsp.war" />
+		</publish-portal-artifact>
 	</target>
 
 	<target depends="war" name="publish-portal-snapshot">
-		<publish-portal-artifact packaging="war" snapshot="true" />
+		<publish-portal-artifact packaging="war" snapshot="true">
+			<attach classifier="jsp" file="${artifact.name}-jsp.war" />
+		</publish-portal-artifact>
 	</target>
 
 	<target name="war">
@@ -181,6 +185,22 @@
 					basedir="docroot"
 					destfile="${war.file}.war"
 					excludes="WEB-INF/web.xml"
+					webxml="docroot/WEB-INF/web.xml"
+				/>
+			</then>
+		</if>
+	</target>
+
+	<target name="war-jsp">
+		<manifest-macro />
+
+		<if>
+			<available file="docroot" />
+			<then>
+				<war
+					basedir="docroot"
+					destfile="${war.file}-jsp.war"
+					includes="**/*.jsp"
 					webxml="docroot/WEB-INF/web.xml"
 				/>
 			</then>

@@ -761,6 +761,24 @@
 		</java>
 	</target>
 
+	<target name="download-portal-war">
+		<artifact:dependencies filesetId="com.liferay.portal.web">
+			<dependency artifactId="com.liferay.portal.web" groupId="com.liferay" version="com.liferay.portal.web.version" />
+			<remoteRepository url="${sonatype.release.url}">
+				<authentication password="${sonatype.release.password}" username="${sonatype.release.username}" />
+			</remoteRepository>
+		</artifact:dependencies>
+	</target>
+
+	<target depends="download-portal-war" name="publish-portal-war-jsp">
+		<artifact:deploy file="com.liferay.portal.web.jsp.war">
+			<pom file="pom.xml" />
+			<remoteRepository url="${sonatype.release.url}">
+				<authentication password="${sonatype.release.password}" username="${sonatype.release.username}" />
+			</remoteRepository>
+		</artifact:deploy>
+	</target>
+
 	<target depends="setup-jrebel-properties" name="setup-jrebel">
 		<copy file="tools/jrebel/rebel.xml_GLOBAL" tofile="${app.server.lib.global.dir}/rebel.xml">
 			<filterchain>
