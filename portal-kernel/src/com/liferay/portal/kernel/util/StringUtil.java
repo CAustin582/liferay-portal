@@ -2207,11 +2207,13 @@ public class StringUtil {
 	/**
 	 * Pseudorandomly permutes the characters of the string.
 	 *
+	 * @deprecated As of 7.0.0, replaced by {@link RandomUtil#shuffle(String)}
 	 * @param  s the string whose characters are to be randomized
 	 * @return a string of the same length as the string whose characters
 	 *         represent a pseudorandom permutation of the characters of the
 	 *         string
 	 */
+	@Deprecated
 	public static String randomize(String s) {
 		return RandomUtil.shuffle(s);
 	}
@@ -5230,40 +5232,46 @@ public class StringUtil {
 
 		StringBundler sb = new StringBundler();
 
-		UnsyncBufferedReader unsyncBufferedReader = new UnsyncBufferedReader(
-			new UnsyncStringReader(text));
+		try (UnsyncBufferedReader unsyncBufferedReader =
+				new UnsyncBufferedReader(new UnsyncStringReader(text))) {
 
-		String s = StringPool.BLANK;
+			String s = StringPool.BLANK;
 
-		while ((s = unsyncBufferedReader.readLine()) != null) {
-			if (s.length() == 0) {
-				sb.append(lineSeparator);
+			while ((s = unsyncBufferedReader.readLine()) != null) {
+				if (s.length() == 0) {
+					sb.append(lineSeparator);
 
-				continue;
-			}
+					continue;
+				}
 
-			int lineLength = 0;
+				int lineLength = 0;
 
-			String[] tokens = s.split(StringPool.SPACE);
+				String[] tokens = s.split(StringPool.SPACE);
 
-			for (String token : tokens) {
-				if ((lineLength + token.length() + 1) > width) {
-					if (lineLength > 0) {
-						sb.append(lineSeparator);
-					}
-
-					if (token.length() > width) {
-						int pos = token.indexOf(CharPool.OPEN_PARENTHESIS);
-
-						if (pos != -1) {
-							sb.append(token.substring(0, pos + 1));
+				for (String token : tokens) {
+					if ((lineLength + token.length() + 1) > width) {
+						if (lineLength > 0) {
 							sb.append(lineSeparator);
+						}
 
-							token = token.substring(pos + 1);
+						if (token.length() > width) {
+							int pos = token.indexOf(CharPool.OPEN_PARENTHESIS);
 
-							sb.append(token);
+							if (pos != -1) {
+								sb.append(token.substring(0, pos + 1));
+								sb.append(lineSeparator);
 
-							lineLength = token.length();
+								token = token.substring(pos + 1);
+
+								sb.append(token);
+
+								lineLength = token.length();
+							}
+							else {
+								sb.append(token);
+
+								lineLength = token.length();
+							}
 						}
 						else {
 							sb.append(token);
@@ -5272,25 +5280,20 @@ public class StringUtil {
 						}
 					}
 					else {
+						if (lineLength > 0) {
+							sb.append(StringPool.SPACE);
+
+							lineLength++;
+						}
+
 						sb.append(token);
 
-						lineLength = token.length();
+						lineLength += token.length();
 					}
 				}
-				else {
-					if (lineLength > 0) {
-						sb.append(StringPool.SPACE);
 
-						lineLength++;
-					}
-
-					sb.append(token);
-
-					lineLength += token.length();
-				}
+				sb.append(lineSeparator);
 			}
-
-			sb.append(lineSeparator);
 		}
 
 		return sb.toString();

@@ -316,7 +316,7 @@ public class SearchPermissionCheckerImpl implements SearchPermissionChecker {
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						"Skipping presearch permission checking due to too " +
-							"many roles, groups, and groupRoles: " +
+							"many roles, groups, and group roles: " +
 								termsCount + " > " + permissionTermsLimit);
 				}
 

@@ -19,6 +19,7 @@ import com.liferay.portal.kernel.util.CharPool;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tools.ToolsUtil;
 import com.liferay.source.formatter.ExcludeSyntax;
 import com.liferay.source.formatter.ExcludeSyntaxPattern;
 import com.liferay.source.formatter.SourceFormatterExcludes;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * @author Igor Spasic
@@ -51,7 +53,8 @@ public class SourceFormatterUtil {
 
 	public static List<String> filterFileNames(
 		List<String> allFileNames, String[] excludes, String[] includes,
-		SourceFormatterExcludes sourceFormatterExcludes) {
+		SourceFormatterExcludes sourceFormatterExcludes,
+		boolean forceIncludeSourceFormatterExcludes) {
 
 		List<String> excludeRegexList = new ArrayList<>();
 		Map<String, List<String>> excludeRegexMap = new HashMap<>();
@@ -78,33 +81,36 @@ public class SourceFormatterUtil {
 			}
 		}
 
-		Map<String, List<ExcludeSyntaxPattern>> excludeSyntaxPatternsMap =
-			sourceFormatterExcludes.getExcludeSyntaxPatternsMap();
+		if (!forceIncludeSourceFormatterExcludes) {
+			Map<String, List<ExcludeSyntaxPattern>> excludeSyntaxPatternsMap =
+				sourceFormatterExcludes.getExcludeSyntaxPatternsMap();
 
-		for (Map.Entry<String, List<ExcludeSyntaxPattern>> entry :
-				excludeSyntaxPatternsMap.entrySet()) {
+			for (Map.Entry<String, List<ExcludeSyntaxPattern>> entry :
+					excludeSyntaxPatternsMap.entrySet()) {
 
-			List<ExcludeSyntaxPattern> excludeSyntaxPatterns = entry.getValue();
+				List<ExcludeSyntaxPattern> excludeSyntaxPatterns =
+					entry.getValue();
 
-			List<String> regexList = new ArrayList<>();
+				List<String> regexList = new ArrayList<>();
 
-			for (ExcludeSyntaxPattern excludeSyntaxPattern :
-					excludeSyntaxPatterns) {
+				for (ExcludeSyntaxPattern excludeSyntaxPattern :
+						excludeSyntaxPatterns) {
 
-				String excludePattern =
-					excludeSyntaxPattern.getExcludePattern();
-				ExcludeSyntax excludeSyntax =
-					excludeSyntaxPattern.getExcludeSyntax();
+					String excludePattern =
+						excludeSyntaxPattern.getExcludePattern();
+					ExcludeSyntax excludeSyntax =
+						excludeSyntaxPattern.getExcludeSyntax();
 
-				if (excludeSyntax.equals(ExcludeSyntax.REGEX)) {
-					regexList.add(excludePattern);
+					if (excludeSyntax.equals(ExcludeSyntax.REGEX)) {
+						regexList.add(excludePattern);
+					}
+					else if (!excludePattern.contains(StringPool.DOLLAR)) {
+						regexList.add(_createRegex(excludePattern));
+					}
 				}
-				else if (!excludePattern.contains(StringPool.DOLLAR)) {
-					regexList.add(_createRegex(excludePattern));
-				}
+
+				excludeRegexMap.put(entry.getKey(), regexList);
 			}
-
-			excludeRegexMap.put(entry.getKey(), regexList);
 		}
 
 		for (String include : includes) {
@@ -183,6 +189,53 @@ public class SourceFormatterUtil {
 		}
 
 		return null;
+	}
+
+	public static List<File> getSuppressionsFiles(
+		String basedir, String fileName, List<String> allFileNames,
+		SourceFormatterExcludes sourceFormatterExcludes, boolean portalSource,
+		boolean subrepository) {
+
+		List<File> suppressionsFiles = new ArrayList<>();
+
+		// Find suppressions files in any parent directory
+
+		int maxDirLevel = ToolsUtil.PLUGINS_MAX_DIR_LEVEL;
+		String parentDirName = basedir;
+
+		if (portalSource || subrepository) {
+			maxDirLevel = ToolsUtil.PORTAL_MAX_DIR_LEVEL;
+		}
+
+		for (int i = 0; i < maxDirLevel; i++) {
+			File suppressionsFile = new File(parentDirName + fileName);
+
+			if (suppressionsFile.exists()) {
+				suppressionsFiles.add(suppressionsFile);
+			}
+
+			parentDirName += "../";
+		}
+
+		if (!portalSource && !subrepository) {
+			return suppressionsFiles;
+		}
+
+		// Find suppressions files in any child directory
+
+		List<String> moduleSuppressionsFileNames = filterFileNames(
+			allFileNames, new String[0], new String[] {"**/" + fileName},
+			sourceFormatterExcludes, true);
+
+		for (String moduleSuppressionsFileName : moduleSuppressionsFileNames) {
+			moduleSuppressionsFileName = StringUtil.replace(
+				moduleSuppressionsFileName, CharPool.BACK_SLASH,
+				CharPool.SLASH);
+
+			suppressionsFiles.add(new File(moduleSuppressionsFileName));
+		}
+
+		return suppressionsFiles;
 	}
 
 	public static void printError(String fileName, File file) {
@@ -563,10 +616,12 @@ public class SourceFormatterUtil {
 						excludeSyntax.getValue() + ":" + excludePattern));
 			}
 			else if (excludeSyntax.equals(ExcludeSyntax.REGEX) &&
-					 excludePattern.endsWith("[\\/\\\\].*")) {
+					 excludePattern.endsWith(
+						 Pattern.quote(File.separator) + ".*")) {
 
-				excludePattern = excludePattern.substring(
-					0, excludePattern.length() - 8);
+				excludePattern = StringUtil.replaceLast(
+					excludePattern, Pattern.quote(File.separator) + ".*",
+					StringPool.BLANK);
 
 				_excludeDirPathMatchers.add(
 					_fileSystem.getPathMatcher(
@@ -611,10 +666,12 @@ public class SourceFormatterUtil {
 							excludeSyntax.getValue() + ":" + excludePattern));
 				}
 				else if (excludeSyntax.equals(ExcludeSyntax.REGEX) &&
-						 excludePattern.endsWith("[\\/\\\\].*")) {
+						 excludePattern.endsWith(
+							 Pattern.quote(File.separator) + ".*")) {
 
-					excludePattern = excludePattern.substring(
-						0, excludePattern.length() - 8);
+					excludePattern = StringUtil.replaceLast(
+						excludePattern, Pattern.quote(File.separator) + ".*",
+						StringPool.BLANK);
 
 					excludeDirPathMatcherList.add(
 						_fileSystem.getPathMatcher(

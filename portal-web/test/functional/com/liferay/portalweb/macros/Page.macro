@@ -239,7 +239,9 @@
 
 		<execute function="Type" locator1="SitePages#JAVASCRIPT_TEXTAREA" value1="${javaScript}" />
 
-		<execute macro="PortletEntry#save" />
+		<execute function="AssertClickNoError" locator1="Button#SAVE" value1="Save" />
+
+		<execute macro="Alert#viewSuccessMessage" />
 	</command>
 
 	<command name="addPageCategory">
@@ -278,7 +280,7 @@
 		</execute>
 
 		<execute macro="SitePageNavigator#gotoAddPage">
-			<var name="sitePagePrivacy" value="Private" />
+			<var name="siteTemplateName" value="${siteTemplateName}" />
 		</execute>
 
 		<execute macro="Page#addPageTitle">
@@ -487,7 +489,7 @@
 
 		<execute function="MouseOver" locator1="SitePages#NAVIGATION_SPECIFIC_PAGE" />
 
-		<execute function="ClickNoError" locator1="SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE" />
+		<execute function="ClickNoError#makeVisibleClick" locator1="SitePages#NAVIGATION_SPECIFIC_PAGE_X_DELETE" />
 
 		<execute function="Confirm#waitForConfirmation" value1="Are you sure you want to delete this page?" />
 	</command>
@@ -1148,7 +1150,7 @@
 			<var name="page" value="${page}" />
 		</execute>
 
-		<execute function="AssertTextEquals" locator1="SitePagesEditPage#PAGE_TYPE_TEMPLATE_AUTOMATICALLY_APPLY_CHANGES_LABEL_GENERIC" value1="Inherit Changes If enabled, this page will inherit changes made to the ${pageTemplateName} page template." />
+		<execute function="AssertTextEquals" locator1="Message#ERROR_3" value1="Some page settings are unavailable because Inherit Changes is enabled. To change these settings, disable Inherit Changes under the General section." />
 		<execute function="AssertChecked#assertCheckedToggleSwitch" locator1="SitePagesEditPage#PAGE_TYPE_TEMPLATE_AUTOMATICALLY_APPLY_CHANGES_CHECKBOX_GENERIC" />
 	</command>
 
@@ -1221,6 +1223,12 @@
 		</for>
 	</command>
 
+	<command name="viewRTLLayout">
+		<execute function="AssertCssValue" locator1="Home#SITE_NAME" locator2="margin-right" value1="20px" />
+		<execute function="AssertCssValue" locator1="ProductMenu#TOGGLE" locator2="text-align" value1="right" />
+		<execute function="AssertCssValue" locator1="ProductMenu#PRODUCT_MENU_OPENED" locator2="right" value1="0px" />
+	</command>
+
 	<command name="viewSelectedLayoutColumn">
 		<execute function="AssertElementPresent" locator1="SitePagesEditPage#LAYOUT_CARD_SELECTED">
 			<var name="key_columnName" value="${columnName}" />
@@ -1288,7 +1296,7 @@
 			</else>
 		</if>
 
-		<execute function="AssertClick" locator1="Staging#LIVE_BUTTON" value1="Live" />
+		<execute function="AssertClick#assertPartialTextClickAt" locator1="Staging#LIVE_BUTTON" value1="Live" />
 
 		<var name="key_pageName" value="${pageName}" />
 

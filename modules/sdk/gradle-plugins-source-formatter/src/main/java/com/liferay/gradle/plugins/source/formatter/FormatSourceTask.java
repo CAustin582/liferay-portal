@@ -108,8 +108,16 @@ public class FormatSourceTask extends JavaExec {
 		return _sourceFormatterArgs.isPrintErrors();
 	}
 
+	public boolean isShowDebugInformation() {
+		return _sourceFormatterArgs.isShowDebugInformation();
+	}
+
 	public boolean isShowDocumentation() {
 		return _sourceFormatterArgs.isShowDocumentation();
+	}
+
+	public boolean isShowStatusUpdates() {
+		return _sourceFormatterArgs.isShowStatusUpdates();
 	}
 
 	public boolean isThrowException() {
@@ -165,8 +173,16 @@ public class FormatSourceTask extends JavaExec {
 		_sourceFormatterArgs.setProcessorThreadCount(processorThreadCount);
 	}
 
+	public void setShowDebugInformation(boolean showDebugInformation) {
+		_sourceFormatterArgs.setShowDebugInformation(showDebugInformation);
+	}
+
 	public void setShowDocumentation(boolean showDocumentation) {
 		_sourceFormatterArgs.setShowDocumentation(showDocumentation);
+	}
+
+	public void setShowStatusUpdates(boolean showStatusUpdates) {
+		_sourceFormatterArgs.setShowStatusUpdates(showStatusUpdates);
 	}
 
 	public void setThrowException(boolean throwException) {
@@ -183,7 +199,9 @@ public class FormatSourceTask extends JavaExec {
 		args.add("include.subrepositories=" + isIncludeSubrepositories());
 		args.add("max.line.length=" + getMaxLineLength());
 		args.add("processor.thread.count=" + getProcessorThreadCount());
+		args.add("show.debug.information=" + isShowDebugInformation());
 		args.add("show.documentation=" + isShowDocumentation());
+		args.add("show.status.updates=" + isShowStatusUpdates());
 		args.add("source.auto.fix=" + isAutoFix());
 		args.add("source.print.errors=" + isPrintErrors());
 		args.add("source.throw.exception=" + isThrowException());

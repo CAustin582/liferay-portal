@@ -99,6 +99,7 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 						<span class="search-asset-type-sticker sticker sticker-default sticker-lg sticker-rounded sticker-static">
 							<svg class="lexicon-icon">
 								<use xlink:href="<%= searchResultSummaryDisplayContext.getPathThemeImages() %>/lexicon/icons.svg#<%= searchResultSummaryDisplayContext.getIconId() %>" />
+								<title><%= searchResultSummaryDisplayContext.getIconId() %></title>
 							</svg>
 						</span>
 					</c:if>
@@ -137,14 +138,14 @@ com.liferay.portal.kernel.dao.search.SearchContainer<com.liferay.portal.kernel.s
 
 					<c:if test="<%= searchResultSummaryDisplayContext.isAssetCategoriesOrTagsVisible() %>">
 						<h6 class="search-document-tags text-default">
-							<liferay-ui:asset-tags-summary
+							<liferay-asset:asset-tags-summary
 								className="<%= searchResultSummaryDisplayContext.getClassName() %>"
 								classPK="<%= searchResultSummaryDisplayContext.getClassPK() %>"
 								paramName="<%= searchResultSummaryDisplayContext.getFieldAssetTagNames() %>"
 								portletURL="<%= searchResultSummaryDisplayContext.getPortletURL() %>"
 							/>
 
-							<liferay-ui:asset-categories-summary
+							<liferay-asset:asset-categories-summary
 								className="<%= searchResultSummaryDisplayContext.getClassName() %>"
 								classPK="<%= searchResultSummaryDisplayContext.getClassPK() %>"
 								paramName="<%= searchResultSummaryDisplayContext.getFieldAssetCategoryIds() %>"

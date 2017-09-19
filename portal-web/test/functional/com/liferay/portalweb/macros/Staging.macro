@@ -30,15 +30,15 @@
 		<if>
 			<equals arg1="${pageVersioningEnabled}" arg2="true" />
 			<then>
-				<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLED_ON_PUBLIC_PAGES" />
-				<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLED_ON_PRIVATE_PAGES" />
+				<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#ENABLED_ON_PUBLIC_PAGES" />
+				<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#ENABLED_ON_PRIVATE_PAGES" />
 			</then>
 		</if>
 
 		<if>
 			<isset var="contentName" />
 			<then>
-				<execute function="Check#checkToggleSwitch" locator1="Checkbox#STAGED_CONTENT">
+				<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#STAGED_CONTENT">
 					<var name="key_contentName" value="${contentName}" />
 				</execute>
 			</then>
@@ -54,7 +54,7 @@
 					<for list="Application Display Template,Blogs,Bookmarks,Calendar,Documents and Media,Forms,Knowledge Base,Message Boards,Mobile Device Families,Polls,Web Content,Wiki" param="contentName">
 						<var name="key_contentName" value="${contentName}" />
 
-						<execute function="Check#checkToggleSwitch" locator1="Checkbox#STAGED_CONTENT" />
+						<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#STAGED_CONTENT" />
 					</for>
 				</then>
 			</elseif>
@@ -69,7 +69,7 @@
 			<if>
 				<condition function="IsElementPresent" locator1="Checkbox#STAGED_CONTENT" />
 				<then>
-					<execute function="Check#checkToggleSwitch" locator1="Checkbox#STAGED_CONTENT" />
+					<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#STAGED_CONTENT" />
 				</then>
 			</if>
 		</for>
@@ -178,8 +178,8 @@
 	<command name="addPublishTemplate">
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
 
-		<execute macro="Navigator#gotoNavItem">
-			<var name="navItem" value="Publish Templates" />
+		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Publish Templates">
+			<var name="key_menuItem" value="Publish Templates" />
 		</execute>
 
 		<execute function="Pause" locator1="3000" />
@@ -357,7 +357,7 @@
 			<then>
 				<execute function="Click" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_HEADER" />
 
-				<execute function="Check#checkToggleSwitch" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_CHECKBOX" />
+				<execute function="Check#checkHiddenToggleSwitch" locator1="StagingPublishToLive#CONTENT_CHOOSE_CONTENT_DELETION_CHECKBOX" />
 			</then>
 		</if>
 
@@ -517,8 +517,8 @@
 	<command name="deletePublishTemplate">
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
 
-		<execute macro="Navigator#gotoNavItem">
-			<var name="navItem" value="Publish Templates" />
+		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Publish Templates">
+			<var name="key_menuItem" value="Publish Templates" />
 		</execute>
 
 		<var name="key_rowEntry" value="${publishTemplateName}" />
@@ -597,8 +597,8 @@
 		<if>
 			<equals arg1="${pageVersioningEnabled}" arg2="true" />
 			<then>
-				<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLED_ON_PUBLIC_PAGES" />
-				<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLED_ON_PRIVATE_PAGES" />
+				<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#ENABLED_ON_PUBLIC_PAGES" />
+				<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#ENABLED_ON_PRIVATE_PAGES" />
 			</then>
 		</if>
 
@@ -708,7 +708,7 @@
 		<if>
 			<isset var="enableOnPublicPages" />
 			<then>
-				<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLED_ON_PUBLIC_PAGES" />
+				<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#ENABLED_ON_PUBLIC_PAGES" />
 
 				<execute function="AssertClickNoError" locator1="Button#SAVE" value1="Save" />
 			</then>
@@ -717,7 +717,7 @@
 		<if>
 			<isset var="enableOnPrivatePages" />
 			<then>
-				<execute function="Check#checkToggleSwitch" locator1="Checkbox#ENABLED_ON_PRIVATE_PAGES" />
+				<execute function="Check#checkHiddenToggleSwitch" locator1="Checkbox#ENABLED_ON_PRIVATE_PAGES" />
 
 				<execute function="AssertClickNoError" locator1="Button#SAVE" value1="Save" />
 			</then>
@@ -727,8 +727,8 @@
 	<command name="moveToTheRecycleBinPublishTemplate">
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
 
-		<execute macro="Navigator#gotoNavItem">
-			<var name="navItem" value="Publish Templates" />
+		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Publish Templates">
+			<var name="key_menuItem" value="Publish Templates" />
 		</execute>
 
 		<var name="key_rowEntry" value="${publishTemplateName}" />
@@ -976,8 +976,8 @@
 	<command name="searchPublishTemplate">
 		<execute function="Click" locator1="Icon#HEADER_VERTICAL_ELLIPSIS" />
 
-		<execute macro="Navigator#gotoNavItem">
-			<var name="navItem" value="Publish Templates" />
+		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Publish Templates">
+			<var name="key_menuItem" value="Publish Templates" />
 		</execute>
 
 		<execute function="Pause" locator1="3000" />
@@ -1075,6 +1075,8 @@
 		<if>
 			<equals arg1="${modifiedVersion}" arg2="true" />
 			<then>
+				<var name="key_historyVersion" value="${historyVersion}" />
+
 				<execute function="AssertTextNotEquals" locator1="Staging#HISTORY_VERSION" value1="${historyVersion}" />
 			</then>
 			<elseif>
@@ -1088,6 +1090,8 @@
 			<elseif>
 				<condition function="IsElementPresent#isVisible" locator1="Staging#HISTORY_VERSION" />
 				<then>
+					<var name="key_historyVersion" value="${historyVersion}" />
+
 					<execute function="AssertTextEquals#assertPartialText" locator1="Staging#HISTORY_VERSION" value1="${historyVersion}" />
 				</then>
 			</elseif>
@@ -1120,6 +1124,14 @@
 		<execute function="Click" locator1="Icon#CLOSE" />
 	</command>
 
+	<command name="viewNotAvailableMenuItem">
+		<var name="key_page" value="${pageName}" />
+
+		<execute function="Click#mouseOverClick" locator1="SitePages#SPECIFIC_PAGE_ELLIPSIS" />
+
+		<execute function="AssertNotVisible" locator1="SitePages#DELETE_SPECIFIC_PAGE" />
+	</command>
+
 	<command name="viewPageVariationPG">
 		<var name="key_pageVariationName" value="${pageVariationName}" />
 
@@ -1145,8 +1157,8 @@
 			</then>
 		</if>
 
-		<execute macro="Navigator#gotoNavItem">
-			<var name="navItem" value="Publish Templates" />
+		<execute function="AssertClick" locator1="MenuItem#ANY_MENU_ITEM" value1="Publish Templates">
+			<var name="key_menuItem" value="Publish Templates" />
 		</execute>
 
 		<var name="key_publishTemplateName" value="${publishTemplateName}" />

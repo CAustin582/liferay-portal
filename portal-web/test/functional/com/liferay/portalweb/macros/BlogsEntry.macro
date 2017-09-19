@@ -599,6 +599,16 @@
 		<execute function="AssertTextEquals" locator1="Blogs#SEARCH_RESULTS_ENTRY_DESCRIPTION" value1="${entryContent}" />
 	</command>
 
+	<command name="selectFormattingStyle">
+		<execute function="SelectFieldText" locator1="AlloyEditor#CONTENT_FIELD" />
+
+		<execute function="Click" locator1="AlloyEditor#TEXT_FORMATTING_STYLE" />
+
+		<execute function="Click" locator1="AlloyEditor#TEXT_FORMATTING_STYLE_DROPDOWN">
+			<var name="key_styleFormat" value="${styleFormat}" />
+		</execute>
+	</command>
+
 	<command name="subscribePG">
 		<execute function="AssertClick" locator1="Link#SUBSCRIBE" value1="Subscribe" />
 
@@ -1054,7 +1064,7 @@
 
 					<execute function="AssertClick" locator1="BlogsEntry#TAG" value1="${tagName}" />
 
-					<execute function="AssertTextEquals" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName} ." />
+					<execute function="AssertTextEquals#assertPartialText" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName}" />
 					<execute function="AssertTextEquals" locator1="BlogsEntry#TITLE" value1="${entryTitle}" />
 				</for>
 			</then>
@@ -1067,7 +1077,7 @@
 
 				<execute function="AssertClick" locator1="BlogsEntry#TAG" value1="${tagName}" />
 
-				<execute function="AssertTextEquals" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName} ." />
+				<execute function="AssertTextEquals#assertPartialText" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName}" />
 				<execute function="AssertTextEquals" locator1="BlogsEntry#TITLE" value1="${entryTitle}" />
 			</else>
 		</if>
@@ -1086,7 +1096,7 @@
 
 					<execute function="AssertClick" locator1="BlogsEntry#TAG" value1="${tagName}" />
 
-					<execute function="AssertTextEquals" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName} ." />
+					<execute function="AssertTextEquals#assertPartialText" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName}" />
 					<execute function="AssertTextEquals" locator1="BlogsEntry#TITLE" value1="${entryTitle}" />
 				</for>
 			</then>
@@ -1097,7 +1107,7 @@
 
 				<execute function="AssertClick" locator1="BlogsEntry#TAG" value1="${tagName}" />
 
-				<execute function="AssertTextEquals" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName} ." />
+				<execute function="AssertTextEquals#assertPartialText" locator1="AssetCategorization#TAG_FILTER_TITLE" value1="Entries with tag ${tagName}" />
 				<execute function="AssertTextEquals" locator1="BlogsEntry#TITLE" value1="${entryTitle}" />
 			</else>
 		</if>
