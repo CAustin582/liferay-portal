@@ -6,8 +6,8 @@
 
 	<extension-point name="release-tool-dependencies" />
 
-	<property location="${modules.dir}/../bundles" name="liferay.home" />
 	<property location="${modules.dir}/.." name="project.dir" />
+	<property location="${modules.dir}/../bundles" name="liferay.home" />
 
 	<property file="../app.server.${user.name}.properties" />
 	<property file="../app.server.${env.COMPUTERNAME}.properties" />
@@ -77,9 +77,9 @@
 
 	<target name="build-app-lpkg-all">
 		<pathconvert pathsep="," property="app.names">
-			<globmapper from="${modules.dir}${file.separator}apps${file.separator}*" to="*" />
+			<flattenmapper />
 			<path>
-				<dirset dir="${modules.dir}" includes="apps/*">
+				<dirset dir="${modules.dir}" includes="apps/*,private/apps/*">
 					<present targetdir="${modules.dir}">
 						<mapper from="*" to="*/app.bnd" type="glob" />
 					</present>
