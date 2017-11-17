@@ -279,7 +279,6 @@
 
 		<property name="artifact.location.src" value="${osgi.dir}/modules/${Bundle-SymbolicName}.jar" />
 
-		<dirname file="${artifact.location.src}" property="artifact.dir.name" />
 		<basename file="${artifact.location.src}" property="artifact.file.name" />
 	</target>
 
@@ -403,6 +402,8 @@
 				<regexpmapper from="^(.+?)-\d.*?\.jar$" to="\1.jar" />
 			</chainedmapper>
 		</pathconvert>
+
+		<dirname file="${artifact.location.src}" property="artifact.dir.name" />
 
 		<delete>
 			<fileset dir="${artifact.dir.name}" includes="${artifact.dependencies.file.names}" />
