@@ -98,6 +98,20 @@ gradle.beforeProject {
 			doLast {
 				println project.path
 			}
+
+			onlyIf {
+				String excludeRelengIgnore = GradleUtil.getTaskPrefixedProperty(printProjectPath, "excludeRelengIgnore")
+
+				if (Boolean.parseBoolean(excludeRelengIgnore)) {
+					File relengIgnoreDir = _getRootDir(project.projectDir, ".lfrbuild-releng-ignore")
+
+					if (relengIgnoreDir != null) {
+						return false
+					}
+				}
+
+				return true
+			}
 		}
 
 		if (project.path.startsWith(":sdk:project-templates:project-templates-")) {
