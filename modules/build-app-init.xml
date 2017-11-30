@@ -22,6 +22,7 @@
 			>
 				<arg value="printProjectPath" />
 				<arg value="-Dbuild.profile=@{build.profile}" />
+				<arg value="-DprintProjectPath.excludeRelengIgnore=true" />
 				<arg value="--quiet" />
 			</exec>
 
