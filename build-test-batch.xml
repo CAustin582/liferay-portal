@@ -5035,10 +5035,21 @@ tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</e
 								mkdir -p modules/core/portal-bootstrap
 
 								tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --to-stdout --verbose > modules/core/portal-bootstrap/system.packages.extra.mf
-
-								tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
 							]]>
 						</execute>
+
+						<if>
+							<equals arg1="${build.profile}" arg2="dxp" />
+							<then>
+								<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
+
+								<execute>
+									<![CDATA[
+										tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
+									]]>
+								</execute>
+							</then>
+						</if>
 					</then>
 					<else>
 						<prepare-test-build />
@@ -5720,17 +5731,27 @@ ${output.content}</echo>
 
 			<test-set-up>
 				<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
-tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose
-tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
-				</echo>
+tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose</echo>
 
 				<execute>
 					<![CDATA[
 						tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
 						tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose
-						tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
 					]]>
 				</execute>
+
+				<if>
+					<equals arg1="${build.profile}" arg2="dxp" />
+					<then>
+						<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
+
+						<execute>
+							<![CDATA[
+								tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
+							]]>
+						</execute>
+					</then>
+				</if>
 
 				<echo>Deleting stale baseline log files.</echo>
 
