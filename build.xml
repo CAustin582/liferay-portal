@@ -479,6 +479,7 @@ message.
 							<then>
 								<gradle-execute dir="${project.dir}/modules" task="deploy">
 									<arg value="--parallel" />
+									<arg value="-Dbuild.profile=${build.profile}" />
 									<arg value="-Ddeploy.only.profile=ci" />
 								</gradle-execute>
 							</then>
