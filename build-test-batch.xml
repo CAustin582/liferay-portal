@@ -4418,12 +4418,17 @@ log.sanitizer.enabled=false</echo>
 	<target name="js-unit-private-jdk8">
 		<run-batch-test>
 			<test-action>
-				<gradle-execute dir="modules/dxp" task="packageRunTest">
-					<arg value="--continue" />
-					<arg value="--parallel" />
-					<arg value="-Dbuild.profile=${build.profile}" />
-					<arg value="-DpackageRunTest.ignore.failures=true" />
-				</gradle-execute>
+				<if>
+					<equals arg1="${build.profile}" arg2="dxp" />
+					<then>
+						<gradle-execute dir="modules/dxp" task="packageRunTest">
+							<arg value="--continue" />
+							<arg value="--parallel" />
+							<arg value="-Dbuild.profile=${build.profile}" />
+							<arg value="-DpackageRunTest.ignore.failures=true" />
+						</gradle-execute>
+					</then>
+				</if>
 
 				<replace
 					dir="modules"
