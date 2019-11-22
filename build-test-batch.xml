@@ -4386,7 +4386,6 @@ log.sanitizer.enabled=false</echo>
 								<echo message="Executing Gradle task: ${js.project.path}:packageRunTest" />
 
 								<gradle-execute dir="modules" task="${js.project.path}:packageRunTest">
-									<arg value="-Dbuild.profile=${build.profile}" />
 									<arg value="-DpackageRunTest.ignore.failures=true" />
 								</gradle-execute>
 							</then>
