@@ -10,18 +10,64 @@ buildscript {
 	apply from: file("build-buildscript.gradle"), to: buildscript
 }
 
-task downloadElasticsearch
+ext {
+	elasticsearchSidecarMajorVersion = "7"
+	elasticsearchSidecarVersion = "7.3.1"
+
+	elasticsearchSidecarZipURLLinux = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${elasticsearchSidecarVersion}-linux-x86_64.tar.gz"
+	elasticsearchSidecarZipURLMac = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${elasticsearchSidecarVersion}-darwin-x86_64.tar.gz"
+	elasticsearchSidecarZipURLWindows = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${elasticsearchSidecarVersion}-windows-x86_64.zip"
+
+	elasticsearchPlugins = [
+		"https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-icu/analysis-icu-${elasticsearchSidecarVersion}.zip",
+		"https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-kuromoji/analysis-kuromoji-${elasticsearchSidecarVersion}.zip",
+		"https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-smartcn/analysis-smartcn-${elasticsearchSidecarVersion}.zip",
+		"https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-stempel/analysis-stempel-${elasticsearchSidecarVersion}.zip"
+	]
+}
+
+task buildElasticsearch
+task deployDistribution(type: Zip)
 task setupElasticsearch
 task startElasticsearch
 task stopElasticsearch
 
-int elasticsearchSidecarClusterSize = project.properties["elasticsearch.sidecar.cluster.size"] as int
-File elasticsearchSidecarDataDir = file("${project.'liferay.home'}/data/elasticsearch${project.'elasticsearch.sidecar.major.version'}/repo")
-File elasticsearchSidecarClusterDir = file("${project.'liferay.home'}/elasticsearch-${project.'elasticsearch.sidecar.major.version'}")
-File elasticsearchSidecarDir = file("${project.'liferay.home'}/elasticsearch-${project.'elasticsearch.sidecar.version'}")
-String elasticsearchSidecarURL = "http://localhost:9200/"
+File elasticsearchSidecarDataDir = file("${project.'liferay.home'}/data/elasticsearch${project.'elasticsearchSidecarMajorVersion'}/repo")
+File elasticsearchSidecarDir = file("${project.'liferay.home'}/elasticsearch-${project.'elasticsearchSidecarMajorVersion'}")
 
-downloadElasticsearch {
+buildElasticsearch {
+	doLast {
+		String zipURL = elasticsearchSidecarZipURLLinux
+
+		if (OSDetector.isWindows()) {
+			zipURL = elasticsearchSidecarZipURLWindows
+		}
+		else if (OSDetector.isApple()) {
+			zipURL = elasticsearchSidecarZipURLMac
+		}
+
+		File zipFile = file("${buildDir}/${zipURL.drop(zipURL.lastIndexOf('/') + 1)}")
+
+		FileUtil.get(project, zipURL, zipFile, false, true)
+
+		delete file("${buildDir}/elasticsearch-${elasticsearchSidecarVersion}"), deployDistribution.archiveFile
+
+		project.copy {
+			fileMode = 0777
+
+			into buildDir
+
+			if (zipURL.endsWith(".zip")) {
+				from zipTree(zipFile)
+			}
+			else {
+				from tarTree(zipFile)
+			}
+		}
+	}
+}
+
+setupElasticsearch {
 	doFirst {
 		logger.lifecycle "Deleting {}", elasticsearchSidecarDataDir
 
@@ -32,92 +78,84 @@ downloadElasticsearch {
 				delete it
 			}
 		}
+
+		project.mkdir elasticsearchSidecarDataDir
 	}
 
 	doLast {
-		String zipName = project.properties["elasticsearch.sidecar.zip.name.linux"]
-
-		if (OSDetector.isWindows()) {
-			zipName = project.properties["elasticsearch.sidecar.zip.name.windows"]
-		}
-		else if (OSDetector.isApple()) {
-			zipName = project.properties["elasticsearch.sidecar.zip.name.mac"]
-		}
-
-		FileUtil.get(project, "${project.'elasticsearch.sidecar.zip.url'}/${zipName}", file("${project.'liferay.home'}/${zipName}"), false, true)
-
 		project.copy {
 			fileMode = 0777
 
-			into project.properties["liferay.home"]
-
-			if (zipName.endsWith(".zip")) {
-				from zipTree(file("${project.'liferay.home'}/${zipName}"))
-			}
-			else {
-				from tarTree(file("${project.'liferay.home'}/${zipName}"))
-			}
+			into elasticsearchSidecarDir
+			from zipTree(deployDistribution.archiveFile)
 		}
+
+		File configFile = file("${project.'liferay.home'}/osgi/configs/com.liferay.portal.search.elasticsearch${project.'elasticsearchSidecarMajorVersion'}.configuration.ElasticsearchConfiguration.config")
+
+		String text = ""
+
+		if (new Boolean(project.properties["elasticsearch.sidecar.enabled"])) {
+			text = project.properties["elasticsearch.configs.osgi"].replace("\\\"", "\"").split(',').sort().join('\n')
+		}
+
+		configFile.text = text
+
+		configFile = file("${elasticsearchSidecarDir}/config/elasticsearch.yml")
+
+		configFile.append '\n' + project.properties["elasticsearch.configs.sidecar"].replace("\\\"", "\"").split(',').sort().join('\n')
 	}
 }
 
-setupElasticsearch {
-	dependsOn downloadElasticsearch
+deployDistribution {
+	dependsOn buildElasticsearch
 
-	doFirst {
-		project.mkdir elasticsearchSidecarDataDir
+	baseName = "elasticsearch"
+	destinationDir = buildDir
+	version = elasticsearchSidecarVersion
 
-		File configFile = file("${project.'liferay.home'}/osgi/configs/com.liferay.portal.search.elasticsearch${project.'elasticsearch.sidecar.major.version'}.configuration.ElasticsearchConfiguration.config")
-
-		configFile.text = project.properties["elasticsearch.configs.osgi"].replace("\\\"", "\"").split(',').sort().join('\n')
-
-		File ymlFile = file("${elasticsearchSidecarDir}/config/elasticsearch.yml")
-
-		ymlFile.append '\n' + project.properties["elasticsearch.configs.sidecar"].replace("\\\"", "\"").split(',').sort().join('\n')
+	from {
+		file("${buildDir}/elasticsearch-${elasticsearchSidecarVersion}")
 	}
 
-	doLast {
-		for (int i = 1; i <= elasticsearchSidecarClusterSize; i++) {
-			project.copy {
-				fileMode = 0777
-
-				from elasticsearchSidecarDir
-				into new File(elasticsearchSidecarClusterDir, "node-${i}")
-			}
-		}
-
-		delete elasticsearchSidecarDir
+	if (OSDetector.isApple()) {
+		classifier = "mac"
+	}
+	else if (OSDetector.isWindows()) {
+		classifier = "windows"
+	}
+	else {
+		classifier = "linux"
 	}
 }
 
 startElasticsearch {
 	doFirst {
-		for (int i = 1; i <= elasticsearchSidecarClusterSize; i++) {
-			if (System.getenv("JENKINS_HOME")) {
-				project.exec {
-					workingDir = new File(elasticsearchSidecarClusterDir, "node-${i}/bin")
+		if (System.getenv("JENKINS_HOME")) {
+			project.exec {
+				workingDir = new File(elasticsearchSidecarDir, "bin")
 
-					args "-c", "sudo -H -u shutdown bash -c 'export JAVA_HOME=${java.jdk.home} &amp;&amp; ./elasticsearch -d -p pid-elasticsearch'"
-					executable "/bin/sh"
-				}
+				args "-c", "sudo -H -u shutdown bash -c 'export JAVA_HOME=${java.jdk.home} &amp;&amp; ./elasticsearch -d -p pid-elasticsearch'"
+				executable "/bin/sh"
 			}
-			else if (OSDetector.isWindows()) {
-				ant.exec(dir: new File(elasticsearchSidecarClusterDir, "node-${i}/bin"), executable: "cmd.exe", spawn: true) {
-					arg(value: "/c elasticsearch -d -p pid-elasticsearch")
-				}
+		}
+		else if (OSDetector.isWindows()) {
+			ant.exec(dir: new File(elasticsearchSidecarDir, "bin"), executable: "cmd.exe", spawn: true) {
+				arg(value: "/c elasticsearch -d -p pid-elasticsearch")
 			}
-			else {
-				project.exec {
-					workingDir = new File(elasticsearchSidecarClusterDir, "node-${i}/bin")
+		}
+		else {
+			project.exec {
+				workingDir = new File(elasticsearchSidecarDir, "bin")
 
-					args "-c", "./elasticsearch -d -p pid-elasticsearch"
-					executable "/bin/sh"
-				}
+				args "-c", "./elasticsearch -d -p pid-elasticsearch"
+				executable "/bin/sh"
 			}
 		}
 	}
 
 	doLast {
+		String elasticsearchSidecarURL = "http://localhost:9200/"
+
 		long startTime = System.currentTimeMillis()
 		long waitTime = TimeUnit.SECONDS.toMillis(60)
 
@@ -130,7 +168,7 @@ startElasticsearch {
 
 			try {
 				if (urlConnection.responseCode == 200) {
-					println new File(elasticsearchSidecarClusterDir, "node-1/logs/LiferayElasticsearchCluster.log").text
+					println new File(elasticsearchSidecarDir, "logs/LiferayElasticsearchCluster.log").text
 
 					return
 				}
@@ -146,52 +184,42 @@ startElasticsearch {
 
 stopElasticsearch {
 	doLast {
-		for (int i = 1; i <= elasticsearchSidecarClusterSize; i++) {
-			project.exec {
-				workingDir = new File(elasticsearchSidecarClusterDir, "node-${i}")
+		project.exec {
+			workingDir = elasticsearchSidecarDir
 
-				if (OSDetector.isWindows()) {
-					args "/c", "for /f %x in (pid-elasticsearch) do taskkill /f /pid %x"
-					executable "cmd.exe"
-				}
-				else {
-					File pidElasticsearchFile = new File(workingDir, "pid-elasticsearch")
+			if (OSDetector.isWindows()) {
+				args "/c", "for /f %x in (pid-elasticsearch) do taskkill /f /pid %x"
+				executable "cmd.exe"
+			}
+			else {
+				File pidElasticsearchFile = new File(workingDir, "pid-elasticsearch")
 
-					args "-c", "kill " + pidElasticsearchFile.text
-					executable "/bin/sh"
-				}
+				args "-c", "kill " + pidElasticsearchFile.text
+				executable "/bin/sh"
 			}
 		}
 	}
 }
 
-_createPluginTasks(elasticsearchSidecarDir)
+_createPluginTasks()
 
-private void _createPluginTasks(File elasticsearchSidecarDir) {
-	project.properties.each {
-		name, value ->
+private void _createPluginTasks() {
+	elasticsearchPlugins.each {
+		url ->
 
-		if (name.startsWith("elasticsearch.plugins.") && name.endsWith(".zip.name")) {
-			String url = project.properties[name.substring(0, name.length() - 4) + "url"]
+		String fileName = url.drop(url.lastIndexOf('/') + 1)
 
-			if (url != null) {
-				String suffix = value.replaceAll(/[\.-](\w)/) {
-					return it[1].toUpperCase()
-				}
-
-				Task installPluginTask = tasks.create(name: "installPlugin" + StringUtil.capitalize(suffix), type: InstallPluginTask) {
-					pluginFile = file(project.properties["liferay.home"] + '/' + value)
-					pluginURL = url
-					workingDir = file("${elasticsearchSidecarDir}/bin")
-
-					if (name == "elasticsearch.plugins.ltr.zip.name") {
-						input = "y"
-					}
-				}
-
-				setupElasticsearch.dependsOn installPluginTask
-			}
+		String suffix = fileName.replaceAll(/[\.-](\w)/) {
+			return it[1].toUpperCase()
 		}
+
+		Task installPluginTask = tasks.create(name: "installPlugin" + StringUtil.capitalize(suffix), type: InstallPluginTask) {
+			pluginFile = file("${buildDir}/${fileName}")
+			pluginURL = url
+			workingDir = file("${buildDir}/elasticsearch-${elasticsearchSidecarVersion}/bin")
+		}
+
+		buildElasticsearch.finalizedBy installPluginTask
 	}
 }
 
