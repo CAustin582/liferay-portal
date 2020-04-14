@@ -31,6 +31,7 @@ buildscript {
 }
 
 task generatePom
+task generatePomCommerce
 task generatePomCompileOnly
 task generatePomRelease
 task generatePomThirdParty
@@ -38,6 +39,7 @@ task testPomCompileOnly
 task testPomRelease
 task testPomThirdParty
 
+String pomCommerceArtifactId = "release." + (_isDigitalExperiencePlatform() ? "dxp" : "portal") + ".bom.commerce"
 String pomCompileOnlyArtifactId = "release." + (_isDigitalExperiencePlatform() ? "dxp" : "portal") + ".bom.compile.only"
 String pomReleaseArtifactId = "release." + (_isDigitalExperiencePlatform() ? "dxp" : "portal") + ".bom"
 String pomThirdPartyArtifactId = "release." + (_isDigitalExperiencePlatform() ? "dxp" : "portal") + ".bom.third.party"
@@ -54,6 +56,63 @@ generatePom {
 	dependsOn generatePomCompileOnly
 	dependsOn generatePomRelease
 	dependsOn generatePomThirdParty
+}
+
+generatePomCommerce {
+	doLast {
+		Model model = _getModel(pomCommerceArtifactId)
+
+		DependencyManagement dependencyManagement = new DependencyManagement()
+
+		File commerceDir = new File("../modules/apps/commerce")
+
+		commerceDir.traverse(
+			preDir: {
+				println it
+				File relengIgnoreMarkerFile = new File(it, ".lfrbuild-releng-ignore")
+
+				if (it.name.endsWith("-test") || relengIgnoreMarkerFile.exists()) {
+					return FileVisitResult.SKIP_SUBTREE
+				}
+
+				File bndBndFile = new File(it, "bnd.bnd")
+				File buildXMLFile = new File(it, "build.xml")
+				File gulpJSFile = new File(it, "gulp.js")
+				File portalMarkerFile = new File(it, ".lfrbuild-portal")
+
+				if (!portalMarkerFile.exists() || !(buildXMLFile.exists() || gulpJSFile.exists() || bndBndFile.exists())) {
+					return FileVisitResult.CONTINUE
+				}
+
+				File artifactPropertiesFile = new File(it.toString().replace("/modules/", "/modules/.releng/"), "artifact.properties")
+
+				if (!artifactPropertiesFile.exists()) {
+					return FileVisitResult.CONTINUE
+				}
+
+				Properties artifactProperties = new Properties()
+
+				artifactPropertiesFile.withInputStream {
+					artifactProperties.load(it)
+				}
+
+				Dependency dependency = new Dependency()
+
+				String[] artifactURLSplit = artifactProperties["artifact.url"].split("/")
+
+				dependency.setArtifactId(artifactURLSplit[artifactURLSplit.length - 3])
+				dependency.setGroupId(artifactURLSplit.last().endsWith(".war") ? "com.liferay.plugins" : "com.liferay")
+				dependency.setVersion(artifactURLSplit[artifactURLSplit.length - 2])
+
+				dependencyManagement.addDependency(dependency)
+			},
+			type: FileType.DIRECTORIES
+		)
+
+		model.setDependencyManagement(dependencyManagement)
+
+		_write(model)
+	}
 }
 
 generatePomCompileOnly {
