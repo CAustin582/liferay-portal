@@ -13,6 +13,7 @@ import org.apache.maven.model.License
 import org.apache.maven.model.Model
 import org.apache.maven.model.Repository
 import org.apache.maven.model.Scm
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer
 
 buildscript {
@@ -200,10 +201,54 @@ generatePomRelease {
 generatePomThirdParty {
 	dependsOn generatePomCompileOnly
 
+	doFirst {
+		assert project.properties["osgiMarketplaceDir"] : "Provide a value for the project property 'osgiMarketplaceDir'"
+	}
+
 	doLast {
 		Model model = _getModel(pomThirdPartyArtifactId)
 
 		DependencyManagement dependencyManagement = new DependencyManagement()
+
+		DependencyManagement osgiJarsDependencyManagement = new DependencyManagement()
+
+		delete("lpkgTmp")
+
+		ant.unzip(dest: "lpkgTmp") {
+			fileset(dir: osgiMarketplaceDir, includes: "*.lpkg")
+		}
+
+		def osgiJars = fileTree("lpkgTmp").matching {
+			exclude "com.liferay.*"
+			include "*.jar"
+		}
+
+		osgiJars.each {
+			delete("pomTmp")
+
+			ant.unzip(dest: "pomTmp", src: it) {
+				flattenmapper()
+				patternset {
+					include(name: "META-INF/maven/**/pom.xml")
+				}
+			}
+
+			Dependency dependency = new Dependency()
+
+			if (file("pomTmp/pom.xml").exists()) {
+				MavenXpp3Reader reader = new MavenXpp3Reader();
+
+				Model osgiJarModel = reader.read(new FileReader("pomTmp/pom.xml"));
+
+				if (osgiJarModel.artifactId && osgiJarModel.groupId && osgiJarModel.version) {
+					dependency.setArtifactId(osgiJarModel.artifactId)
+					dependency.setGroupId(osgiJarModel.groupId)
+					dependency.setVersion(osgiJarModel.version)
+
+					osgiJarsDependencyManagement.addDependency(dependency)
+				}
+			}
+		}
 
 		Properties dependenciesProperties = new Properties()
 
@@ -243,6 +288,12 @@ generatePomThirdParty {
 				dependency.setArtifactId(dependencyInfo[1])
 				dependency.setGroupId(dependencyInfo[0])
 				dependency.setVersion(dependencyInfo[2])
+
+				osgiJarsDependencyManagement.dependencies.each { osgiJarDependency ->
+					if (dependencyInfo[0] == osgiJarDependency.groupId && dependencyInfo[1] == osgiJarDependency.artifactId) {
+						dependency.setVersion(osgiJarDependency.version)
+					}
+				}
 
 				if (dependencyInfo.length == 4) {
 					dependency.setClassifier(dependencyInfo[3])
