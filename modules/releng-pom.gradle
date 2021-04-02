@@ -214,6 +214,8 @@ generatePomThirdParty {
 
 		delete("lpkgTmp")
 
+		mkdir("lpkgTmp")
+
 		ant.unzip(dest: "lpkgTmp") {
 			fileset(dir: osgiMarketplaceDir, includes: "*.lpkg")
 		}
@@ -225,6 +227,8 @@ generatePomThirdParty {
 
 		osgiJars.each {
 			delete("pomTmp")
+
+			mkdir("pomTmp")
 
 			ant.unzip(dest: "pomTmp", src: it) {
 				flattenmapper()
