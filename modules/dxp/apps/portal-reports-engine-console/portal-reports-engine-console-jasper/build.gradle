@@ -32,7 +32,7 @@ dependencies {
 	compileInclude group: "org.jfree", name: "jfreechart", version: "1.0.19"
 	compileInclude group: "org.olap4j", name: "olap4j", version: "1.2.0"
 
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly project(":portal:portal-kernel")
 	compileOnly group: "commons-collections", name: "commons-collections", version: "3.2.2"
 	compileOnly group: "org.apache.commons", name: "commons-compress", version: "1.21"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"

@@ -5,8 +5,8 @@ dependencies {
 
 	compileInclude group: "com.liferay", name: "com.liferay.petra.string", version: "2.0.0"
 
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly project(":portal:portal-impl")
+	compileOnly project(":portal:portal-kernel")
 }
 
 updateFileVersions {

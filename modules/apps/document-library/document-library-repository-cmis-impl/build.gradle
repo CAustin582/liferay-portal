@@ -17,8 +17,8 @@ dependencies {
 	compileInclude group: "org.apache.neethi", name: "neethi", version: "3.1.1"
 
 	compileOnly group: "com.fasterxml.woodstox", name: "woodstox-core", version: "6.2.6"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly project(":portal:portal-impl")
+	compileOnly project(":portal:portal-kernel")
 	compileOnly group: "javax.portlet", name: "portlet-api", version: "3.0.1"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"
 	compileOnly group: "org.codehaus.woodstox", name: "stax2-api", version: "4.2.1"

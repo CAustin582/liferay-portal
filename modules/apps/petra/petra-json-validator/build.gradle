@@ -6,7 +6,7 @@ dependencies {
 	compileInclude group: "joda-time", name: "joda-time", version: "2.9.1"
 	compileInclude group: "org.json", name: "json", version: "20180813"
 
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	compileOnly project(":portal:portal-kernel")
 	compileOnly project(":core:petra:petra-string")
 
 	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"

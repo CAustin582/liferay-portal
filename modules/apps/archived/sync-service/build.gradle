@@ -10,9 +10,9 @@ dependencies {
 
 	compileOnly group: "com.googlecode.jsontoken", name: "jsontoken", version: "1.1"
 	compileOnly group: "com.liferay", name: "jodd.util", version: "6.0.1.LIFERAY-PATCHED-1"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	compileOnly group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
+	compileOnly project(":portal:portal-impl")
+	compileOnly project(":portal:portal-kernel")
+	compileOnly project(":portal:util-java")
 	compileOnly group: "commons-lang", name: "commons-lang", version: "2.6"
 	compileOnly group: "javax.portlet", name: "portlet-api", version: "3.0.1"
 	compileOnly group: "org.apache.felix", name: "org.apache.felix.http.servlet-api", version: "1.1.2"
