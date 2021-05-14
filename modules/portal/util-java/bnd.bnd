@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Util Java
+Bundle-SymbolicName: com.liferay.util.java
+Bundle-Version: 6.0.2
+Export-Package: com.liferay.util.*
+Import-Package:\
+	com.liferay.*,\
+	\
+	*;resolution:=optional
+Include-Resource: classes
+-include ../../../common.bnd

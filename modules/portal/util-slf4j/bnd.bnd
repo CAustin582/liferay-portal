@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Util SLF4J
+Bundle-SymbolicName: com.liferay.util.slf4j
+Bundle-Version: 6.0.3
+Export-Package: com.liferay.util.slf4j
+Import-Package:\
+	com.liferay.*,\
+	\
+	*;resolution:=optional
+Include-Resource: classes
+-include ../../../common.bnd

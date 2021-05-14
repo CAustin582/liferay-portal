@@ -1,0 +1,41 @@
+Bundle-Name: Liferay Portal Test
+Bundle-SymbolicName: com.liferay.portal.test
+Bundle-Version: 9.3.0
+Export-Package:\
+	com.liferay.portal.kernel.dao.db.test,\
+	com.liferay.portal.kernel.test,\
+	com.liferay.portal.kernel.test.constants,\
+	com.liferay.portal.kernel.test.context,\
+	com.liferay.portal.kernel.test.junit,\
+	com.liferay.portal.kernel.test.portlet,\
+	com.liferay.portal.kernel.test.randomizerbumpers,\
+	com.liferay.portal.kernel.test.rule,\
+	com.liferay.portal.kernel.test.util,\
+	com.liferay.portal.test.log,\
+	com.liferay.portal.test.mail,\
+	com.liferay.portal.test.randomizerbumpers,\
+	com.liferay.portal.test.rule,\
+	com.liferay.portlet.asset.service.persistence.test,\
+	com.liferay.portlet.dynamicdatamapping.util.test,\
+	com.liferay.portlet.expando.util.test,\
+	com.liferay.portlet.passwordpoliciesadmin.util.test,\
+	com.liferay.portlet.test,\
+	com.liferay.portletmvc4spring.test.mock.web.portlet,\
+	\
+	junit.*,\
+	\
+	org.hamcrest.*,\
+	\
+	org.junit.runner.*,\
+	org.junit.*,\
+	\
+	org.springframework.mock.web
+Import-Package: *;resolution:=optional
+Include-Resource:\
+	@${project.dir}/../lib/development/dumbster.jar,\
+	@${project.dir}/../lib/development/hamcrest-core.jar,\
+	@${project.dir}/../lib/development/junit.jar,\
+	@${project.dir}/../lib/development/portletmvc4spring-test.jar,\
+	@${project.dir}/../lib/development/spring-test.jar,\
+	@${project.dir}/../lib/portal/aspectj-rt.jar
+-include ../../../common.bnd

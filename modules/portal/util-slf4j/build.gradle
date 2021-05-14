@@ -1,0 +1,31 @@
+cleanJar {
+	doLast {
+		project.delete(rootProject.file('../util-slf4j/util-slf4j.jar'))
+	}
+}
+
+dependencies {
+	compileOnly group: "org.slf4j", name: "slf4j-api", version: "1.7.26"
+	compileOnly project(":portal:portal-kernel")
+}
+
+jar {
+	doLast {
+		copy {
+			from jar.archivePath
+			into rootProject.file('../util-slf4j')
+			rename { 'util-slf4j.jar' }
+		}
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs rootProject.file('../util-slf4j/src')
+		}
+		resources {
+			srcDirs rootProject.file('../util-slf4j/src')
+		}
+	}
+}

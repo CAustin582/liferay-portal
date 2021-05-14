@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Util Bridges
+Bundle-SymbolicName: com.liferay.util.bridges
+Bundle-Version: 8.0.2
+Export-Package: com.liferay.util.bridges.*
+Import-Package:\
+	com.liferay.*,\
+	\
+	*;resolution:=optional
+Include-Resource: classes
+-include ../../../common.bnd

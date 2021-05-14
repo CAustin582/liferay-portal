@@ -1,0 +1,10 @@
+Bundle-Name: Liferay Portal Kernel
+Bundle-SymbolicName: com.liferay.portal.kernel
+Bundle-Version: 10.0.0
+Export-Package:\
+	!com.liferay.portal.kernel.internal.*,\
+	!com.liferay.portal.kernel.test.*,\
+	\
+	com.liferay.*
+Import-Package: *
+-include ../../../common.bnd
