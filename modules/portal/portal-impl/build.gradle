@@ -1,6 +1,6 @@
 cleanJar {
 	doLast {
-		project.delete(rootProject.file('../portal-impl/portal-impl.jar'))
+		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
 	}
 }
 
@@ -8,7 +8,6 @@ dependencies {
 	compileOnly "javax.enterprise.deploy:deployment-api:1.2-rev-1"
 	compileOnly "com.liferay:org.freemarker:2.3.29.LIFERAY-PATCHED-2"
 	compileOnly "jalopy:jalopy:1.5rc3"
-//	compileOnly "org.mockito:mockito-all:1.9.5"
 	compileOnly "org.osgi:org.osgi.annotation.versioning:1.1.0"
 	compileOnly "org.postgresql:postgresql:42.2.5"
 	compileOnly "com.thoughtworks.qdox:qdox:1.12.1"
@@ -231,8 +230,50 @@ jar {
 	doLast {
 		copy {
 			from jar.archivePath
-			into rootProject.file('../portal-impl')
-			rename { 'portal-impl.jar' }
+			into rootProject.file("../${project.name}")
+			rename { "${project.name}.jar" }
+		}
+	}
+}
+
+processResources {
+	doLast {
+		copy {
+			from rootProject.file("../definitions")
+			into new File(
+					sourceSets.main.output.resourcesDir,
+					"com/liferay/portal/definitions")
+		}
+
+		copy {
+			from rootProject.file("../classes")
+			include "*.properties"
+			into new File(sourceSets.main.output.resourcesDir, "com/liferay/portal/deploy/dependencies")
+		}
+
+		copy {
+			from rootProject.file("../portal-web/docroot/WEB-INF/tld")
+			include "*.tld"
+			into new File(sourceSets.main.output.resourcesDir, "com/liferay/portal/deploy/dependencies")
+		}
+
+		copy {
+			from rootProject.file("../sql")
+			include "portal-data-common.sql"
+			include "portal-data-counter.sql"
+			include "portal-tables.sql"
+			include "indexes.properties"
+			include "indexes.sql"
+			include "sequences.sql"
+			include "update-*.sql"
+			into new File(sourceSets.main.output.resourcesDir, "com/liferay/portal/tools/sql/dependencie")
+		}
+
+		copy {
+			from rootProject.file("../classes/log4j2.properties")
+			from rootProject.file("../classes/logging.properties")
+			into sourceSets.main.output.resourcesDir
+
 		}
 	}
 }
@@ -240,10 +281,17 @@ jar {
 sourceSets {
 	main {
 		java {
-			srcDirs rootProject.file('../portal-impl/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 		resources {
-			srcDirs rootProject.file('../portal-impl/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
+	}
+}
+
+task printSource {
+	doLast {
+		println "Sources : " + sourceSets.main.allSource.files
+		println rootProject.file("../${project.name}/src")
 	}
 }

@@ -539,12 +539,12 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 				/>
 
 				<copy
-					file="classes/log4j2.properties"
+					file="${project.dir}/modules/portal/${ant.project.name}/classes/log4j2.properties"
 					preservelastmodified="true"
 					todir="${app.server.classes.portal.dir}"
 				/>
 				<copy
-					file="classes/logging.properties"
+					file="${project.dir}/modules/portal/${ant.project.name}/classes/logging.properties"
 					preservelastmodified="true"
 					todir="${app.server.classes.portal.dir}"
 				/>
@@ -819,62 +819,6 @@ svn://svn.liferay.com/repos/public/alloy/trunk/sandbox/taglibs.
 		</java>
 
 		<delete file="ServiceBuilder.temp" />
-	</target>
-
-	<target depends="build-common-java.init-compile" name="init-compile">
-		<copy
-			preservelastmodified="true"
-			todir="${portal-impl.classes.dir}/com/liferay/portal/definitions"
-		>
-			<fileset
-				dir="${project.dir}/definitions"
-			/>
-		</copy>
-
-		<copy
-			preservelastmodified="true"
-			todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies"
-		>
-			<fileset
-				dir="${project.dir}/classes"
-				includes="*.properties"
-			/>
-			<fileset
-				dir="${project.dir}/portal-web/docroot/WEB-INF/tld"
-				includes="*.tld"
-			/>
-		</copy>
-
-		<copy
-			preservelastmodified="true"
-			todir="${portal-impl.classes.dir}/com/liferay/portal/tools/sql/dependencies"
-		>
-			<fileset
-				dir="${project.dir}/sql"
-				includes="portal-data-common.sql,portal-data-counter.sql,portal-tables.sql,indexes.properties,indexes.sql,sequences.sql,update-*.sql"
-			/>
-		</copy>
-
-		<copy
-			file="${project.dir}/classes/log4j2.properties"
-			preservelastmodified="true"
-			todir="${portal-impl.classes.dir}"
-		/>
-		<copy
-			file="${project.dir}/classes/logging.properties"
-			preservelastmodified="true"
-			todir="${portal-impl.classes.dir}"
-		/>
-
-		<copy
-			preservelastmodified="true"
-			todir="${portal-impl.classes.dir}"
-		>
-			<fileset
-				dir="src"
-				excludes="**/*.java,**/META-INF/javadocs-all*.xml"
-			/>
-		</copy>
 	</target>
 
 	<target depends="build-common-java.init-jar" name="init-jar">

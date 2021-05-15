@@ -1,6 +1,22 @@
 cleanJar {
 	doLast {
-		project.delete(rootProject.file('../util-taglib/util-taglib.jar'))
+		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
+	}
+}
+
+classes {
+	doLast {
+		ant.replace(
+			file: "classes/META-INF/liferay-portlet_1_0.tld",
+			token: "<short-name>portlet_1_0</short-name>",
+			value: "<short-name>portlet</short-name>"
+		)
+
+		ant.replace(
+			file: "classes/META-INF/liferay-portlet_2_0.tld",
+			token: "<short-name>portlet_2_0</short-name>",
+			value: "<short-name>portlet</short-name>"
+		)
 	}
 }
 
@@ -15,23 +31,69 @@ dependencies {
 	compileOnly project(":portal:util-java")
 }
 
-jar {
+deploy {
 	doLast {
-		copy {
-			from jar.archivePath
-			into rootProject.file('../util-taglib')
-			rename { 'util-taglib.jar' }
+		if (liferay.appServerType == "tomcat") {
+			project.copy {
+				from project.file("classes/META-INF")
+				include "*.tld"
+				into new File(liferay.appServerPortalDir, "/WEB-INF/tld")
+			}
 		}
 	}
 }
 
-sourceSets {
-	main {
-		java {
-			srcDirs rootProject.file('../util-taglib/src')
-		}
-		resources {
-			srcDirs rootProject.file('../util-taglib/src')
+jar {
+	doLast {
+		copy {
+			from jar.archivePath
+			into rootProject.file("../${project.name}")
+			rename { "${project.name}.jar" }
 		}
 	}
 }
+
+
+sourceSets {
+	main {
+		java {
+			srcDirs rootProject.file("../${project.name}/src")
+		}
+		resources {
+			srcDirs rootProject.file("../${project.name}/src")
+		}
+	}
+}
+
+
+//				<copy
+//		file="${jar.file}.jar"
+//		preservelastmodified="true"
+//		todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies"
+//		/>
+//
+//		<copy
+//			preservelastmodified="true"
+//			todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies"
+//				>
+//				<fileset
+//		dir="classes/META-INF"
+//		/>
+//		</copy>
+//
+//				<copy
+//		file="${jar.file}.jar"
+//		preservelastmodified="true"
+//		todir="${project.dir}/portal-web/docroot/WEB-INF/lib"
+//		/>
+//
+//		<copy
+//			overwrite="true"
+//			preservelastmodified="true"
+//			todir="${project.dir}/portal-web/docroot/WEB-INF/tld"
+//				>
+//				<fileset
+//		dir="classes/META-INF"
+//		includes="*.tld"
+//		/>
+//		</copy>

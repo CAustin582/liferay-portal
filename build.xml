@@ -206,35 +206,9 @@ message.
 		<setup-libs />
 		<setup-yarn />
 
-		<gradle-execute dir="modules/core" task="deploy">
-			<arg value="--parallel" />
-			<arg value="-Dbuild.profile=portal-pre" />
-			<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
-		</gradle-execute>
+		<ant dir="portal-kernel" inheritAll="false" target="compile" />
 
-		<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
-
-		<gradle-execute dir="modules/apps" task="deploy">
-			<arg value="--parallel" />
-			<arg value="-Dbuild.profile=portal-pre" />
-			<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
-		</gradle-execute>
-
-		<parallel failonany="true" threadcount="${parallel.thread.count}">
-			<ant dir="support-tomcat" inheritAll="false" target="compile" />
-			<ant dir="util-bridges" inheritAll="false" target="compile" />
-
-			<sequential>
-				<ant dir="util-java" inheritAll="false" target="compile" />
-				<ant dir="util-taglib" inheritAll="false" target="compile" />
-			</sequential>
-
-			<ant dir="util-slf4j" inheritAll="false" target="compile" />
-		</parallel>
-
-		<ant dir="portal-impl" inheritAll="false" target="compile" />
-
-		<ant dir="portal-test" inheritAll="false" target="compile" />
+		<ant dir="support-tomcat" inheritAll="false" target="compile" />
 
 		<print-current-time />
 	</target>
@@ -247,6 +221,12 @@ message.
 	</target>
 
 	<target name="deploy">
+		<gradle-execute dir="${project.dir}/modules" task="deploy">
+			<arg value="--parallel" />
+			<arg value="-Dbuild.profile=portal-pre" />
+			<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
+		</gradle-execute>
+
 		<if>
 			<equals arg1="${app.server.type}" arg2="websphere" />
 			<then>
@@ -327,10 +307,10 @@ message.
 		<if>
 			<equals arg1="${build.marketplace.apps.enabled}" arg2="true" />
 			<then>
-				<gradle-execute dir="${project.dir}/modules" task="deploy">
-					<arg value="--parallel" />
-					<arg value="-Dbuild.profile=portal-pre" />
-				</gradle-execute>
+<!--				<gradle-execute dir="${project.dir}/modules" task="deploy">-->
+<!--					<arg value="&#45;&#45;parallel" />-->
+<!--					<arg value="-Dbuild.profile=portal-pre" />-->
+<!--				</gradle-execute>-->
 
 				<gradle-execute dir="${project.dir}/modules" task="deploy">
 					<arg value="--parallel" />

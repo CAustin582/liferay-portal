@@ -28,7 +28,7 @@
 			verbose="true"
 		/>
 
-		<echo file="classes/.releaseinfo">${release.properties.files}</echo>
+		<echo file="${project.dir}/modules/portal/${ant.project.name}/classes/.releaseinfo">${release.properties.files}</echo>
 	</target>
 
 	<target if="${build.portal.artifacts.enabled}" name="init-compile">
@@ -41,11 +41,11 @@
 		<property name="release.properties.files" refid="release.properties.file.set" />
 
 		<if>
-			<available file="${basedir}/classes/.releaseinfo" />
+			<available file="${project.dir}/modules/portal/${ant.project.name}/classes/.releaseinfo" />
 			<then>
 				<loadfile
 					property="release.info.content"
-					srcFile="${basedir}/classes/.releaseinfo"
+					srcFile="${project.dir}/modules/portal/${ant.project.name}/classes/.releaseinfo"
 				/>
 			</then>
 		</if>
@@ -53,7 +53,7 @@
 		<condition property="release.info.uptodate">
 			<and>
 				<uptodate
-					targetfile="classes/.releaseinfo"
+					targetfile="${project.dir}/modules/portal/${ant.project.name}/classes/.releaseinfo"
 				>
 					<srcfiles dir="${project.dir}" includes="release.properties,release.*.properties" />
 				</uptodate>
@@ -64,7 +64,7 @@
 		<condition property="compile.uptodate">
 			<and>
 				<uptodate
-					targetfile="classes/.touch"
+					targetfile="${project.dir}/modules/portal/${ant.project.name}/classes/.touch"
 				>
 					<srcfiles dir="${basedir}" excludes="src/com/liferay/portal/kernel/util/ReleaseInfo.java" includes="bnd.bnd,build.xml,ivy.xml,src/**/*.*" />
 				</uptodate>

@@ -1,6 +1,6 @@
 cleanJar {
 	doLast {
-		project.delete(rootProject.file('../util-slf4j/util-slf4j.jar'))
+		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
 	}
 }
 
@@ -13,8 +13,8 @@ jar {
 	doLast {
 		copy {
 			from jar.archivePath
-			into rootProject.file('../util-slf4j')
-			rename { 'util-slf4j.jar' }
+			into rootProject.file("../${project.name}")
+			rename { "${project.name}.jar" }
 		}
 	}
 }
@@ -22,10 +22,10 @@ jar {
 sourceSets {
 	main {
 		java {
-			srcDirs rootProject.file('../util-slf4j/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 		resources {
-			srcDirs rootProject.file('../util-slf4j/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 	}
 }

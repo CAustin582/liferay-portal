@@ -1,8 +1,9 @@
 cleanJar {
 	doLast {
-		project.delete(rootProject.file('../portal-test/portal-test.jar'))
+		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
 	}
 }
+
 
 dependencies {
 	compileOnly group: "com.liferay", name: "com.dumbster.smtp", version: "02856255a6cc7f"
@@ -25,19 +26,21 @@ jar {
 	doLast {
 		copy {
 			from jar.archivePath
-			into rootProject.file('../portal-test')
-			rename { 'portal-test.jar' }
+			into rootProject.file("../${project.name}")
+			rename { "${project.name}.jar" }
 		}
 	}
+	enabled true
 }
+
 
 sourceSets {
 	main {
 		java {
-			srcDirs rootProject.file('../portal-test/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 		resources {
-			srcDirs rootProject.file('../portal-test/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 	}
 }

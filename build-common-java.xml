@@ -29,32 +29,40 @@
 		<property name="javac.srcdir" value="src" />
 		<property name="javac.classpathref" value="project.classpath" />
 
-		<copy
-			preservelastmodified="true"
-			todir="${javac.destdir}"
-		>
-			<fileset
-				dir="${javac.srcdir}"
-				excludes="**/*.java"
-			/>
-		</copy>
+		<if>
+			<available file="${project.dir}/modules/portal/${ant.project.name}" />
+			<then>
+				<gradle-execute dir="${project.dir}/modules/portal/${ant.project.name}" task="compileJava" />
+			</then>
+			<else>
+				<copy
+					preservelastmodified="true"
+					todir="${javac.destdir}"
+				>
+					<fileset
+						dir="${javac.srcdir}"
+						excludes="**/*.java"
+					/>
+				</copy>
 
-		<javac
-			classpathref="${javac.classpathref}"
-			compiler="${javac.compiler}"
-			debug="${javac.debug}"
-			deprecation="${javac.deprecation}"
-			destdir="${javac.destdir}"
-			encoding="${javac.encoding}"
-			includeAntRuntime="false"
-			nowarn="${javac.nowarn}"
-			srcdir="${javac.srcdir}"
-		/>
+				<javac
+					classpathref="${javac.classpathref}"
+					compiler="${javac.compiler}"
+					debug="${javac.debug}"
+					deprecation="${javac.deprecation}"
+					destdir="${javac.destdir}"
+					encoding="${javac.encoding}"
+					includeAntRuntime="false"
+					nowarn="${javac.nowarn}"
+					srcdir="${javac.srcdir}"
+				/>
 
-		<echo file="${javac.destdir}/.touch"></echo>
+				<echo file="${javac.destdir}/.touch"></echo>
+			</else>
+		</if>
 	</target>
 
-	<target depends="init-deploy,jar" if="${copy.jar}" name="deploy" unless="deploy.uptodate">
+	<target depends="init-deploy" if="${copy.jar}" name="deploy" unless="deploy.uptodate">
 		<copy
 			file="${jar.file}.jar"
 			preservelastmodified="true"
@@ -78,7 +86,7 @@
 		</condition>
 	</target>
 
-	<target depends="jar" name="init-deploy">
+	<target name="init-deploy">
 		<property name="copy.jar" value="true" />
 		<property name="src.dir" value="${basedir}" />
 

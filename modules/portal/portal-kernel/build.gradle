@@ -1,6 +1,6 @@
 cleanJar {
 	doLast {
-		project.delete(rootProject.file('../portal-kernel/portal-kernel.jar'))
+		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
 	}
 }
 
@@ -28,20 +28,20 @@ jar {
 	doLast {
 		copy {
 			from jar.archivePath
-			into rootProject.file('../portal-kernel')
-			rename { 'portal-kernel.jar' }
+			into rootProject.file("../${project.name}")
+			rename { "${project.name}.jar" }
 		}
 	}
 }
 
+
 sourceSets {
 	main {
 		java {
-			srcDirs rootProject.file('../portal-kernel/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 		resources {
-			srcDirs rootProject.file('../portal-kernel/src')
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 	}
-
 }
