@@ -21,12 +21,4 @@
 			includes="bsf.jar,commons-logging.jar,liferay-rhino.jar"
 		/>
 	</path>
-
-	<target depends="build-common-java.jar" name="jar">
-		<copy
-			file="${jar.file}.jar"
-			preservelastmodified="true"
-			todir="${portal-impl.classes.dir}/com/liferay/portal/deploy/dependencies"
-		/>
-	</target>
 </project>
