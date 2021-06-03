@@ -203,7 +203,7 @@ message.
 	<target name="compile">
 		<setup-sdk />
 
-		<setup-libs />
+<!--		<setup-libs />-->
 		<setup-yarn />
 
 		<ant dir="portal-kernel" inheritAll="false" target="compile" />
@@ -246,19 +246,23 @@ message.
 			</then>
 		</if>
 
-		<ant dir="portal-kernel" inheritAll="false" target="deploy" />
+<!--		<ant dir="portal-kernel" inheritAll="false" target="deploy" />-->
 
-		<ant dir="util-bridges" inheritAll="false" target="deploy" />
-		<ant dir="util-java" inheritAll="false" target="deploy" />
-		<ant dir="util-slf4j" inheritAll="false" target="deploy" />
-		<ant dir="util-taglib" inheritAll="false" target="deploy" />
+<!--		<ant dir="util-bridges" inheritAll="false" target="deploy" />-->
+<!--		<ant dir="util-java" inheritAll="false" target="deploy" />-->
+<!--		<ant dir="util-slf4j" inheritAll="false" target="deploy" />-->
+<!--		<ant dir="util-taglib" inheritAll="false" target="deploy" />-->
 
-		<ant dir="portal-impl" inheritAll="false" target="deploy" />
+<!--		<ant dir="portal-impl" inheritAll="false" target="deploy" />-->
 
-		<ant dir="portal-test" inheritAll="false" target="deploy" />
-		<ant dir="portal-web" inheritAll="false" target="deploy" />
+<!--		<ant dir="portal-test" inheritAll="false" target="deploy" />-->
+		<gradle-execute dir="${project.dir}/modules/portal/portal-web" task="war" />
 
-		<antcall target="install-portal-snapshots" />
+<!--		<ant dir="portal-web" inheritAll="false" target="deploy" />-->
+
+<!--		<antcall target="install-portal-snapshots" />-->
+
+		<ant dir="support-tomcat" inheritAll="false" target="jar" />
 
 		<touch file="${liferay.home}/.liferay-home" />
 
@@ -300,7 +304,7 @@ message.
 			</then>
 		</if>
 
-		<ant dir="portal-web" inheritAll="false" target="war" />
+<!--		<ant dir="portal-web" inheritAll="false" target="war" />-->
 
 		<stopwatch name="modules.stopwatch" />
 

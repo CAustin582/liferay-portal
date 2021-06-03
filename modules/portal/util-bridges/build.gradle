@@ -18,12 +18,6 @@ jar {
 			into rootProject.file("../${project.name}")
 			rename { "${project.name}.jar" }
 		}
-
-		copy {
-			from jar
-			into new File(project(":portal:portal-impl").sourceSets.main.output.resourcesDir, "com/liferay/portal/deploy/dependencies")
-			rename { "${project.name}.jar" }
-		}
 	}
 }
 

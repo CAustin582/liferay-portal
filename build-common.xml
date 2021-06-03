@@ -169,8 +169,6 @@
 		</filterchain>
 	</loadproperties>
 
-	<delete file="${app.server.tmp.properties}" />
-
 	<condition property="app.server.portal.war.name" value="${app.server.websphere.portal.war.name}">
 		<equals arg1="${app.server.type}" arg2="websphere" />
 	</condition>
@@ -1928,6 +1926,7 @@ rerun your task.
 
 	<macrodef name="update-gradle-properties">
 		<sequential>
+			<property file="release.properties" />
 			<property file="test.${user.name}.properties" />
 			<property file="test.${env.COMPUTERNAME}.properties" />
 			<property file="test.${env.HOST}.properties" />
@@ -1977,6 +1976,18 @@ rerun your task.
 					<propertyref name="service.builder.incubation.features" />
 					<propertyref name="timeout.app.server.wait" />
 					<propertyref name="upgrade.table.dir" />
+					<propertyref name="release.info.server.info" />
+					<propertyref name="release.info.build" />
+					<propertyref name="release.info.build.date" />
+					<propertyref name="release.info.code.name" />
+					<propertyref name="release.info.parent.build.number" />
+					<propertyref name="release.info.release.info" />
+					<propertyref name="release.info.vendor" />
+					<propertyref name="release.info.version" />
+					<propertyref name="javac.debug" />
+					<propertyref name="javac.deprecation" />
+					<propertyref name="javac.encoding" />
+					<propertyref name="javac.compiler" />
 					<propertyref prefix="build.compat.version.com.liferay.portal." />
 					<propertyref prefix="build.compat.version.com.liferay.util." />
 					<propertyref prefix="gradle.publish." />
@@ -2020,6 +2031,15 @@ rerun your task.
 				</then>
 			</if>
 
+			<tstamp>
+				<format pattern="EEE MMM d HH:mm:ss z yyyy" property="build.time" />
+			</tstamp>
+
+			<property name="release.info.prefix" value="" />
+			<property name="release.info.suffix" value="" />
+
+			<property name="release.info.release.info" value="${release.info.prefix}${release.info.name} ${release.info.version.display.name} (${release.info.code.name} / Build ${release.info.build} / ${release.info.date})${release.info.suffix}" />
+
 			<propertyfile file="${gradle.properties.file}">
 				<entry key="database.jdbc.drivers.url" value="${test.jdbc.drivers.url}" />
 				<entry key="database.jdbc.oracle.driver" value="${jdbc.oracle.driver}" />
@@ -2030,6 +2050,14 @@ rerun your task.
 				<entry key="systemProp.repository.private.password" value="${build.repository.private.password}" />
 				<entry key="systemProp.repository.private.url" value="${build.repository.private.proxied.url}" />
 				<entry key="systemProp.repository.private.username" value="${build.repository.private.username}" />
+
+				<entry key="build.time" value="${build.time}" />
+				<entry key="release.info.build.date" value="${release.info.date}" />
+				<entry key="release.info.build.number" value="${release.info.build}" />
+				<entry key="release.info.server.info" value="${release.info.name} / ${release.info.version}" />
+				<entry key="release.info.release.info" value="${release.info.release.info}" />
+				<entry key="release.info.parent.build.number" value="${release.info.build}" />
+				<entry key="release.info.vendor" value="${release.info.vendor}" />
 			</propertyfile>
 
 			<replaceregexp

@@ -141,7 +141,7 @@ public class ReleaseInfo {
 
 	private static final int _BUILD_NUMBER = GetterUtil.getInteger(_BUILD);
 
-	private static final String _CODE_NAME = "Cavanaugh";
+	private static final String _CODE_NAME = "@release.info.code.name@";
 
 	private static final String _DATE = "@release.info.date@";
 
@@ -155,7 +155,7 @@ public class ReleaseInfo {
 	private static final String _RELEASE_INFO_SUFFIX = System.getProperty(
 		"liferay.release.info.suffix", StringPool.BLANK);
 
-	private static final String _VENDOR = "Liferay, Inc.";
+	private static final String _VENDOR = "@release.info.vendor@";
 
 	private static final String _VERSION = "@release.info.version@";
 

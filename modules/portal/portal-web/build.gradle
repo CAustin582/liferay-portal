@@ -1,0 +1,39 @@
+apply plugin: 'war'
+
+task deployTomcat(type: Copy, dependsOn: war)
+
+cleanJar {
+	doLast {
+		project.delete(rootProject.file("../${project.name}/${project.name}.war"))
+	}
+}
+
+
+jar {
+	enabled false
+}
+
+deploy {
+	dependsOn deployTomcat
+}
+
+deployTomcat {
+	from zipTree(war.archivePath)
+	into liferay.appServerPortalDir
+}
+
+dependencies {
+	compile project(":portal:portal-impl")
+}
+
+webAppDirName = rootProject.file("../${project.name}/docroot")
+
+war {
+	doLast {
+		copy {
+			from war.archivePath
+			into rootProject.file("../${project.name}")
+			rename { "${project.name}.war" }
+		}
+	}
+}

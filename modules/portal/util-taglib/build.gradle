@@ -17,6 +17,48 @@ classes {
 			token: "<short-name>portlet_2_0</short-name>",
 			value: "<short-name>portlet</short-name>"
 		)
+
+		ant.replaceregexp(
+			file: "classes/META-INF/liferay-ui.tld",
+			flags: "gs" ,
+			match: "&lt;tag-extension.*&lt;/tag-extension>",
+			replace: ""
+		)
+
+		for (File file : project.fileTree('classes/META-INF').include('*.tld')) {
+			println(file.name)
+		}
+
+
+//				<sequential>
+//				<local name="filename" />
+//
+//				<basename file="@{file}" property="filename" suffix=".tld" />
+//
+//				<if>
+//		<available file="../modules/core/util-taglib-compat/tld/${filename}-compat" />
+//				<then>
+//				<local name="content" />
+//
+//				<loadfile
+//		property="content"
+//		srcFile="../modules/core/util-taglib-compat/tld/${filename}-compat"
+//		/>
+//
+//						<replace
+//							file="@{file}"
+//							value="${content}"
+//						>
+//							<replacetoken><![CDATA[</taglib>]]></replacetoken>
+//						</replace>
+//
+//				<concat append="true" destfile="@{file}"><![CDATA[</taglib>]]></concat>
+//				</then>
+//				</if>
+//		</sequential>
+//		</for>
+
+
 	}
 }
 
