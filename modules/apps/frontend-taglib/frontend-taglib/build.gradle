@@ -23,5 +23,5 @@ dependencies {
 	compileOnly project(":core:petra:petra-string")
 	compileOnly project(":core:registry-api")
 
-	testCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	testCompile project(":portal:portal-impl")
 }

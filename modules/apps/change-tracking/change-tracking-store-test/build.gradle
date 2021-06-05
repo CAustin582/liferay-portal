@@ -1,5 +1,5 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
+	testIntegrationCompile project(":portal:portal-impl")
 	testIntegrationCompile project(":apps:change-tracking:change-tracking-api")
 	testIntegrationCompile project(":apps:change-tracking:change-tracking-spi")
 	testIntegrationCompile project(":apps:change-tracking:change-tracking-store-api")

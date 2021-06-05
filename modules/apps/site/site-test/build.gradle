@@ -1,7 +1,7 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.impl", version: "default"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
+	testIntegrationCompile project(":portal:portal-impl")
+	testIntegrationCompile project(":portal:portal-kernel")
+	testIntegrationCompile project(":portal:util-java")
 	testIntegrationCompile project(":apps:change-tracking:change-tracking-test-util")
 	testIntegrationCompile project(":apps:layout:layout-test-util")
 	testIntegrationCompile project(":apps:portal:portal-local-service-tree-test-util")

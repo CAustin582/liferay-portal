@@ -30,5 +30,5 @@ dependencies {
 	compileOnly project(":core:petra:petra-sql-dsl-spi")
 	compileOnly project(":core:petra:petra-string")
 
-	testCompile group: "com.liferay.portal", name: "com.liferay.portal.test", version: "default"
+	testCompile project(":portal:portal-test")
 }

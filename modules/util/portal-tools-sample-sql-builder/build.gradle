@@ -24,7 +24,7 @@ classes {
 }
 
 dependencies {
-	compile group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
+	compile project(":portal:util-java")
 	compile group: "javax.portlet", name: "portlet-api", transitive: false, version: "3.0.1"
 
 	compileInclude project(":apps:account:account-api")

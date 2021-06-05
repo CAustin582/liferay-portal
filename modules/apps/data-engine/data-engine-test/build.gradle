@@ -1,0 +1,8 @@
+dependencies {
+	testIntegrationCompile project(":portal:portal-kernel")
+	testIntegrationCompile project(":apps:data-engine:data-engine-api")
+	testIntegrationCompile project(":apps:data-engine:data-engine-rest-api")
+	testIntegrationCompile project(":apps:portal-configuration:portal-configuration-test-util")
+	testIntegrationCompile project(":core:petra:petra-string")
+	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
+}

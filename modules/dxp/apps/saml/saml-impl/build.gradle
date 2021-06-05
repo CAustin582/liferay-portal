@@ -16,7 +16,7 @@ dependencies {
 	compileOnly project(":dxp:apps:saml:saml-api")
 	compileOnly project(":dxp:apps:saml:saml-persistence-api")
 
-	testCompile group: "com.liferay.portal", name: "com.liferay.util.java", version: "default"
+	testCompile project(":portal:util-java")
 	testCompile project(":apps:static:portal-configuration:portal-configuration-persistence-api")
 	testCompile project(":core:petra:petra-concurrent")
 	testCompile project(":core:petra:petra-lang")

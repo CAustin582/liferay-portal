@@ -1,5 +1,5 @@
 dependencies {
-	testIntegrationCompile group: "com.liferay.portal", name: "com.liferay.portal.kernel", version: "default"
+	testIntegrationCompile project(":portal:portal-kernel")
 	testIntegrationCompile project(":apps:asset:asset-display-page-api")
 	testIntegrationCompile project(":apps:asset:asset-info-display-api")
 	testIntegrationCompile project(":apps:dynamic-data-mapping:dynamic-data-mapping-api")
