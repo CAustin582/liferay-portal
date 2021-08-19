@@ -1,8 +1,4 @@
-cleanJar {
-	doLast {
-		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
-	}
-}
+apply from: file('../build-common.gradle')
 
 dependencies {
 	compile "javax.enterprise.deploy:deployment-api:1.2-rev-1"
@@ -227,16 +223,6 @@ dependencies {
 	}
 }
 
-jar {
-	doLast {
-		copy {
-			from jar.archivePath
-			into rootProject.file("../${project.name}")
-			rename { "${project.name}.jar" }
-		}
-	}
-}
-
 processResources {
 	dependsOn
 
@@ -297,17 +283,6 @@ processResources {
 			from rootProject.file("../classes/logging.properties")
 			into sourceSets.main.output.resourcesDir
 
-		}
-	}
-}
-
-sourceSets {
-	main {
-		java {
-			srcDirs rootProject.file("../${project.name}/src")
-		}
-		resources {
-			srcDirs rootProject.file("../${project.name}/src")
 		}
 	}
 }

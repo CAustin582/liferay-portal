@@ -1,13 +1,13 @@
+apply from: file('../build-common.gradle')
 apply plugin: 'war'
 
 task deployTomcat(type: Copy, dependsOn: war)
 
-cleanJar {
+cleanWar {
 	doLast {
 		project.delete(rootProject.file("../${project.name}/${project.name}.war"))
 	}
 }
-
 
 jar {
 	enabled false

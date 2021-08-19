@@ -1,8 +1,4 @@
-cleanJar {
-	doLast {
-		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
-	}
-}
+apply from: file('../build-common.gradle')
 
 classes {
 	doLast {
@@ -84,29 +80,6 @@ deploy {
 		}
 	}
 }
-
-jar {
-	doLast {
-		copy {
-			from jar.archivePath
-			into rootProject.file("../${project.name}")
-			rename { "${project.name}.jar" }
-		}
-	}
-}
-
-
-sourceSets {
-	main {
-		java {
-			srcDirs rootProject.file("../${project.name}/src")
-		}
-		resources {
-			srcDirs rootProject.file("../${project.name}/src")
-		}
-	}
-}
-
 
 //				<copy
 //		file="${jar.file}.jar"

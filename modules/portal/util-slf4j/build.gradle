@@ -1,31 +1,6 @@
-cleanJar {
-	doLast {
-		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
-	}
-}
+apply from: file('../build-common.gradle')
 
 dependencies {
 	compileOnly group: "org.slf4j", name: "slf4j-api", version: "1.7.26"
 	compileOnly project(":portal:portal-kernel")
-}
-
-jar {
-	doLast {
-		copy {
-			from jar.archivePath
-			into rootProject.file("../${project.name}")
-			rename { "${project.name}.jar" }
-		}
-	}
-}
-
-sourceSets {
-	main {
-		java {
-			srcDirs rootProject.file("../${project.name}/src")
-		}
-		resources {
-			srcDirs rootProject.file("../${project.name}/src")
-		}
-	}
 }
