@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+repositories {
+	maven {
+		url 'https://repository-cdn.liferay.com/nexus/content/groups/public'
+	}
+	mavenCentral()
+}
+
+compileJava.options.encoding = 'UTF-8'
+
+jar {
+	manifest {
+		attributes('Bundle-Name': project.bundleName,
+			'Bundle-SymbolicName': artifactId,
+			'Bundle-Vendor': bundleVendor,
+			'Bundle-Version': artifactVersion,
+			'Export-Package': exportPackage,
+			'Import-Package': importPackage,
+			'Include-Resource': includeResource)
+	}
+
+	into("META-INF/maven/${project.group}/${project.name}") {
+		from { generatePomFileForMavenPublication }
+		rename ".*", "pom.xml"
+	}
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			from components.java
+
+			artifactId = project.artifactId
+			groupId = project.groupId
+			version = project.artifactVersion
+
+			suppressAllPomMetadataWarnings()
+		}
+	}
+}

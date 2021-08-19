@@ -1,3 +1,5 @@
+apply from: file('../build-common.gradle')
+
 cleanJar {
 	doLast {
 		project.delete(rootProject.file("../${project.name}/${project.name}.jar"))
