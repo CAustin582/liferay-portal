@@ -11,6 +11,14 @@ repositories {
 compileJava.options.encoding = 'UTF-8'
 
 jar {
+	doLast {
+		copy {
+			from jar.archivePath
+			into rootProject.file("../${project.name}")
+			rename { "${project.name}.jar" }
+		}
+	}
+
 	manifest {
 		attributes('Bundle-Name': project.bundleName,
 			'Bundle-SymbolicName': artifactId,
@@ -37,6 +45,17 @@ publishing {
 			version = project.artifactVersion
 
 			suppressAllPomMetadataWarnings()
+		}
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs rootProject.file("../${project.name}/src")
+		}
+		resources {
+			srcDirs rootProject.file("../${project.name}/src")
 		}
 	}
 }

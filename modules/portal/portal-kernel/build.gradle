@@ -25,25 +25,3 @@ dependencies {
 	compileOnly project(":core:petra:petra-string")
 	compileOnly project(":core:registry-api")
 }
-
-jar {
-	doLast {
-		copy {
-			from jar.archivePath
-			into rootProject.file("../${project.name}")
-			rename { "${project.name}.jar" }
-		}
-	}
-}
-
-
-sourceSets {
-	main {
-		java {
-			srcDirs rootProject.file("../${project.name}/src")
-		}
-		resources {
-			srcDirs rootProject.file("../${project.name}/src")
-		}
-	}
-}

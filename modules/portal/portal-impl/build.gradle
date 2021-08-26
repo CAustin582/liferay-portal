@@ -289,7 +289,7 @@ processResources {
 			include "indexes.sql"
 			include "sequences.sql"
 			include "update-*.sql"
-			into new File(sourceSets.main.output.resourcesDir, "com/liferay/portal/tools/sql/dependencie")
+			into new File(sourceSets.main.output.resourcesDir, "com/liferay/portal/tools/sql/dependencies")
 		}
 
 		copy {
