@@ -1,4 +1,4 @@
-apply from: file('../build-common.gradle')
+apply from: file('../../build-common.gradle')
 
 cleanJar {
 	doLast {

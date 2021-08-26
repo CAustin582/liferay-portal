@@ -1,4 +1,4 @@
-apply from: file('../build-common.gradle')
+apply from: file('../../build-common.gradle')
 
 dependencies {
 	compile "javax.enterprise.deploy:deployment-api:1.2-rev-1"
