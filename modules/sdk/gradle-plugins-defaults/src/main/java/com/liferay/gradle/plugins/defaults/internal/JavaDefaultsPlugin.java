@@ -62,7 +62,7 @@ public class JavaDefaultsPlugin extends BaseDefaultsPlugin<JavaPlugin> {
 
 		String name = project.getName();
 
-		if (name.endsWith("-test")) {
+		if (!name.equals("portal-test") && name.endsWith("-test")) {
 			jar.setEnabled(false);
 		}
 	}
