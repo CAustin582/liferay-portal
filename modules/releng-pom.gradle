@@ -119,7 +119,7 @@ generatePomRelease {
 					return FileVisitResult.SKIP_SUBTREE
 				}
 
-				if (it.getParentFile().name == "apps" || it.getParentFile().name == "util") {
+				if (it.getParentFile().name == "apps") {
 					File appBndFile = new File(it, "app.bnd")
 
 					if (appBndFile.exists()) {
@@ -143,7 +143,7 @@ generatePomRelease {
 				File gulpJSFile = new File(it, "gulp.js")
 				File portalMarkerFile = new File(it, ".lfrbuild-portal")
 
-				if (!portalMarkerFile.exists() || !(buildXMLFile.exists() || gulpJSFile.exists() || bndBndFile.exists())) {
+				if ((!portalMarkerFile.exists() && !it.getParentFile().name == "util") || !(buildXMLFile.exists() || gulpJSFile.exists() || bndBndFile.exists())) {
 					return FileVisitResult.CONTINUE
 				}
 
