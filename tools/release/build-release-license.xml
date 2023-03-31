@@ -1,0 +1,333 @@
+<project basedir="." default="update-portal" name="release-license" xmlns:antelope="antlib:ise.antelope.tasks">
+	<target name="obfuscate-portal">
+		<ant dir="portal-impl" inheritall="false" target="compile" />
+
+		<!-- Temporary workaround for LPS-74687 -->
+
+		<mkdir dir="modules/core/portal-compat/petra/util-java-compat/classes" />
+
+		<proguard note="false" optimize="false" shrink="false">
+			<injar filter="**/portal/ee/license/**.class,**/portal/license/License.class,**/portal/license/LicenseManager*.class,**/portal/license/validator/**.class" path="portal-impl/classes" />
+			<keep name="com.liferay.portal.ee.license.LCSLicenseManager">
+				<method name="checkUserLicense" />
+				<method name="getLCSStates" />
+				<method name="getResetToken" />
+				<method name="getStartupAction" />
+				<method name="getLicenseState" />
+				<method name="getLifecycleAction" />
+				<method name="resetState" />
+				<method name="_getTimestamp" />
+			</keep>
+			<keep name="com.liferay.portal.ee.license.LicenseBottomJSPDynamicInclude">
+				<method name="include" />
+				<method name="register" />
+				<field name="_JSP_PATH" />
+				<field name="_log" />
+				<field name="_servletContext" />
+			</keep>
+			<keep name="com.liferay.portal.ee.license.LifecycleAction" />
+			<keep name="com.liferay.portal.ee.license.StartupAction" />
+			<keep name="com.liferay.portal.ee.license.UpdateLicenseAction">
+				<method name="execute" />
+			</keep>
+			<keepclassmembernames name="com.liferay.portal.license.License">
+				<field name="serialVersionUID" />
+				<method name="compareTo" />
+			</keepclassmembernames>
+			<keep name="com.liferay.portal.license.LicenseConstants" />
+			<keep name="com.liferay.portal.license.LicenseManager">
+				<method name="checkBinaryLicense" />
+				<method name="checkClusterLicense" />
+				<method name="checkLicense" />
+				<method name="getClusterLicenseProperties" />
+				<method name="getLicenseProperties" />
+				<method name="getLicenseState" />
+				<method name="getServerId" />
+				<method name="registerLicense" />
+			</keep>
+			<keep name="com.liferay.portal.license.util.LicenseManagerImpl" />
+			<libraryjar path="${java.lib.dir}/jce.jar" />
+			<libraryjar path="${java.lib.dir}/rt.jar" />
+			<libraryjar path="lib/development/servlet-api.jar" />
+			<libraryjar path="tmp/lib-pre/com.liferay.petra.string.jar" />
+			<libraryjar filter="!WEB-INF/**,!**/portal/ee/license/**.class,!**/portal/license/License.class,!**/portal/license/LicenseManager*.class,!**/portal/license/validator/**.class" path="portal-impl/classes" />
+			<libraryjar path="${portal.kernel.dir}/classes" />
+			<libraryjar path="util-java/classes" />
+			<outjar path="portal-impl/obfuscated-classes" />
+		</proguard>
+
+		<if>
+			<and>
+				<istrue value="${env.DXP}" />
+				<not>
+					<istrue value="${update.portal.override}" />
+				</not>
+			</and>
+			<then>
+				<delete includeemptydirs="true">
+					<fileset
+						dir="portal-impl/classes/com/liferay/portal/ee"
+						excludes="**/*.key,**/*.txt"
+					/>
+					<fileset
+						dir="portal-impl/src/com/liferay/portal/ee"
+					/>
+				</delete>
+			</then>
+		</if>
+
+		<delete includeemptydirs="true">
+			<fileset
+				dir="portal-impl/classes/com/liferay/portal/license"
+				excludes="**/*.key,**/*.txt,**/sigar/**,**/util/**.class"
+			/>
+			<fileset
+				dir="portal-impl/src/com/liferay/portal/license"
+				excludes="public.key,**/sigar/**,**/util/DefaultLicenseManagerImpl.java,**/util/LicenseUtil.java"
+			/>
+		</delete>
+
+		<move todir="portal-impl/classes">
+			<fileset dir="portal-impl/obfuscated-classes" />
+		</move>
+
+		<delete dir="tools/release/ext-impl/classes" />
+		<mkdir dir="tools/release/ext-impl/classes" />
+
+		<path id="ClassEncryptorBuilder.classpath">
+			<fileset dir="lib/development" includes="*.jar" />
+			<fileset dir="lib/portal" includes="*.jar" />
+			<fileset dir="tmp/lib-pre" includes="*.jar" />
+			<pathelement location="${ant.core.lib}" />
+			<pathelement location="tools/release/ext-impl/classes" />
+			<pathelement location="portal-impl/classes" />
+			<pathelement location="${portal.kernel.dir}/classes" />
+			<pathelement location="util-java/classes" />
+		</path>
+
+		<javac
+			classpathref="ClassEncryptorBuilder.classpath"
+			compiler="modern"
+			deprecation="off"
+			destdir="tools/release/ext-impl/classes"
+			includes="**/ClassEncryptorBuilder.java"
+			nowarn="on"
+			srcdir="tools/release/ext-impl/src"
+		/>
+
+		<copy todir="tools/release/ext-impl/classes">
+			<fileset dir="tools/release/ext-impl/src" excludes="**/*.java" />
+		</copy>
+
+		<if>
+			<and>
+				<istrue value="${env.DXP}" />
+				<not>
+					<istrue value="${update.portal.override}" />
+				</not>
+			</and>
+			<then>
+				<java
+					classname="com.liferay.portal.ee.tools.ClassEncryptorBuilder"
+					classpathref="ClassEncryptorBuilder.classpath"
+					failonerror="true"
+					fork="true"
+					newenvironment="true"
+				>
+					<arg value="portal-impl/classes" />
+				</java>
+
+				<move
+					file="portal-impl/classes/com/liferay/portal/ee/license/LifecycleAction.class"
+					tofile="portal-impl/classes/com/liferay/portal/ee/license/LifecycleAction"
+				/>
+				<move
+					file="portal-impl/classes/com/liferay/portal/ee/license/StartupAction.class"
+					tofile="portal-impl/classes/com/liferay/portal/ee/license/StartupAction"
+				/>
+			</then>
+		</if>
+
+		<delete file="portal-impl/portal-impl.jar" />
+	</target>
+
+	<target name="-update-portal">
+		<copy includeemptydirs="false" todir="portal-impl/src/com/liferay/portal/license">
+			<fileset dir="tools/release/src/com/liferay/portal/license" />
+		</copy>
+
+		<if>
+			<istrue value="${use.legacy.portal.encrypter}" />
+			<then>
+				<copy includeemptydirs="false" todir="portal-impl/src/com/liferay/portal/kernel/encryptor">
+					<fileset dir="tools/release/ext-impl/src/com/liferay/portal/kernel/encryptor" />
+				</copy>
+			</then>
+		</if>
+
+		<replace encoding="UTF-8" file="modules/core/portal-app-license-resolver-hook/src/main/java/com/liferay/portal/app/license/resolver/hook/AppResolverHook.java">
+			<replacetoken><![CDATA[if (productId == null) {]]></replacetoken>
+			<replacevalue><![CDATA[if ((productId == null) && properties.containsKey("product-type")) {
+				productId = bundleRevision.getSymbolicName();
+			}
+
+			if (productId == null) {]]></replacevalue>
+		</replace>
+
+		<replace encoding="UTF-8" file="portal-impl/src/META-INF/util-spring.xml">
+			<replacetoken><![CDATA[com.liferay.portal.license.util.DefaultLicenseManagerImpl]]></replacetoken>
+			<replacevalue><![CDATA[com.liferay.portal.license.util.LocalLicenseManagerImpl]]></replacevalue>
+		</replace>
+
+		<replace encoding="UTF-8" file="portal-impl/src/com/liferay/portal/util/LicenseUtil.java">
+			<replacetoken><![CDATA["version", 2]]></replacetoken>
+			<replacevalue><![CDATA["version", 1]]></replacevalue>
+		</replace>
+
+		<replace encoding="UTF-8" file="portal-impl/src/com/liferay/portal/util/LicenseUtil.java">
+			<replacetoken><![CDATA[Arrays.toString(getServerIdBytes())]]></replacetoken>
+			<replacevalue><![CDATA[com.liferay.portal.license.LicenseManager.getServerId()]]></replacevalue>
+		</replace>
+
+		<copy todir="modules">
+			<fileset dir="tools/release/ext-modules" />
+		</copy>
+
+		<if>
+			<and>
+				<istrue value="${env.DXP}" />
+				<not>
+					<istrue value="${update.portal.override}" />
+				</not>
+			</and>
+			<then>
+				<copy includeemptydirs="false" todir="portal-impl/src/com/liferay/portal/ee">
+					<fileset dir="tools/release/ext-impl/src/com/liferay/portal/ee" excludes="**/ClassEncryptorBuilder.java" />
+				</copy>
+
+				<replace encoding="UTF-8" file="portal-impl/src/META-INF/util-spring.xml">
+					<replacetoken><![CDATA[<bean class="com.liferay.portal.license.util.LocalLicenseManagerImpl" id="com.liferay.portal.kernel.license.util.LicenseManager" />]]></replacetoken>
+					<replacevalue><![CDATA[<bean class="com.liferay.portal.license.util.LocalLicenseManagerImpl" id="com.liferay.portal.kernel.license.util.LicenseManager" />
+					<bean class="com.liferay.portal.ee.license.LicenseBottomJSPDynamicInclude" id="com.liferay.portal.ee.license.LicenseBottomJSPDynamicInclude" />]]></replacevalue>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-impl/src/META-INF/portal-log4j.xml">
+					<replacetoken><![CDATA[<Logger level="INFO" name="com.liferay.portal.license" />]]></replacetoken>
+					<replacevalue><![CDATA[<Logger level="INFO" name="com.liferay.portal.license" />
+			<Logger level="INFO" name="com.liferay.portal.ee.license" />]]></replacevalue>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-impl/src/com/liferay/portal/events/EventsProcessorUtil.java">
+					<replacetoken><![CDATA[if (lifecycleActions != null) {]]></replacetoken>
+					<replacevalue><![CDATA[if (key.equals(com.liferay.portal.kernel.util.PropsKeys.SERVLET_SERVICE_EVENTS_PRE)) {
+			_lifecycleAction.processLifecycleEvent(lifecycleEvent);
+		}
+
+		if (lifecycleActions != null) {]]></replacevalue>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-impl/src/com/liferay/portal/events/EventsProcessorUtil.java">
+					<replacetoken><![CDATA[private static final Log _log = LogFactoryUtil.getLog(]]></replacetoken>
+					<replacevalue><![CDATA[private static final LifecycleAction _lifecycleAction = com.liferay.portal.ee.license.LCSLicenseManager.getLifecycleAction();
+
+	private static final Log _log = LogFactoryUtil.getLog(]]></replacevalue>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-impl/src/com/liferay/portal/service/impl/UserLocalServiceImpl.java">
+					<replacefilter token="// PLACEHOLDER 01"><replacevalue><![CDATA[com.liferay.portal.ee.license.LCSLicenseManager.checkUserLicense();]]></replacevalue></replacefilter>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-impl/src/com/liferay/portal/internal/servlet/MainServlet.java">
+					<replacetoken><![CDATA[StartupAction startupAction = new StartupAction();]]></replacetoken>
+					<replacevalue><![CDATA[StartupAction startupAction = com.liferay.portal.ee.license.LCSLicenseManager.getStartupAction();]]></replacevalue>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-web/docroot/html/portal/license.jsp">
+					<replacetoken><![CDATA[Register Your Application]]></replacetoken>
+					<replacevalue><![CDATA[Register Your Server or Application]]></replacevalue>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-web/docroot/html/portal/license.jsp">
+					<replacetoken><![CDATA[List<Map<String, String>> licenseProperties = LicenseManagerUtil.getLicenseProperties();]]></replacetoken>
+					<replacevalue><![CDATA[List<Map<String, String>> licenseProperties = LicenseManagerUtil.getLicenseProperties();
+
+		int portalLicenseState = 0;
+		String portalLicenseType = StringPool.BLANK;
+
+		if ((licenseProperties != null) && (licenseProperties.size() > 0)) {
+			Map<String, String> portalLicenseProperties = licenseProperties.get(0);
+
+			String productId = GetterUtil.getString(portalLicenseProperties.get("productId"));
+
+			if (productId.equals("Portal")) {
+				portalLicenseState = GetterUtil.getInteger(portalLicenseProperties.get("licenseState"));
+				portalLicenseType = portalLicenseProperties.get("type");
+			}
+		}
+
+		if (portalLicenseState <= 0) {
+			portalLicenseState = 1;
+		}
+		%>
+
+		<c:choose>
+			<c:when test="<%= portalLicenseState == 2 %>">
+				<div class="portlet-msg-error">
+					Your activation key has expired. Please update your activation key to continue using Liferay DXP.
+				</div>
+			</c:when>
+			<c:when test="<%= portalLicenseState == 4 %>">
+				<div class="portlet-msg-error">
+					Your activation key has been deactivated.
+				</div>
+			</c:when>
+			<c:when test="<%= portalLicenseState == 5 %>">
+				<div class="portlet-msg-error">
+					Your activation key is not valid for this server.
+				</div>
+			</c:when>
+			<c:when test="<%= portalLicenseState == 6 %>">
+				<div class="portlet-msg-error">
+					<c:choose>
+						<c:when test='<%= portalLicenseType.equals("limited") || portalLicenseType.equals("production") %>'>
+							Your activation key is currently in use by another instance.
+						</c:when>
+						<c:when test='<%= portalLicenseType.equals("per-user") %>'>
+							Your server has exceeded the maximum number of users.
+						</c:when>
+						<c:otherwise>
+							You have exceeded the developer activation key connection limit. Click <a href="<%= themeDisplay.getPathMain() %>/portal/license?cmd=resetState&resetToken=<%= com.liferay.portal.ee.license.LCSLicenseManager.getResetToken() %>">here</a> to reset all connections.
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</c:when>
+		</c:choose>
+
+		<%]]></replacevalue>
+				</replace>
+
+				<replace encoding="UTF-8" file="portal-web/docroot/WEB-INF/struts-config.xml">
+					<replacetoken><![CDATA[<action path="/portal/license" type="com.liferay.portal.action.UpdateLicenseAction">]]></replacetoken>
+					<replacevalue><![CDATA[<action forward="portal.license_activation" path="/portal/license_activation" />
+
+		<action path="/portal/license" type="com.liferay.portal.ee.license.UpdateLicenseAction">]]></replacevalue>
+				</replace>
+
+		<replace encoding="UTF-8" file="portal-web/docroot/WEB-INF/tiles-defs.xml">
+			<replacetoken><![CDATA[<definition extends="portal" name="portal.license">]]></replacetoken>
+			<replacevalue><![CDATA[<definition extends="portal" name="portal.license_activation">
+		<put name="pop_up" value="true" />
+		<put name="title" value="license" />
+		<put name="content" value="/portal/license_activation.jsp" />
+	</definition>
+
+	<definition extends="portal" name="portal.license">]]></replacevalue>
+				</replace>
+
+				<copy todir="portal-web/docroot">
+					<fileset dir="tools/release/ext-web/docroot" />
+				</copy>
+			</then>
+		</if>
+	</target>
+</project>

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+
+<project name="build-release" default="release">
+	<tstamp>
+		<format property="tstamp.value" pattern="yyyyMMddHHmmssSSS" />
+	</tstamp>
+
+	<property file="release.properties" />
+	<property environment="env" />
+
+	<import file="tools/release/build-release-license.xml" />
+	<import file="tools/release/get-release-apps.xml" />
+
+	<target
+		name="dist"
+		depends="
+			build-portal,
+			get-release-apps,
+			-build-archives,
+			-copy-archives,
+			-copy-keys-txt,
+			-update-properties"
+	>
+	</target>
+
+	<target name="build-portal" depends="-copy-keys-txt,-update-properties">
+		<ant inheritall="false" target="compile" />
+
+		<ant inheritall="false" target="deploy" />
+	</target>
+
+	<target
+		name="-build-archives"
+		depends="
+			build-portal,
+			-copy-release-apps-to-bundle,
+			-deploy-sidecar,
+			-update-properties"
+	>
+		<ant antfile="build-dist.xml" inheritall="false" target="zip-tomcat" />
+	</target>
+
+	<target name="-copy-archives" depends="-build-archives">
+		<property name="build.release.user.content.dir" value="/opt/java/jenkins/userContent/liferay-release-tool/${release.info.version}${release.info.version.file.suffix}" />
+
+		<copy todir="${build.release.user.content.dir}/${tstamp.value}">
+			<fileset dir="dist" />
+		</copy>
+	</target>
+
+	<target name="-copy-keys-txt" if="${env.DXP}">
+		<copy includeemptydirs="false" todir="${portal.dir}/portal-impl/src/com/liferay/portal/license">
+			<fileset dir="${ext.dir}/ext-impl/src/com/liferay/portal/license" />
+		</copy>
+	</target>
+
+	<target name="-copy-release-apps-to-bundle" depends="get-release-apps">
+		<delete dir="${bundles.dir}/osgi/modules" />
+		<delete dir="${bundles.dir}/osgi/portal" />
+		<delete dir="${bundles.dir}/osgi/static" />
+		<delete dir="${bundles.dir}/osgi/test" />
+		<delete dir="${bundles.dir}/osgi/war" />
+		<delete dir="${bundles.dir}/deploy" />
+
+		<copy overwrite="true" todir="${bundles.dir}/osgi">
+			<fileset dir="${tstamp.value}/osgi" includes="marketplace/**/*" />
+		</copy>
+	</target>
+
+	<target name="-deploy-sidecar" depends="-update-properties">
+		<exec dir="modules/apps/portal-search-elasticsearch7/portal-search-elasticsearch7-impl" executable="${basedir}/gradlew">
+			<arg value="deploySidecar" />
+		</exec>
+
+		<chmod
+			perm="777"
+			type="both"
+			verbose="true"
+		>
+			<fileset dir="${bundles.dir}" includes="elasticsearch7/**/*" />
+			<fileset dir="${bundles.dir}" includes="elasticsearch-sidecar/**/*" />
+		</chmod>
+	</target>
+
+	<target name="-update-properties">
+		<propertyfile file="build.${user.name}.properties">
+			<entry key="baseline.jar.report.level" value="off" />
+			<entry key="build.marketplace.apps.enabled" value="false" />
+			<entry key="jdk.6.home" value="/opt/java/jdk" />
+			<entry key="jdk.7.home" value="/opt/java/jdk" />
+			<entry key="jsp.precompile" value="on" />
+		</propertyfile>
+	</target>
+</project>

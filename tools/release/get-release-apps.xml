@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<project name="get-release-apps" default="get-release-apps">
+	<property name="dist.dir.parent" location="${tstamp.value}/osgi" />
+
+	<delete dir="${dist.dir.parent}" />
+
+	<mkdir dir="${dist.dir.parent}" />
+
+	<target name="get-release-apps" depends="-update-properties">
+		<ant inheritall="false" target="install-portal-snapshots" />
+
+		<condition property="get.release.apps.includes" value="apps/*,dxp/apps/*" else="apps/*">
+			<istrue value="${env.DXP}" />
+		</condition>
+
+		<!-- <pathconvert pathsep=";" property="liferay.liferay.plugin.package.properties.files">
+			<fileset dir="modules" includes="**/docroot/WEB-INF/liferay-plugin-package.properties" />
+		</pathconvert>
+
+		<groovy><![CDATA[
+			String[] files = project.getProperty("liferay.liferay.plugin.package.properties.files").split(";");
+
+			files.each {
+				File file = new File(it);
+
+				ant.propertyfile(file: file) {
+					entry(key: "module-incremental-version", operation: "-", type: "int", value: "1")
+				}
+			}
+		]]></groovy> -->
+
+		<subant genericantfile="tools/release/get-release-app.xml" target="get-release-app" inheritall="true">
+			<dirset dir="modules" includes="${get.release.apps.includes}" excludes="${get.release.apps.excludes}">
+				<present targetdir="modules">
+					<mapper from="*" to="*/app.bnd" type="glob" />
+				</present>
+				<not>
+					<present targetdir="modules">
+						<mapper from="*" to="*/.lfrbuild-releng-ignore" type="glob" />
+					</present>
+				</not>
+			</dirset>
+			<property name="modules.dir" value="${basedir}/modules" />
+			<property name="tstamp.value" value="${tstamp.value}" />
+		</subant>
+	</target>
+</project>

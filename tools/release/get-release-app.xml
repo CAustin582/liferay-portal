@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<project name="get-release-app">
+	<property file="app.bnd" />
+
+	<basename property="app.name" file="${basedir}" />
+
+	<echo message="App Name: ${app.name}" />
+
+	<property name="download.app.sources" value="false" />
+
+	<target name="build-app-from-nexus-modules" if="${Liferay-Releng-Bundle}">
+		<condition property="app.dist.dir" value="${dist.dir.parent}/portal">
+			<matches pattern="^portal(?:-|$)" string="${app.name}" />
+		</condition>
+
+		<condition property="app.dist.dir" value="${dist.dir.parent}/static">
+			<equals arg1="${app.name}" arg2="static" />
+		</condition>
+
+		<property name="app.dist.dir" value="${dist.dir.parent}/modules" />
+
+		<ant antfile="${modules.dir}/build.xml" target="build-app" inheritall="false" usenativebasedir="true">
+			<property file=".gradle/gradle.properties" />
+			<property name="app.name" value="${app.name}" />
+			<property name="check.stale.artifacts.skip" value="false" />
+			<property name="dist.dir" value="${app.dist.dir}" />
+			<property name="download.app.sources" value="false" />
+			<property name="lp.version" value="${release.info.version.major}.${release.info.version.minor}.${release.info.version.bug.fix}" />
+			<property name="tstamp.value" value="${tstamp.value}" />
+		</ant>
+
+		<!--
+		Remove the artifact version and ".hotfix" from the file names, unless
+		the artifact is a non-theme war file, and move all war files to the
+		deploy directory.
+		-->
+
+		<move todir="${app.dist.dir}">
+			<fileset dir="${app.dist.dir}" includes="*.jar" />
+			<regexpmapper from="(.*?)-\d(?:[\d.a-z-]*\d)(?:\.hotfix.+)?\.jar" to="\1.jar" />
+		</move>
+
+		<move todir="${app.dist.dir}/../../deploy">
+			<fileset dir="${app.dist.dir}" includes="*.war" />
+			<regexpmapper from="^(?=.*-theme)(.*?)-\d(?:[\d.a-z-]*\d)(?:\.hotfix.+)?\.war" to="\1.war" />
+		</move>
+
+		<move todir="${app.dist.dir}/../../deploy">
+			<fileset dir="${app.dist.dir}" includes="*.war" />
+			<regexpmapper from="^(?!.*-theme.*)(.*?)(?:\.hotfix.+)?\.war" to="\1.war" />
+		</move>
+
+		<ant antfile="${modules.dir}/build.xml" target="build-app-lpkg" inheritall="false" usenativebasedir="true">
+			<property file=".gradle/gradle.properties" />
+			<property file="release.properties" />
+			<property file="release.profile-dxp.properties" />
+			<property name="app.name" value="${app.name}" />
+			<property name="lp.version" value="${release.info.version.major}.${release.info.version.minor}.${release.info.version.bug.fix}" />
+			<property name="osgi.dir" value="${dist.dir.parent}" />
+			<property name="output.dir" value="${dist.dir.parent}/marketplace" />
+			<property name="tstamp.value" value="${tstamp.value}" />
+		</ant>
+	</target>
+
+	<target name="get-release-app" depends="build-app-from-nexus-modules" />
+</project>
