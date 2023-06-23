@@ -680,7 +680,7 @@ gradle.taskGraph.useFilter {
 		}
 	}
 
-	return false
+	return true
 }
 
 private File _getRootDir(File dir, String markerFileName) {
