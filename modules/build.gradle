@@ -654,18 +654,17 @@ gradle.taskGraph.useFilter {
 
 		File appDir = _getRootDir(task.project.projectDir, "app.bnd")
 
-		if ((buildProfile != null) && (buildProfile != "portal-pre") && appDir) {
-			File appBndFile = new File(appDir, "app.bnd")
+		String liferayRelengBundle = System.properties["build.liferay.releng.bundle"]
 
-			String liferayRelengBundle = System.properties["liferay.releng.bundle"]
+		if ((buildProfile != null) && (buildProfile != "portal-pre") && appDir && (liferayRelengBundle == "true")) {
+			File appBndFile = new File(appDir, "app.bnd")
 
 			Properties appBndProperties = new Properties()
 
 			appBndFile.withInputStream {
 				appBndProperties.load(it)
 			}
-
-			if (appBndProperties["Liferay-Releng-Bundle"] != liferayRelengBundle) {
+			if (appBndProperties["Liferay-Releng-Bundle"] == "false") {
 				return false
 			}
 		}
@@ -681,7 +680,7 @@ gradle.taskGraph.useFilter {
 		}
 	}
 
-	return true
+	return false
 }
 
 private File _getRootDir(File dir, String markerFileName) {
