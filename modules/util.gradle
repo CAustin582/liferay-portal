@@ -2,6 +2,7 @@ import com.liferay.gradle.plugins.defaults.task.CopyIvyDependenciesTask
 import com.liferay.gradle.plugins.source.formatter.FormatSourceTask
 import com.liferay.gradle.plugins.util.PortalTools
 import com.liferay.gradle.util.FileUtil
+import com.liferay.gradle.util.GradleUtil
 import com.liferay.gradle.util.StringUtil
 
 import java.util.regex.Matcher
@@ -28,6 +29,25 @@ task updateYarnBinariesCache
 task wrapperPortal(type: Wrapper)
 task wrapperProjectTemplates(type: Wrapper)
 task wrapperSubrepo(type: Wrapper)
+
+task publishArtifacts {
+	doLast {
+		println "#### " + rootDir.parentFile
+
+		fileTree(dir: rootDir.parentFile, include: "**/build/artifacts-publish-commands/artifacts-publish-commands.sh").each {
+			File commandsFile ->
+
+			exec {
+				executable "/bin/sh"
+
+				args "-c"
+				args commandsFile.getCanonicalPath()
+
+				workingDir = rootDir.parentFile
+			}
+		}
+	}
+}
 
 FileTree libDependenciesFileTree = fileTree(dir: "../lib", include: "*/dependencies.properties")
 

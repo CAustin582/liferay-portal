@@ -42,14 +42,10 @@ public class LiferayDefaultsPlugin extends LiferayPlugin {
 		MavenPublishDefaultsPlugin.INSTANCE.apply(project);
 		NodeDefaultsPlugin.INSTANCE.apply(project);
 
-		String buildProfile = System.getProperty("build.profile");
+		File relengDir = LiferayRelengUtil.getRelengDir(project);
 
-		if (Validator.isNull(buildProfile)) {
-			File relengDir = LiferayRelengUtil.getRelengDir(project);
-
-			if (relengDir != null) {
-				LiferayRelengPlugin.INSTANCE.apply(project);
-			}
+		if (relengDir != null) {
+			LiferayRelengPlugin.INSTANCE.apply(project);
 		}
 
 		String projectPath = project.getPath();

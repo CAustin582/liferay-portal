@@ -424,6 +424,12 @@ gradle.beforeProject {
 			}
 		}
 
+		pluginManager.withPlugin("com.liferay.base.plugin") {
+			if (deploy.enabled) {
+				deploy.finalizedBy writeArtifactPublishCommands
+			}
+		}
+
 		pluginManager.withPlugin("com.liferay.baseline") {
 			if (project.path.startsWith(":third-party:")) {
 				baseline {
@@ -762,6 +768,10 @@ gradle.taskGraph.whenReady {
 				task.setEnabled(false)
 			}
 		}
+
+		if (task.name == "publishNodeModule") {
+			task.setEnabled(false)
+		}
 	}
 }
 
@@ -868,4 +878,14 @@ private void _updateGradleSourcePaths(String gradleVersion, EclipseModel eclipse
 				}
 			}
 		})
+}
+
+class LogListener implements StandardOutputListener {
+
+	void onOutput(CharSequence charSequence) {
+		log = log + charSequence
+	}
+
+	String log = ""
+
 }
