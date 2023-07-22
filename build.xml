@@ -295,17 +295,17 @@ message.
 		<setup-yarn />
 
 		<gradle-execute dir="modules/core" task="deploy">
-			<arg value="--parallel" />
 			<arg value="-Dbuild.profile=portal-pre" />
+			<arg value="-DwriteArtifactPublishCommands.force=true" />
 			<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
 		</gradle-execute>
 
 		<ant dir="portal-kernel" inheritAll="false" target="install-portal-snapshot" />
 
 		<gradle-execute dir="modules/apps" task="deploy">
-			<arg value="--parallel" />
 			<arg value="-Dbuild.profile=portal-pre" />
 			<arg value="-Pforced.deploy.dir=${project.dir}/tmp/lib-pre" />
+			<arg value="-DwriteArtifactPublishCommands.force=true" />
 		</gradle-execute>
 
 		<parallel failonany="true" threadcount="${parallel.thread.count}">
@@ -400,17 +400,17 @@ message.
 			<equals arg1="${build.marketplace.apps.enabled}" arg2="true" />
 			<then>
 				<gradle-execute dir="${project.dir}/modules" task="deploy">
-					<arg value="--parallel" />
 					<arg value="-Dbuild.profile=portal-pre" />
+					<arg value="-DwriteArtifactPublishCommands.force=true" />
 				</gradle-execute>
 
 				<gradle-execute dir="${project.dir}/modules" task="deploy">
-					<arg value="--parallel" />
 					<arg value="-Dbuild.exclude.dirs=${build.exclude.dirs}" />
 					<arg value="-Dbuild.include.dirs=${build.include.dirs}" />
 					<arg value="-Dbuild.profile=${build.profile}" />
 					<arg if:true="${gradle.build.scan.enabled}" value="-Dgradle.build.scan.enabled=true" />
 					<arg if:set="gradle.build.scan.server.url" value="-Dgradle.build.scan.server.url=${gradle.build.scan.server.url}" />
+					<arg value="-DwriteArtifactPublishCommands.force=true" />
 					<env key="WAS_HOME" value="${app.server.websphere.dir}" />
 				</gradle-execute>
 
@@ -434,7 +434,9 @@ message.
 										<antelope:replace regex="(.+)\/\.lfrbuild-ci" replacement="$1" />
 									</antelope:stringutil>
 
-									<gradle-execute dir="${lfrbuild.dir}" task="deploy" />
+									<gradle-execute dir="${lfrbuild.dir}" task="deploy">
+										<arg value="-DwriteArtifactPublishCommands.force=true" />
+									</gradle-execute>
 								</sequential>
 							</for>
 						</sequential>
@@ -443,10 +445,10 @@ message.
 			</then>
 			<else>
 				<gradle-execute dir="${project.dir}/modules/core" task="deploy">
-					<arg value="--parallel" />
 					<arg value="-Dbuild.exclude.dirs=${build.exclude.dirs}" />
 					<arg value="-Dbuild.include.dirs=${build.include.dirs}" />
 					<arg value="-Dbuild.profile=${build.profile}" />
+					<arg value="-DwriteArtifactPublishCommands.force=true" />
 				</gradle-execute>
 
 				<pathconvert property="build.app.server.lib.marker.files" setonempty="false">
@@ -911,6 +913,12 @@ This target has been renamed to "snapshot-bundle". Please call "snapshot-bundle"
 		<ant dir="util-java" inheritAll="false" target="publish-portal-release" />
 		<ant dir="util-slf4j" inheritAll="false" target="publish-portal-release" />
 		<ant dir="util-taglib" inheritAll="false" target="publish-portal-release" />
+	</target>
+
+	<target name="publish-modules">
+		<gradle-execute setupbinariescache="false" task="publishArtifacts">
+			<arg value="--build-file=${project.dir}/modules/util.gradle" />
+		</gradle-execute>
 	</target>
 
 	<target name="publish-workspaces">
