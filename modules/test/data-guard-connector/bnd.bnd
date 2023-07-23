@@ -1,6 +1,6 @@
 Bundle-Name: Liferay Data Guard Connector
 Bundle-SymbolicName: com.liferay.data.guard.connector
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Import-Package:\
 	com.liferay.portal.kernel.test,\
 	\
