@@ -97,3 +97,8 @@ ccab0b28b7b86c13f2e31e7dfa0701cbb2ea97ec^..e03f373a1dd0802bd454ffac767ab03cbb6cf
 # Bundle Version 9.4.0
 #
 e03f373a1dd0802bd454ffac767ab03cbb6cfab7^..22ef9a018b73ab7426d6dbdad72e81d43eb8bc2e=LPS-185465
+
+#
+# Bundle Version 9.5.0
+#
+22ef9a018b73ab7426d6dbdad72e81d43eb8bc2e^..34505503fbd91161db4216120db813bcee1ffa5f=COMMERCE-11961 LPS-188912
