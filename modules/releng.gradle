@@ -55,7 +55,7 @@ buildscript {
 	apply from: file("build-buildscript.gradle"), to: buildscript
 
 	dependencies {
-		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "2.0.4"
+		classpath group: "com.github.jengelman.gradle.plugins", name: "shadow", version: "4.0.3"
 		classpath group: "de.undercouch", name: "gradle-download-task", version: "5.4.0"
 		classpath group: "org.ajoberstar", name: "gradle-git", version: "1.6.0"
 	}
@@ -209,6 +209,8 @@ deployReleng {
 }
 
 portalArtifactsJar {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
 	ext {
 		relengPropertiesFiles = null
 	}
@@ -297,6 +299,7 @@ portalJavadocJar {
 
 	baseName = "portal"
 	classifier = "javadoc"
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	from portalJavadoc
 	includeEmptyDirs = false
 	version = _getReleaseInfoVersion()
@@ -319,6 +322,7 @@ portalSourcesJar {
 
 	baseName = "portal"
 	classifier = "sources"
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	includeEmptyDirs = false
 	version = _getReleaseInfoVersion()
 
@@ -1269,6 +1273,8 @@ private List<Dependency> _getPortalArtifactsDependencies(List<File> relengProper
 		File dir = new File(portalArtifactsDir, jarFile.name[0 .. -5])
 
 		copy {
+			duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
 			from zipTree(jarFile).matching {
 				exclude _getExcludes(jarFile)
 				include _getIncludes(jarFile)
@@ -1413,6 +1419,7 @@ private List<File> _getPortalSourcesDependencies(List<File> relengPropertiesFile
 			File dir = new File(portalSourcesDir, jarFile.name[0 .. -5])
 
 			copy {
+				duplicatesStrategy = DuplicatesStrategy.INCLUDE
 				from zipTree(jarFile)
 				into dir
 			}
@@ -1469,6 +1476,7 @@ private List<File> _getPortalSourcesDependencies(List<File> relengPropertiesFile
 				File dir = new File(portalSourcesDir, jarFile.name[0 .. -5])
 
 				copy {
+					duplicatesStrategy = DuplicatesStrategy.INCLUDE
 					from zipTree(jarFile)
 					into dir
 				}
